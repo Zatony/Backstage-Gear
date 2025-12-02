@@ -25,5 +25,7 @@ export default class Advertisement implements IAdvertisement{
         this.description = advertisement.description;
         this.image = advertisement.image;
         this.dateOfAd = advertisement.dateOfAd;
+
+        //Object.assign(this, advertisement as Partial<Advertisement>);
     };
 };
