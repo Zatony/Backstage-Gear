@@ -43,6 +43,8 @@ export class File implements IFile{
                 'INSERT INTO files VALUES (?, ?, ?, ?, ?)',
                 [this.fileId, this.fileName, this.fileSize]
             ) as Array<any>;
+
+            if(results.affectedRows > 0){}
         }
         catch(err){
             console.log(err);
