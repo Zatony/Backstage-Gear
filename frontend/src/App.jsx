@@ -1,19 +1,20 @@
-import './App.css'
-import NavBar from './components/navbar'
-import Footer from './components/footer'
-import NewAd from './components/new-ads'
+import "./App.css";
+import NavBar from "./components/navbar";
+import Footer from "./components/footer";
+import NewAd from "./components/new-ads";
+import SearchBar from "./components/searchbar";
 
 function App() {
-
   return (
     <>
-    <NavBar/>
+      <NavBar />
 
-    {/* <NewAd/> */}
+      <SearchBar />
+      <NewAd />
 
-    <Footer/>
+      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
