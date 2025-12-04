@@ -5,7 +5,7 @@ export default function NavBar() {
     return (
         <nav className="navbar">
             <h3 className="logo">Backstage Gear</h3>
-
+            <div className='navbarLine'></div>
             <ul className="nav-links">
                 <li><a href="#">Rólunk</a></li>
                 <li><a href="#">Szabályzat</a></li>

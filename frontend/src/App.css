@@ -22,6 +22,7 @@ body {
 }
 
 
+/*NAVBAR*/
 .navbar {
   color: var(--white);
   background-color: var(--primary-color);
@@ -40,12 +41,28 @@ body {
   text-decoration: none;
   font-size: 1.5em;
   font-weight: bold;
-  padding-right: 10px;
+  /*padding-right: 10px;
   border-right: solid 3px var(--accent-color);
   border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-bottom-right-radius: 2px; */
   margin-right: 8px;
   cursor: default;
+}
+.navbarLine {
+  position: relative;
+  width: 0;      
+  height: 30px;         
+}
+.navbarLine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 3px;            
+  height: 100%;         
+  background: var(--accent-color);
+  border-radius: 9999px; 
 }
 .nav-links {
   list-style-type: none;
@@ -65,7 +82,6 @@ body {
 }
 .nav-links li a:hover {
   border-bottom: solid 3px var(--accent-color);
-  transition: 0.3s;
 }
 .profile,
 .cart {
@@ -84,13 +100,32 @@ body {
   cursor: pointer;
 }
 
+
+/*SEARCHBAR*/
 .search-text {
   color: var(--white);
   text-align: center;
+  margin-bottom: 5px;
   margin-top: 50px;
   font-size: 1.5rem;  
-  border-bottom: solid 2px var(--accent-color);
+  /* border-bottom: solid 2px var(--accent-color); */
   cursor: default;
+}
+.searchbarLine {
+  position: relative;
+  width: 100%;      
+  height: 3px;         
+}
+.searchbarLine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 150px;            
+  height: 100%;         
+  background: var(--accent-color);
+  border-radius: 9999px; 
 }
 .searchbar {
   background-color: var(--white);
@@ -101,32 +136,41 @@ body {
   border-radius: 60px;
   padding: 0 20px;
   margin: 0 auto;
-  margin-top: 20px;
-  
+  margin-top: 30px;
+  margin-bottom: 50px;  
 }
 .searchbar img {
-  width: 40px;
-  height: 40px;
-  padding: 8px;
+  width: 25px;
+  height: 25px;
+  padding: 0px 8px;
   cursor: pointer;
 }
 .search-input {
   border: none;
   outline: none;
   font-size: 1.2rem;
-  padding: 12px 16px;
+  padding: 8px 16px;
   border-radius: 60px;
   width: 100%;
   background-color: transparent;
 }
 @media screen and (max-width: 1100px) {
   .searchbar {
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-left: 75px;
+    margin-right: 75px;
   }
 }
 
 
+/*KATEGORIA(K)*/
+.category-container{
+  background-color: var(--white);
+  width: 175px;
+  height: 175px;
+  margin: 20px;
+}
+
+/*HIRDETES AJANLAS*/
 .newAd-section {
 }
 .newAd-section h2{
@@ -136,6 +180,7 @@ body {
 }
 
 
+/*HIRDETES*/
 .ad {
   display: flex;
   gap: 20px;
@@ -205,6 +250,7 @@ body {
 }
 
 
+/*FOOTER*/
 .footer {
   background-color: var(--primary-color);
   width: 100%;
