@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { getAds } from "./advertisementController";
+import { getAds, getAdDatasById } from "./advertisementController";
 
 const router: Router = Router();
 
 router.get('/backstagegear/ads', getAds);
+router.get('/backstagegear/ads/:adId', getAdDatasById);
 
 export default router;

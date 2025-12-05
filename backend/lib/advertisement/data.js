@@ -1,4 +1,6 @@
-const datas = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var datas = [
     {
         adId: 1,
         userName: "nagy.eva",
@@ -78,5 +80,4 @@ const datas = [
         dateOfAd: "2025.07.22"
     }
 ];
-
-export default datas;
+exports.default = datas;
