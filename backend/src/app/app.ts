@@ -5,6 +5,7 @@ import bodyparser from "body-parser";
 import categoryRouter from "../category/routes";
 import adRouter from "../advertisement/routes";
 import profileRouter from "../profile/routes";
+import messageRouter from "../message/routes";
 
 
 const app = express();
@@ -17,5 +18,6 @@ app.use(express.json());
 app.use('/', categoryRouter);
 app.use('/', adRouter);
 app.use('/', profileRouter);
+app.use('/', messageRouter);
 
 export default app;
