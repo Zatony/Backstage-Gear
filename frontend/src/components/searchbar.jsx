@@ -8,7 +8,7 @@ export default function SearchBar(){
             <div className='searchbarLine'></div>
             <div className="searchbar">
                 {/* {<img src={filterIco} alt={filterIco} />} */}
-                <input className="search-input" type="search" placeholder="Keresés..." />
+                <input className="search-input" type="search" placeholder="Keresés..." name="searchbar"/>
                 <img src={searchIco} alt={searchIco} />
             </div>
         </div>

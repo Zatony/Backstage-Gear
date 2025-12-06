@@ -1,11 +1,12 @@
-export default function Ad({adName, adDesc, adImg}){
+export default function Ad({adName, adDesc, adImg, adPrice}) {
   return (
     <div className="ad">
-        <div className="adImage"><img src={adImg} alt={adImg} /></div>
+        <img src={adImg} alt={adImg} />
 
       <div className="adText_Button">
-        <h2>{adName}</h2>
+        <h3>{adName}</h3>
         <p>{adDesc}</p>
+        <h2>{adPrice} Ft</h2>
         <button>Kosárba</button>
       </div>
     </div>
