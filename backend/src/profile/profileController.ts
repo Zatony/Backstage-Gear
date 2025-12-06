@@ -2,20 +2,16 @@ import datas from "./data";
 import { Request, Response } from "express";
 
 
-function idIsNan(id: number, res: Response){
-    if(isNaN(id)){
-        res.status(400).send("Nem megfelelő formátumú azonosító.");
+export function getProfileDatasById(req: Request, res: Response){
+    const userName: string = req.params.userName;
+
+    const userResult = datas.some(u => u.userName === userName);
+    if(!userResult){
+        res.status(404).send("Ez a felhasználó még nem létezik.");
         return;
     };
-};
 
-
-export function getProfileDatasById(req: Request, res: Response){
-    const id: number = parseInt(req.params.profileId);
-    idIsNan(id, res);
-
-    const result = datas.find(p => p.profileId === id);
-
+    const result = datas.find(p => p.userName === userName);
     if(result){
         res.status(200).send(result);
         return;
