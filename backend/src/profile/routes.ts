@@ -3,6 +3,6 @@ import { getProfileDatasById } from "./profileController";
 
 const router: Router = Router();
 
-router.get('/backstagegear/user/:profileId', getProfileDatasById);
+router.get('/backstagegear/:userName/profile', getProfileDatasById);
 
 export default router;
