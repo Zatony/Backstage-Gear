@@ -6,7 +6,7 @@ export default function Ad({adName, adDesc, adImg, adPrice}) {
       <div className="adText_Button">
         <h3>{adName}</h3>
         <p>{adDesc}</p>
-        <h2>{adPrice} Ft</h2>
+        <h2>{adPrice.toLocaleString("hu-HU")} Ft</h2>
         <button>Kosárba</button>
       </div>
     </div>

@@ -3,10 +3,14 @@
   --secondary-color: #166091;
   --accent-color: #7dcb15;
   --white: #ffffff;
+  --white-40: rgba(255, 255, 255, 0.4);
   --black: #0b0b0b;
   --muted: #6b7280;
+  --blur: 2px;
+  --black-40: rgba(11, 11, 11, 0.4);
+  --accent-12: rgba(125, 203, 21, 0.12);
+  --accent-60: rgba(125, 203, 21, 0.6);
 }
-
 
 body {
   margin: 0;
@@ -17,12 +21,12 @@ body {
 
   background-image: url("./assets/bg.jpg");
   background-size: cover;
+  background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: center top;
   background-color: var(--primary-color);
   backdrop-filter: blur(2px);
 }
-
 
 /*NAVBAR*/
 .navbar {
@@ -48,8 +52,8 @@ body {
 }
 .navbarLine {
   position: relative;
-  width: 0;      
-  height: 30px;         
+  width: 0;
+  height: 30px;
 }
 .navbarLine::before {
   content: "";
@@ -57,10 +61,10 @@ body {
   left: 50%;
   top: 0;
   transform: translateX(-50%);
-  width: 3px;            
-  height: 100%;         
+  width: 3px;
+  height: 100%;
   background: var(--accent-color);
-  border-radius: 9999px; 
+  border-radius: 9999px;
 }
 .nav-links {
   list-style-type: none;
@@ -92,12 +96,176 @@ body {
   height: 32px;
   border-radius: 60px;
 }
-.profile:hover, .cart:hover {
+.profile:hover,
+.cart:hover {
   transition: 0.5s;
   background-color: var(--accent-color);
   cursor: pointer;
 }
 
+/*LOGIN*/
+.log_reg-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--black-40);
+  backdrop-filter: blur(var(--blur));
+  z-index: 10000;
+}
+.log_reg-modal {
+  width: 360px;
+  max-width: calc(100% - 32px);
+  margin-top: -500px;
+  background: var(--primary-color); /* from :root */
+  color: var(--white);
+  border-radius: 8px;
+  padding: 20px;
+  font-family: inherit;
+}
+.log_reg-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 16px;
+  flex-direction: column;
+}
+.log_reg-header h2 {
+  margin: 0;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: 700;
+}
+.log_reg-close {
+  position: absolute;
+  right: 8px;
+  top: -2px;
+  background: transparent;
+  border: none;
+  color: var(--white);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.log_reg-row label {
+  display: block;
+  font-size: 16px;
+  color: var(--white);
+  margin-bottom: 15px;
+}
+.log_reg-row .forgot-psw {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--white);
+  border-bottom: 1px solid var(--muted);
+  padding-bottom: 2px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.log_reg-row input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--muted);
+  background: var(--white-40);
+  color: var(--white);
+  outline: none;
+  box-sizing: border-box;
+}
+.log_reg-row input:focus {
+  box-shadow: 0 0 0 3px var(--accent-12);
+  border-color: var(--accent-60);
+}
+.log_reg-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+/*LOGIN*/
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.loginLine {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  margin-bottom: 10px;
+}
+.loginLine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 9999px;
+}
+.login-button,
+.register-button {
+  width: 100%;
+  border: none;
+  color: var(--white);
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.login-button {
+  background: var(--accent-color);
+  font-weight: 700;
+}
+
+.register-button {
+  background: var(--secondary-color);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/*REGISTRATION*/
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.registrationLine {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  margin-bottom: 10px;
+}
+.registrationLine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 9999px;
+}
+.registration-button {
+  width: 100%;
+  border: none;
+  color: var(--white);
+  background: var(--accent-color);
+  font-weight: 700;
+  margin-bottom: 5px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
 
 /*SEARCHBAR*/
 .search-text {
@@ -105,13 +273,13 @@ body {
   text-align: center;
   margin-bottom: 5px;
   margin-top: 50px;
-  font-size: 1.5rem;  
+  font-size: 1.5rem;
   cursor: default;
 }
 .searchbarLine {
   position: relative;
-  width: 100%;      
-  height: 3px;         
+  width: 100%;
+  height: 3px;
 }
 .searchbarLine::before {
   content: "";
@@ -119,10 +287,10 @@ body {
   left: 50%;
   top: 0;
   transform: translateX(-50%);
-  width: 150px;            
-  height: 100%;         
+  width: 150px;
+  height: 100%;
   background: var(--accent-color);
-  border-radius: 9999px; 
+  border-radius: 9999px;
 }
 .searchbar {
   background-color: var(--white);
@@ -134,12 +302,11 @@ body {
   padding: 0 20px;
   margin: 0 auto;
   margin-top: 30px;
-  margin-bottom: 70px;  
+  margin-bottom: 70px;
 }
 .searchbar img {
   width: 25px;
   height: 25px;
-  padding: 0px 8px;
   cursor: pointer;
 }
 .search-input {
@@ -158,17 +325,19 @@ body {
   }
 }
 
+/*FILTER*/
+
 
 /*KATEGORIAK*/
-main{
+main {
   display: flex;
 }
 .categories-section {
   width: 90%;
   margin: 0 auto;
 }
-.categories-section h2{
-  font-size: 1.5rem;  
+.categories-section h2 {
+  font-size: 1.5rem;
   text-align: center;
   color: var(--white);
   cursor: default;
@@ -177,8 +346,8 @@ main{
 }
 .categoriesLine {
   position: relative;
-  width: 100%;      
-  height: 3px;         
+  width: 100%;
+  height: 3px;
 }
 .categoriesLine::before {
   content: "";
@@ -186,12 +355,12 @@ main{
   left: 50%;
   top: 0;
   transform: translateX(-50%);
-  width: 75px;            
-  height: 100%;         
+  width: 75px;
+  height: 100%;
   background: var(--accent-color);
-  border-radius: 9999px; 
+  border-radius: 9999px;
 }
-.categories-container{
+.categories-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -199,17 +368,21 @@ main{
   margin-top: 30px;
 }
 
-
 /*KATEGORIA*/
-.category-container{
+.fallback-text {
+  text-align: center;
+  color: var(--white);
+  font-size: 2rem;
+  margin: 60px;
+}
+.category-container {
   background-color: var(--white);
   width: 200px;
   height: 175px;
   margin: 10px;
   cursor: pointer;
-
 }
-.category-container img{
+.category-container img {
   flex: 0 0 100px;
   height: 100px;
   background-size: cover;
@@ -219,7 +392,7 @@ main{
   margin-bottom: 10px;
   padding-top: 10px;
 }
-.category-container h3{
+.category-container h3 {
   text-align: center;
   margin: 0;
   font-size: 1rem;
@@ -228,17 +401,15 @@ main{
   margin-top: 20px;
 }
 
-
 /*HIRDETES AJANLAS*/
 .newAd-section {
   padding: 6px 4px 50px 4px;
 }
-.newAdText{
+.newAdText {
   padding-left: 25px;
   color: var(--white);
   cursor: default;
 }
-/* Carousel wrapper and horizontal scroller */
 .carousel-wrapper {
   position: relative;
   margin: 0 6px;
@@ -246,7 +417,7 @@ main{
 .newAds {
   display: flex;
   gap: 18px;
-  padding: 12px 28px 18px 28px; /* leave room for arrows */
+  padding: 12px 28px 18px 28px;
   overflow-x: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -254,8 +425,9 @@ main{
   -ms-overflow-style: none; /* IE and Edge - hide scrollbar */
   scrollbar-width: none; /* Firefox - hide scrollbar */
 }
-.newAds::-webkit-scrollbar { display: none; } /* WebKit browsers - hide scrollbar */
-/* Arrow controls */
+.newAds::-webkit-scrollbar {
+  display: none; /* WebKit browsers - hide scrollbar */
+}
 .carousel-arrow {
   position: absolute;
   top: 50%;
@@ -265,7 +437,7 @@ main{
   border-radius: 8px;
   background: var(--secondary-color);
   border: none;
-  box-shadow: 0 6px 18px rgba(10,24,48,0.08);
+  box-shadow: 0 6px 18px rgba(10, 24, 48, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -273,10 +445,15 @@ main{
   cursor: pointer;
   z-index: 30;
 }
-.carousel-arrow.left { left: 6px; }
-.carousel-arrow.right { right: 6px; }
-.carousel-arrow:hover { transform: translateY(-50%) scale(1.03); }
-
+.carousel-arrow.left {
+  left: 6px;
+}
+.carousel-arrow.right {
+  right: 6px;
+}
+.carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.03);
+}
 
 /*HIRDETES*/
 .ad {
@@ -364,7 +541,6 @@ main{
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
 }
-
 
 /*FOOTER*/
 .footer {
