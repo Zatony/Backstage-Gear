@@ -19,7 +19,7 @@ body {
   min-width: 610px;
   box-sizing: border-box;
 
-  background-image: url("./assets/bg.jpg");
+  background-image: url("../assets/bg.jpg");
   background-size: cover;
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -117,7 +117,7 @@ body {
 .log_reg-modal {
   width: 360px;
   max-width: calc(100% - 32px);
-  margin-top: -500px;
+  margin-top: -10%;
   background: var(--primary-color); /* from :root */
   color: var(--white);
   border-radius: 8px;
@@ -260,6 +260,7 @@ body {
   color: var(--white);
   background: var(--accent-color);
   font-weight: 700;
+  margin-top: 25px;
   margin-bottom: 5px;
   padding: 10px 12px;
   border-radius: 6px;
@@ -302,7 +303,6 @@ body {
   padding: 0 20px;
   margin: 0 auto;
   margin-top: 30px;
-  margin-bottom: 70px;
 }
 .searchbar img {
   width: 25px;
@@ -326,10 +326,36 @@ body {
 }
 
 /*FILTER*/
-
+.filterCheckBox label {
+  font-size: 1.35em;
+}
+.filterCheckBox input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 1em;
+  height: 1em;
+  font: inherit;
+  border: 0.1em solid var(--muted);
+  margin-bottom: -0.125em;
+}
+.filterCheckBox input[type="checkbox"] {
+  border-radius: 0.25em;
+}
+.filterCheckBox input:checked {
+  border-color: transparent;
+  background-color: var(--accent-color);
+  box-shadow: 0 0 0 1em inset var(--black);
+}
+.filterCheckBox input:not(:checked):hover {
+  border-color: var(--accent-60);
+  box-shadow: 0 0 0 3px var(--accent-12);
+  box-shadow: 0 0 0 1em inset var(--black);
+}
 
 /*KATEGORIAK*/
 main {
+  margin-top: 70px;
   display: flex;
 }
 .categories-section {

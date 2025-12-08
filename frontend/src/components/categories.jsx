@@ -21,27 +21,12 @@ export default function Categories() {
     <section className="categories-section">
       <h2>Kategóriák</h2>
       <div className="categoriesLine"></div>
-
-      <div className="categories-container">
-        {categories.map((category) => (
-          <Category
-            key={category.categoryId}
-            categoryImg={category.picture}
-            categoryName={category.name}
-          />
-        ))}
-      </div>
+      <Category
+        isLoading={isFetching}
+        loadingText="Kategóriák betöltése..."
+        fallbackText="Nincsenek elérhető kategóriák."
+        categories={categories}
+      />
     </section>
-
-    //<section className="categories-section">
-    //  <h2>Kategóriák</h2>
-    //  <div className="categoriesLine"></div>
-    //  <Category
-    //    isLoading={isFetching}
-    //    loadingText="Kategóriák betöltése..."
-    //    fallbackText="Nincsenek elérhető kategóriák."
-    //    categories={categories}
-    //  />
-    //</section>
   );
 }

@@ -23,31 +23,34 @@ export default function Filter() {
       <div className="filter-categories">
         <h3>Kategóriák</h3>
         {categories.map((category) => (
-            <div className="filter-category">
-                <input type="radio" id={"filterCategory-"+category.categoryId} name="categories" value={category.categoryId}/>
+            <div key={"filterCategory-"+category.categoryId} className="filter-category filterCheckBox">
+                <input type="checkbox" id={"filterCategory-"+category.categoryId} name="categories" value={category.categoryId}/>
                 <label htmlFor={"filterCategory-"+category.categoryId}>{handelName(category.name)}</label>
             </div>
         ))}
       </div>
-      <div className="filter-condition">
+      <div className="filter-condition filterCheckBox" >
         <h3>Állapot</h3>
-        <input type="radio" id="filterCondition1" name="conditions" value="új" />
+        <input type="checkbox" id="filterCondition1" name="conditions" value="új" />
         <label htmlFor="filterCondition1">Új</label>
-        <input type="radio" id="filterCondition2" name="conditions" value="használt" />
+        <input type="checkbox" id="filterCondition2" name="conditions" value="használt" />
         <label htmlFor="filterCondition2">Használt</label>
-        <input type="radio" id="filterCondition3" name="conditions" value="sérült" />
+        <input type="checkbox" id="filterCondition3" name="conditions" value="sérült" />
         <label htmlFor="filterCondition3">Sérült</label>
       </div>
-      <div className="filter-brand">
+      <div className="filter-brand_price">
         <h3>Márka</h3>
         <select name="filterBrands">
             {BRAND_NAMES.map((brand) =>(<option key={brand.name} value={brand.name}>{brand.name}</option>))}
         </select>
       </div>
-      <div className="filter-price">
-        <h3>Ár</h3>
-        
-      </div>
+      <div className="price-row">
+        <span>Ft:</span>
+        <input type="number" placeholder="0" />
+        <span>-</span>
+        <input type="number" placeholder="1000000" />
+      <div className="price-slider"></div>
+  </div>
     </div>
   );
 }
