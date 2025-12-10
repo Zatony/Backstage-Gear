@@ -13,12 +13,12 @@ export default function Login({ onClose, onLogin, callRegister }) {
           }}>
           <div className="log_reg-row">
             <label htmlFor="email">E-mail cím:</label>
-            <input type="email" id="email" name="email" required />
+            <input type="email" id="email" name="email" autoComplete="email" required />
           </div>
           <div className="log_reg-row">
             <label htmlFor="password">Jelszó:</label>
             <input type="password" id="password" name="password" required />
-            <label htmlFor="forgot-password" className="forgot-psw">Elfelejtetted a jelszavad?</label>
+            <p htmlFor="forgot-password" className="forgot-psw">Elfelejtetted a jelszavad?</p>
           </div>
           <div className="log_reg-actions">
             <button type="submit" className="login-button" onClick={onLogin}>Belépés</button>

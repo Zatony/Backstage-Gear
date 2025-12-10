@@ -118,7 +118,7 @@ body {
   width: 360px;
   max-width: calc(100% - 32px);
   margin-top: -10%;
-  background: var(--primary-color); /* from :root */
+  background: var(--primary-color);
   color: var(--white);
   border-radius: 8px;
   padding: 20px;
@@ -219,12 +219,10 @@ body {
   cursor: pointer;
   box-sizing: border-box;
 }
-
 .login-button {
   background: var(--accent-color);
   font-weight: 700;
 }
-
 .register-button {
   background: var(--secondary-color);
   font-weight: 600;
@@ -326,8 +324,110 @@ body {
 }
 
 /*FILTER*/
+.filter-container {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 12px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  background-color: var(--white);
+  /* 
+  opacity: 0;
+  transform: translateY(8px) scale(0.995);
+  transition: opacity 240ms cubic-bezier(.2,.8,.2,1), transform 240ms cubic-bezier(.2,.8,.2,1);
+  will-change: opacity, transform;
+  */
+}
+/*.filter-container.show {
+  opacity: 1;
+  transform: none;
+}*/
+.filterLine {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  margin-bottom: 15px;
+}
+.filterLine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 9999px;
+}
+.filterLineBrand {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  margin-bottom: 10px;
+}
+.filterLineBrand::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 9999px;
+}
+.filterLinePrice {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  margin-bottom: 10px;
+}
+.filterLinePrice::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 25px;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 9999px;
+}
+.filter-container h3 {
+  text-align: center;
+  margin: 0 auto;
+}
+.filter-categories-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 0.7fr));
+  gap: 10px;
+}
+.filter-condition-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1em));
+  gap: 10px;
+}
+#price-min,
+#price-max {
+  width: 80px;
+}
+.brand-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.price-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
 .filterCheckBox label {
-  font-size: 1.35em;
+  font-size: 1.2em;
 }
 .filterCheckBox input {
   -webkit-appearance: none;
@@ -341,16 +441,17 @@ body {
 }
 .filterCheckBox input[type="checkbox"] {
   border-radius: 0.25em;
+  margin-right: 15px;
 }
 .filterCheckBox input:checked {
   border-color: transparent;
   background-color: var(--accent-color);
-  box-shadow: 0 0 0 1em inset var(--black);
+  box-shadow: 0 0 0 1em inset var(--secondary-color);
 }
 .filterCheckBox input:not(:checked):hover {
   border-color: var(--accent-60);
-  box-shadow: 0 0 0 3px var(--accent-12);
-  box-shadow: 0 0 0 1em inset var(--black);
+  box-shadow: 0 0 0 13px var(--accent-12);
+  box-shadow: 0 0 0 1em inset var(--black-40);
 }
 
 /*KATEGORIAK*/

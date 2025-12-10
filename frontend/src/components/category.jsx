@@ -12,7 +12,7 @@ export default function Category({ isLoading, loadingText, fallbackText, categor
                 <>
                     {categories.map((category) => (
                         <div key={category.categoryId} className="category-container">
-                            <img src={category.picture} alt={category.picture} />
+                            <img src={category.picture} alt={"category"+category.categoryId} />
                             <h3>{handelName(category.name)}</h3>
                         </div>
                     ))}

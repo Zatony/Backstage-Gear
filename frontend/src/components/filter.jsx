@@ -19,38 +19,59 @@ export default function Filter() {
   }
 
   return (
-    <div className="filter-container">
+    <div className="filter-container show">
       <div className="filter-categories">
         <h3>Kategóriák</h3>
-        {categories.map((category) => (
+        <div className="filterLine"></div>
+
+        <div className="filter-categories-list">
+          {categories.map((category) => (
             <div key={"filterCategory-"+category.categoryId} className="filter-category filterCheckBox">
                 <input type="checkbox" id={"filterCategory-"+category.categoryId} name="categories" value={category.categoryId}/>
                 <label htmlFor={"filterCategory-"+category.categoryId}>{handelName(category.name)}</label>
             </div>
-        ))}
+          ))}
+        </div>
       </div>
+
       <div className="filter-condition filterCheckBox" >
         <h3>Állapot</h3>
-        <input type="checkbox" id="filterCondition1" name="conditions" value="új" />
-        <label htmlFor="filterCondition1">Új</label>
-        <input type="checkbox" id="filterCondition2" name="conditions" value="használt" />
-        <label htmlFor="filterCondition2">Használt</label>
-        <input type="checkbox" id="filterCondition3" name="conditions" value="sérült" />
-        <label htmlFor="filterCondition3">Sérült</label>
+        <div className="filterLine"></div>
+        
+        <div className="filter-condition-list">
+          <input type="checkbox" id="filterCondition1" name="conditions" value="új" />
+          <label htmlFor="filterCondition1">Új</label>
+          <input type="checkbox" id="filterCondition2" name="conditions" value="használt" />
+          <label htmlFor="filterCondition2">Használt</label>
+          <input type="checkbox" id="filterCondition3" name="conditions" value="sérült" />
+          <label htmlFor="filterCondition3">Sérült</label>
+        </div>
       </div>
+
       <div className="filter-brand_price">
-        <h3>Márka</h3>
-        <select name="filterBrands">
+        <div className="brand-row">
+          <div>
+            <h3>Márka</h3>
+            <div className="filterLineBrand"></div>
+          </div>
+
+          <select name="filterBrands">
             {BRAND_NAMES.map((brand) =>(<option key={brand.name} value={brand.name}>{brand.name}</option>))}
-        </select>
+          </select>
+        </div>
+        <div className="price-row">
+          <div>
+            <h3>Ár</h3>
+            <div className="filterLinePrice"></div>
+          </div>
+          
+          <div className="price-inputs">
+            <input type="number" placeholder="0" id="price-min"/>
+            <span> - </span>
+            <input type="number" placeholder="1000000" id="price-max" />
+          </div>
+        </div>
       </div>
-      <div className="price-row">
-        <span>Ft:</span>
-        <input type="number" placeholder="0" />
-        <span>-</span>
-        <input type="number" placeholder="1000000" />
-      <div className="price-slider"></div>
   </div>
-    </div>
   );
 }
