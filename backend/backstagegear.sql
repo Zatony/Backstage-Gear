@@ -87,11 +87,11 @@ VALUES
 
 
 
-/*
+
 DELETE FROM categories;
 DROP TABLE categories;
 ALTER TABLE categories AUTO_INCREMENT = 1;
-*/
+
 CREATE TABLE categories(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -100,12 +100,12 @@ CREATE TABLE categories(
 
 INSERT INTO categories (id, name, picture)
 VALUES
-(NULL, 'elektromos gitár, elektromos basszusgitár', 'https://i.pravatar.cc/150?img=ecguitar'),
-(NULL, 'akusztikus gitár, akusztikus basszusgitár', 'https://i.pravatar.cc/150?img=acguitar'),
-(NULL, 'billentyűs', 'https://i.pravatar.cc/150?img=piano'),
-(NULL, 'ütős', 'https://i.pravatar.cc/150?img=drum'),
-(NULL, 'erősítők/kombók', 'https://i.pravatar.cc/150?img=amp'),
-(NULL, 'hangtechnika', 'https://i.pravatar.cc/150?img=mix');
+(NULL, 'elektromos gitár, elektromos basszusgitár', 'https://drive.google.com/thumbnail?id=1hjp3fSglKFOJunlsJ5wFclTx6qBYzXz7&sz=w1000'),
+(NULL, 'akusztikus gitár, akusztikus basszusgitár', 'https://drive.google.com/thumbnail?id=12xK0bayGv89cfWAcGAWmUIqJtaOe3BUv&sz=w1000'),
+(NULL, 'billentyűs', 'https://drive.google.com/thumbnail?id=1NIAwfYStjq6x4bJgswe5lr-xVpcryzIY&sz=w1000'),
+(NULL, 'ütős', 'https://drive.google.com/thumbnail?id=11A2soFnAmXZ_Mp-eSAzfw4dm2r_t7_-3&sz=w1000'),
+(NULL, 'erősítők/kombók', 'https://drive.google.com/thumbnail?id=1soNkBYzSxkl25LIYMQ_lKLbd5Ohy67dF&sz=w1000'),
+(NULL, 'hangtechnika', 'https://drive.google.com/thumbnail?id=1cPTNirpPkQIJ3HPL3dvMgPlVh8M7Y0h6&sz=w1000');
 
 
 
