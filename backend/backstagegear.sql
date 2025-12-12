@@ -153,7 +153,7 @@ INSERT INTO used_items (id, item_id, price, item_condition)
 VALUES
 (NULL, 1, 860000, 'új'),
 (NULL, 2, 80000, 'új'),
-(NULL, 2, 27000, 'új'),
+(NULL, 3, 27000, 'új'),
 (NULL, 4, 420000, 'használt'),
 (NULL, 5, 200000, 'sérült'),
 (NULL, 6, 1000000, 'használt');

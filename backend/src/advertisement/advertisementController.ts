@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import datas from "./data";
+import mysql from "mysql2/promise";
+import config from "../config/config";
 
 
 function idIsNan(id: number, res: Response){
@@ -10,8 +12,37 @@ function idIsNan(id: number, res: Response){
 };
 
 
-export function getAds(_req: Request, res: Response){
-    res.status(200).send(datas);
+export async function getAds(_req: Request, res: Response){
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        const [results] = await connection.query(
+            `SELECT 
+                advertisements.id,
+                items.name,
+                advertisements.description,
+                used_items.price,
+                GROUP_CONCAT(files.file_name) AS files
+            FROM advertisements
+                INNER JOIN used_items ON advertisements.used_item_id = used_items.id
+                INNER JOIN items ON used_items.item_id = items.id
+                INNER JOIN ad_files ON advertisements.id = ad_files.ad_id
+                INNER JOIN files ON ad_files.file_id = files.id
+            GROUP BY advertisements.id;`
+        ) as Array<any>;
+
+        if(results.length > 0){
+            res.status(200).send(results);
+            return;
+        };
+
+        res.status(404).send("Nincsenek lekérendő hirdetések.");
+    }
+    catch(err){
+        console.log(err);
+    }
+
+    //res.status(200).send(datas);
 };
 
 

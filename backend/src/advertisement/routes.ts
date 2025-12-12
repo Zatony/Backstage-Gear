@@ -3,6 +3,7 @@ import { getAds, getAdDatasById, getUserAds, getUserAdById } from "./advertiseme
 
 const router: Router = Router();
 
+router.get('/backstagegear', getAds)
 router.get('/backstagegear/ads', getAds);
 router.get('/backstagegear/ads/:adId', getAdDatasById);
 router.get('/backstagegear/:userName/ads', getUserAds);
