@@ -7,6 +7,6 @@ router.get('/backstagegear', getAds)
 router.get('/backstagegear/ads', getLatestAds);
 router.get('/backstagegear/ads/:adId', getAdDatasById);
 router.get('/backstagegear/:userId/ads', getUserAds);
-router.get('/backstagegear/:userName/ads/:adId', getUserAdById);
+router.get('/backstagegear/:userId/ads/:adId', getUserAdById);
 
 export default router;
