@@ -10,7 +10,7 @@ var datas = [
         price: 860000,
         condition: "új",
         isReported: false,
-        description: "leírás, leírás",
+        description: "leírás, leírás adas dasda sddddd d ddddd ddddddd ddd ddd ddddd  ddddddddd ddddddd dddddddddd dddddd dddd ddddddddd as as da asdasdasdasd as das dasdasdas asd sad  asdasd  asdas sa asd dsds aasd asd",
         image: "https://source.unsplash.com/400x300/?guitar",
         dateOfAd: "2025.02.03"
     },

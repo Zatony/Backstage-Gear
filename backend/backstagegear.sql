@@ -88,10 +88,11 @@ VALUES
 
 
 
+/*
 DELETE FROM categories;
 DROP TABLE categories;
 ALTER TABLE categories AUTO_INCREMENT = 1;
-
+*/
 CREATE TABLE categories(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,

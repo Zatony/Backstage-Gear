@@ -1,1 +1,10 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var mesageController_1 = require("./mesageController");
+var router = (0, express_1.Router)();
+router.get('/backstagegear/:userName/incoming_messages', mesageController_1.getUserIncomingMessages);
+router.get('/backstagegear/:userName/incoming_messages/:messageId', mesageController_1.getUserIcomingMessageById);
+router.get('/backstagegear/:userName/sent_messages', mesageController_1.getUserSentMessages);
+router.get('/backstagegear/:userName/sent_messages/:messageId', mesageController_1.getUserSentMessageById);
+exports.default = router;

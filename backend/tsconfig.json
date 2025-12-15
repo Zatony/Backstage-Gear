@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"target": "es5",
 		"module": "commonjs",
+		"ignoreDeprecations": "6.0",
 		"moduleResolution": "node",
 		"lib": [
 			"es2015"
