@@ -1,14 +1,7 @@
 import { Request, Response } from "express";
 import mysql from "mysql2/promise";
 import config from "../config/config";
-
-
-function idIsNan(id: number, res: Response){
-    if(isNaN(id)){
-        res.status(400).send("Nem megfelelő formátumú azonosító.");
-        return;
-    };
-};
+import { idIsNan } from "../validators/id.validator";
 
 
 export async function getAds(_req: Request, res: Response){
@@ -40,8 +33,6 @@ export async function getAds(_req: Request, res: Response){
     catch(err){
         console.log(err);
     }
-
-    //res.status(200).send(datas);
 };
 
 
@@ -71,8 +62,6 @@ export async function getLatestAds(_req: Request, res: Response){
     catch(err){
         console.log(err);
     }
-
-    //res.status(200).send(datas);
 };
 
 
