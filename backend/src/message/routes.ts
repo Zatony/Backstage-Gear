@@ -3,8 +3,8 @@ import { getUserIncomingMessages, getUserIcomingMessageById, getUserSentMessages
 
 const router: Router = Router();
 
-router.get('/backstagegear/:userName/incoming_messages', getUserIncomingMessages);
-router.get('/backstagegear/:userName/incoming_messages/:messageId', getUserIcomingMessageById);
+router.get('/backstagegear/:userId/incoming_messages', getUserIncomingMessages);
+router.get('/backstagegear/:userId/incoming_messages/:messageId', getUserIcomingMessageById);
 router.get('/backstagegear/:userName/sent_messages', getUserSentMessages);
 router.get('/backstagegear/:userName/sent_messages/:messageId', getUserSentMessageById);
 

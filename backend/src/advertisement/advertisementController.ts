@@ -110,6 +110,7 @@ export async function getAdDatasById(req: Request, res: Response){
 
 export async function getUserAds(req: Request, res: Response){
     const userId: number = parseInt(req.params.userId);
+    idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
 
@@ -150,6 +151,7 @@ export async function getUserAdById(req: Request, res: Response){
     const adId: number = parseInt(req.params.adId);
 
     idIsNan(adId, res);
+    idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
     
