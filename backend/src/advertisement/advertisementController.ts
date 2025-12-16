@@ -49,7 +49,7 @@ export async function getLatestAds(_req: Request, res: Response){
             INNER JOIN files ON ad_files.file_id = files.id
             GROUP BY advertisements.id
             ORDER BY advertisements.date_of_ad DESC
-            LIMIT 3;`
+            LIMIT 10;`
         ) as Array<any>;
 
         if(results.length > 0){
