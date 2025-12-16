@@ -26,9 +26,9 @@ export default function Filter() {
 
         <div className="filter-categories-list">
           {categories.map((category) => (
-            <div key={"filterCategory-"+category.categoryId} className="filter-category filterCheckBox">
-                <input type="checkbox" id={"filterCategory-"+category.categoryId} name="categories" value={category.categoryId}/>
-                <label htmlFor={"filterCategory-"+category.categoryId}>{handelName(category.name)}</label>
+            <div key={"filterCategoryCH-"+category.id} className="filter-category filterCheckBox">
+                <input type="checkbox" id={"filterCategory-"+category.id} name="categories" value={category.id}/>
+                <label htmlFor={"filterCategory-"+category.id}>{handelName(category.name)}</label>
             </div>
           ))}
         </div>
