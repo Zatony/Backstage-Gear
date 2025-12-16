@@ -1,4 +1,4 @@
-export default function Login({ onClose, onLogin, callRegister }) {
+export default function Login({ onClose, onLogin, callRegister, refEmail, refPassword }) {
   return (
     <div className="log_reg-overlay" onClick={onClose}>
       <div className="log_reg-modal" onClick={(e) => e.stopPropagation()}>
@@ -13,11 +13,11 @@ export default function Login({ onClose, onLogin, callRegister }) {
           }}>
           <div className="log_reg-row">
             <label htmlFor="email">E-mail cím:</label>
-            <input type="email" id="email" name="email" autoComplete="email" required />
+            <input type="email" id="email" name="email" autoComplete="email" ref={refEmail} required />
           </div>
           <div className="log_reg-row">
             <label htmlFor="password">Jelszó:</label>
-            <input type="password" id="password" name="password" required />
+            <input type="password" id="password" name="password" ref={refPassword} required />
             <p htmlFor="forgot-password" className="forgot-psw">Elfelejtetted a jelszavad?</p>
           </div>
           <div className="log_reg-actions">

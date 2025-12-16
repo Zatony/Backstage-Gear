@@ -1,4 +1,4 @@
-export default function Registration({ onClose, onRegister }) {
+export default function Registration({ onClose, onRegister, refUsername, refEmail, refPassword, refRePassword, refPhone, refBirthdate }) {
   return (
     <div className="log_reg-overlay" onClick={onClose}>
       <div className="log_reg-modal" onClick={(e) => e.stopPropagation()}>
@@ -13,27 +13,27 @@ export default function Registration({ onClose, onRegister }) {
         }}>
         <div className="log_reg-row">
           <label htmlFor="username">Felhasználó név:</label>
-          <input type="text" id="username" name="username" required />
+          <input type="text" id="username" name="username" ref={refUsername} required />
         </div>
         <div className="log_reg-row">
           <label htmlFor="email">E-mail cím:</label>
-          <input type="email" id="email" name="email" required />
+          <input type="email" id="email" name="email" ref={refEmail} required />
         </div>
         <div className="log_reg-row">
           <label htmlFor="password">Jelszó:</label>
-          <input type="password" id="password" name="password" required />
+          <input type="password" id="password" name="password" ref={refPassword} required />
         </div>
         <div className="log_reg-row">
           <label htmlFor="rePassword">ismételt jelszó:</label>
-          <input type="password" id="rePassword" name="rePassword" required />
+          <input type="password" id="rePassword" name="rePassword" ref={refRePassword} required />
         </div>
         <div className="log_reg-row">
           <label htmlFor="phone">Telefonszám:</label>
-          <input type="tel" id="phone" name="phone" required />
+          <input type="tel" id="phone" name="phone" ref={refPhone} required />
         </div>
         <div className="log_reg-row">
           <label htmlFor="birthdate">Születési dátum:</label>
-          <input type="date" id="birthdate" name="birthdate" required />
+          <input type="date" id="birthdate" name="birthdate" ref={refBirthdate} required />
         </div>
         <div className="log_reg-actions">
           <button type="submit" className="registration-button" onClick={onRegister}>Regisztráció</button>

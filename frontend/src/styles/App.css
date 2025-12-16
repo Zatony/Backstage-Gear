@@ -1,6 +1,7 @@
 :root {
   --primary-color: #0b2545;
   --secondary-color: #166091;
+  --accent-color-mix: #a4cc70;
   --accent-color: #7dcb15;
   --white: #ffffff;
   --white-40: rgba(255, 255, 255, 0.4);
@@ -45,10 +46,15 @@ body {
 }
 .logo {
   text-decoration: none;
+  color: var(--white);
   font-size: 1.5em;
   font-weight: bold;
   margin-right: 8px;
   cursor: default;
+}
+.logo:hover{
+  transition: 0.3s;
+  color: var(--accent-color-mix);
 }
 .navbarLine {
   position: relative;
@@ -103,7 +109,7 @@ body {
   cursor: pointer;
 }
 
-/*LOGIN*/
+/*LOGIN és REGISZTRÁCIÓ*/
 .log_reg-overlay {
   position: fixed;
   inset: 0;
@@ -667,6 +673,19 @@ main {
 .adText_Button button:hover {
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+}
+
+/*ROLUNK és SZABÁLYZAT*/
+.text-box{
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+  color: var(--white);
+  cursor: default;
+}
+.text-box h1{
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 /*FOOTER*/
