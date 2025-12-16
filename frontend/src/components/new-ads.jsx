@@ -22,12 +22,12 @@ export default function NewAd(){
 
         return(
                 <section className="newAd-section">
-                        <h2 className="newAdText">Nemrég feltöltött hírdetések:</h2>
+                        <h2 className="newAdText">Nemrég feltöltött hirdetések:</h2>
                         <div className="carousel-wrapper">
                             <button className="carousel-arrow left" aria-label="Previous" onClick={() => scrollByOffset(-scrollerRef.current.clientWidth * 0.8)}>‹</button>
                             <div className="newAds" ref={scrollerRef}>
                                 {ads.map((ad) => (
-                                    <Ad key={ad.adId} adName={ad.usedItem} adDesc={ad.description} adImg={ad.image} adPrice={ad.price} />
+                                    <Ad key={ad.id} adName={ad.name} adDesc={ad.description} adImg={ad.image} adPrice={ad.price} />
                                 ))}
                             </div>
                             <button className="carousel-arrow right" aria-label="Next" onClick={() => scrollByOffset(scrollerRef.current.clientWidth * 0.8)}>›</button>

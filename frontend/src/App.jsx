@@ -1,18 +1,13 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Homepage from "./homepage/Homepage";
 import { useState } from "react";
-import "./styles/App.css";
-import NavBar from "./components/navbar";
-import Footer from "./components/footer";
-import NewAd from "./components/new-ads";
-import SearchBar from "./components/searchbar";
-import Categories from "./components/categories";
 import Login from "./components/login";
 import Registration from "./components/registration";
-import Filter from "./components/filter";
+import NavBar from "./components/navbar";
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
 
   //Login es register kezelok
   function handleLogin() {
@@ -44,31 +39,26 @@ function App() {
     console.log("Cart clicked");
   }
 
-  //filter kezelő
-  function handleFilter() {
-    console.log("Filter clicked");
-    if (!showFilter)
-      setShowFilter(true);
-    else
-      setShowFilter(false);
-  }
-
   return (
-    <>
+    <BrowserRouter>
       <NavBar callLogin={handleLogin} callCart={handleCart} />
-      <SearchBar onFilter={handleFilter} />
-      {showFilter && <Filter />}
-
-      <main>
-        <Categories />
-      </main>
-
-      <NewAd />
-      <Footer />
-
-      {showLogin && <Login onClose={handleCloseLogin} onLogin={loginRequest} callRegister={handleRegister} />}
-      {showRegister && <Registration onClose={handleCloseRegister} onRegister={registerRequest} />}
-    </>
+      {showLogin && (
+        <Login
+          onClose={handleCloseLogin}
+          onLogin={loginRequest}
+          callRegister={handleRegister}
+        />
+      )}
+      {showRegister && (
+        <Registration
+          onClose={handleCloseRegister}
+          onRegister={registerRequest}
+        />
+      )}
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

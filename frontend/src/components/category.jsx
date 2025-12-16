@@ -11,7 +11,7 @@ export default function Category({ isLoading, loadingText, fallbackText, categor
             {!isLoading && categories.length > 0 && (
                 <>
                     {categories.map((category) => (
-                        <div key={category.categoryId} className="category-container">
+                        <div key={"category" + category.id} className="category-container">
                             <img src={category.picture} alt={"category"+category.categoryId} />
                             <h3>{handelName(category.name)}</h3>
                         </div>
