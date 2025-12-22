@@ -27,7 +27,7 @@ export async function getAds(_req: Request, res: Response){
                 items.name,
                 advertisements.description,
                 used_items.price,
-            GROUP_CONCAT(files.file_name) AS files
+                GROUP_CONCAT(files.file_name) AS files
             FROM advertisements
             INNER JOIN used_items ON advertisements.used_item_id = used_items.id
             INNER JOIN items ON used_items.item_id = items.id
@@ -54,7 +54,12 @@ export async function getLatestAds(_req: Request, res: Response){
 
     try{
         const [results] = await connection.query(
-            `SELECT advertisements.id, items.name, advertisements.description, used_items.price, GROUP_CONCAT(files.file_name) AS files
+            `SELECT 
+                advertisements.id, 
+                items.name, 
+                advertisements.description, 
+                used_items.price, 
+                GROUP_CONCAT(files.file_name) AS files
             FROM advertisements
             INNER JOIN used_items ON advertisements.used_item_id = used_items.id
             INNER JOIN items ON used_items.item_id = items.id
