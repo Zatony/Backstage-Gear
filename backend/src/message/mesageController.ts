@@ -4,6 +4,19 @@ import config from "../config/config";
 import { idIsNan } from "../validators/id.validator";
 
 
+async function isUserExisted(id: number, res: Response, connection: any){
+    const [result] = await connection.query(
+        'SELECT id FROM users WHERE id = ?',
+        [id]
+    ) as Array<any>;
+
+    if(result.length === 0){
+        res.status(404).send("Ez a felhasználó nem létezik.");
+        return;
+    };
+};
+
+
 export async function getUserIncomingMessages(req: Request, res: Response){
     const userId: number = parseInt(req.params.userId);
     idIsNan(userId, res);
@@ -11,15 +24,7 @@ export async function getUserIncomingMessages(req: Request, res: Response){
     const connection = await mysql.createConnection(config.database);
 
     try{
-        const [userResult] = await connection.query(
-            'SELECT id FROM users WHERE id = ?',
-            [userId]
-        ) as Array<any>;
-
-        if(userResult.length === 0){
-            res.status(404).send("Ez a felhasználó nem létezik.");
-            return;
-        };
+        isUserExisted(userId, res, connection);
 
 
         const [results] = await connection.query(
@@ -59,15 +64,7 @@ export async function getUserIcomingMessageById(req: Request, res: Response){
     const connection = await mysql.createConnection(config.database);
 
     try{
-        const [userResult] = await connection.query(
-            'SELECT id FROM users WHERE id = ?',
-            [userId]
-        ) as Array<any>;
-
-        if(userResult.length === 0){
-            res.status(404).send("Ez a felhasználó nem létezik.");
-            return;
-        };
+        isUserExisted(userId, res, connection);
 
 
         const [result] = await connection.query(
@@ -104,15 +101,7 @@ export async function getUserSentMessages(req: Request, res: Response){
     const connection = await mysql.createConnection(config.database);
 
     try{
-        const [userResult] = await connection.query(
-            'SELECT id FROM users WHERE id = ?',
-            [userId]
-        ) as Array<any>;
-
-        if(userResult.length === 0){
-            res.status(404).send("Ez a felhasználó nem létezik.");
-            return;
-        };
+        isUserExisted(userId, res, connection);
 
 
         const [results] = await connection.query(
@@ -152,15 +141,7 @@ export async function getUserSentMessageById(req: Request, res: Response){
     const connection = await mysql.createConnection(config.database);
 
     try{
-        const [userResult] = await connection.query(
-            'SELECT id FROM users WHERE id = ?',
-            [userId]
-        ) as Array<any>;
-
-        if(userResult.length === 0){
-            res.status(404).send("Ez a felhasználó nem létezik.");
-            return;
-        };
+        isUserExisted(userId, res, connection);
 
 
         const [result] = await connection.query(
