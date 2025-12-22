@@ -6,6 +6,7 @@ import categoryRouter from "../category/routes";
 import adRouter from "../advertisement/routes";
 import profileRouter from "../profile/routes";
 import messageRouter from "../message/routes";
+import cartRouter from "../cart/routes";
 
 
 const app = express();
@@ -19,5 +20,6 @@ app.use('/', categoryRouter);
 app.use('/', adRouter);
 app.use('/', profileRouter);
 app.use('/', messageRouter);
+app.use('/', cartRouter);
 
 export default app;
