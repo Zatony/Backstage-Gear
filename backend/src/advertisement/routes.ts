@@ -8,6 +8,7 @@ router.get('/backstagegear/ads', getLatestAds);
 router.get('/backstagegear/ads/:adId', getAdDatasById);
 router.get('/backstagegear/:userId/ads', getUserAds);
 router.get('/backstagegear/:userId/ads/:adId', getUserAdById);
+router.get('/backstagegear/:userId/update_ad/:adId', getUserAdById);
 
 // Csak adminnál kéne, hogy működjön
 router.get('/backstagegear/:userId/reported_ads', getReportedAds);
