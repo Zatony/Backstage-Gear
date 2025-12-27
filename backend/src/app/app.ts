@@ -7,6 +7,7 @@ import adRouter from "../advertisement/routes";
 import profileRouter from "../profile/routes";
 import messageRouter from "../message/routes";
 import cartRouter from "../cart/routes";
+import userRouter from "../user/routes";
 
 
 const app = express();
@@ -21,5 +22,6 @@ app.use('/', adRouter);
 app.use('/', profileRouter);
 app.use('/', messageRouter);
 app.use('/', cartRouter);
+app.use('/', userRouter);
 
 export default app;

@@ -1,3 +1,4 @@
+-- Active: 1765535940941@@127.0.0.1@3307@backstagegear
 CREATE DATABASE backstagegear
 CHARACTER SET = 'utf8' COLLATE = 'utf8_hungarian_ci';
 
@@ -25,6 +26,15 @@ RETURN SHA2(concat(pwd, 'sozas'), 256);
 
 CREATE TRIGGER insert_user BEFORE INSERT ON users
 FOR EACH ROW SET new.password = pwd_encrypt(new.password);
+
+CREATE FUNCTION login(email VARCHAR(255), password VARCHAR(255))
+RETURNS INTEGER DETERMINISTIC
+BEGIN
+    DECLARE OK INTEGER;
+    SET OK = 0;
+    SELECT id INTO OK FROM users WHERE users.email = email AND users.password = pwd_encrypt(password);
+    RETURN OK;
+END
 
 
 INSERT INTO users (id, name, username, email, phone_number, date_of_birth, password)
