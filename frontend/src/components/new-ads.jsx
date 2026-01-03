@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react"
 import Ad from "./ad"
 
-export default function NewAd(){
+export default function NewAd({page}){
 
         const [ads, setAds] = useState([]);
         const scrollerRef = useRef(null);
@@ -21,16 +21,16 @@ export default function NewAd(){
         }
 
         return(
-                <section className="newAd-section">
-                        <h2 className="newAdText">Nemrég feltöltött hirdetések:</h2>
-                        <div className="carousel-wrapper">
-                            <button className="carousel-arrow left" aria-label="Previous" onClick={() => scrollByOffset(-scrollerRef.current.clientWidth * 0.8)}>‹</button>
-                            <div className="newAds" ref={scrollerRef}>
+                <section className={page.newAdSection}>
+                        <h2 className={page.newAdText}>Nemrég feltöltött hirdetések:</h2>
+                        <div className={page.carouselWrapper}>
+                            <button className={page.carouselArrow + " " + page.left} aria-label="Previous" onClick={() => scrollByOffset(-scrollerRef.current.clientWidth * 0.8)}>‹</button>
+                            <div className={page.newAds} ref={scrollerRef}>
                                 {ads.map((ad) => (
-                                    <Ad key={ad.id} adName={ad.name} adDesc={ad.description} adImg={ad.image} adPrice={ad.price} />
+                                    <Ad key={ad.id} adName={ad.name} adDesc={ad.description} adImg={ad.image} adPrice={ad.price} page={page}/>
                                 ))}
                             </div>
-                            <button className="carousel-arrow right" aria-label="Next" onClick={() => scrollByOffset(scrollerRef.current.clientWidth * 0.8)}>›</button>
+                            <button className={page.carouselArrow + " " + page.right} aria-label="Next" onClick={() => scrollByOffset(scrollerRef.current.clientWidth * 0.8)}>›</button>
                         </div>
                 </section>
         )

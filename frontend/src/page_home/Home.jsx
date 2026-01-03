@@ -1,6 +1,5 @@
 import { useState } from "react";
-import "../styles/App.css";
-import Footer from "../components/footer";
+import home from "./home.module.css";
 import NewAd from "../components/new-ads";
 import SearchBar from "../components/searchbar";
 import Categories from "../components/categories";
@@ -17,15 +16,18 @@ export default function Home() {
   }
   return (
     <>
-      <SearchBar onFilter={handleFilter} />
-      {showFilter && <Filter />}
+      <div className={home.searchbarContainer}>
+        <h2 className={home.searchText}>Keress a hirdetések között</h2>
+        <div className={home.searchbarLine}></div>
+        <SearchBar page={home} onFilter={handleFilter} />
+      </div>
+      {showFilter && <Filter page={home} />}
 
       <main>
-        <Categories />
+        <Categories page={home} />
       </main>
 
-      <NewAd />
-      <Footer />
+      <NewAd page={home}/>
     </>
   );
 }

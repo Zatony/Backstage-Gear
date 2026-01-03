@@ -2,8 +2,9 @@ import { useState,useRef } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NavBar from "./components/navbar";
 import Home from "./page_home/Home";
-import About from "./page_about/about";
-import Rules from "./page_rules/rules";
+import About from "./page_about/About";
+import Rules from "./page_rules/Rules";
+import Products from "./page_products/Products";
 
 export default function Routing() {
   const [showLogin, setShowLogin] = useState(false);
@@ -80,6 +81,10 @@ export default function Routing() {
         {
           path: "/rules",
           element: <Rules />,
+        },
+        {
+          path: "/products",
+          element: <Products />,
         },
       ],
     },

@@ -1,3 +1,5 @@
+import "./rules.css";
+
 export default function Rules() {
   return (
     <div className="text-box">

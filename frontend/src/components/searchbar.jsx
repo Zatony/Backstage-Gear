@@ -1,17 +1,13 @@
 import searchIco from '../assets/searchIcon.png'
 import filterIco from '../assets/filterIcon.png'
+import { Link } from 'react-router-dom';
 
-export default function SearchBar({ onFilter }){
+export default function SearchBar({ page, onFilter }) {
     return(
-        <div className='searchbar-container'>
-            <h2 className="search-text">Keress a hirdetések között</h2>
-            <div className='searchbarLine'></div>
-            <div className="searchbar">
-                <img src={filterIco} alt={filterIco} onClick={onFilter}/>
-                <input className="search-input" type="search" placeholder="Keresés..." name="searchbar"/>
-                <img src={searchIco} alt={searchIco} />
-            </div>
+        <div className= {page.searchbar}>
+            {onFilter && <img src={filterIco} alt={filterIco} onClick={onFilter}/>}
+            <input className= {page.searchInput} type="search" placeholder="Keresés..." name="searchbar"/>
+            <Link to="/products"><img src={searchIco} alt={searchIco}/></Link>
         </div>
-        
     )
 }

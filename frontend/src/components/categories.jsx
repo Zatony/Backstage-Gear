@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Category from "./category";
 
-export default function Categories() {
+export default function Categories({page}) {
   const [categories, setCategories] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
 
@@ -18,10 +18,11 @@ export default function Categories() {
   }, []);
 
   return (
-    <section className="categories-section">
+    <section className={page.categoriesSection}>
       <h2>Kategóriák</h2>
-      <div className="categoriesLine"></div>
+      <div className={page.categoriesLine}></div>
       <Category
+        page={page}
         isLoading={isFetching}
         loadingText="Kategóriák betöltése..."
         fallbackText="Nincsenek elérhető kategóriák."

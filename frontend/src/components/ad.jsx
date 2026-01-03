@@ -1,9 +1,9 @@
-export default function Ad({adName, adDesc, adImg, adPrice}) {
+export default function Ad({adName, adDesc, adImg, adPrice, page}) {
   return (
-    <div className="ad">
+    <div className={page.ad}>
         <img src={adImg} alt={adImg} />
 
-      <div className="adText_Button">
+      <div className={page.adText_Button}>
         <h3>{adName}</h3>
         <p>{adDesc}</p>
         <h2>{adPrice.toLocaleString("hu-HU")} Ft</h2>

@@ -1,18 +1,18 @@
-export default function Category({ isLoading, loadingText, fallbackText, categories }) {
+export default function Category({ page, isLoading, loadingText, fallbackText, categories }) {
 
     function handelName(name) {
         return name.charAt(0).toUpperCase() + name.slice(1);
     }
 
     return(        
-        <div className="categories-container">
-            {isLoading && <p className="fallback-text">{loadingText}</p>}
-            {!isLoading && categories.length === 0 && <p className="fallback-text">{fallbackText}</p>}
+        <div className={page.categoriesContainer}>
+            {isLoading && <p className={page.fallbackText}>{loadingText}</p>}
+            {!isLoading && categories.length === 0 && <p className={page.fallbackText}>{fallbackText}</p>}
             {!isLoading && categories.length > 0 && (
                 <>
                     {categories.map((category) => (
-                        <div key={"category" + category.id} className="category-container">
-                            <img src={category.picture} alt={"category"+category.categoryId} />
+                        <div key={"category" + category.id} className={page.categoryContainer}>
+                            <img src={category.picture} alt={"category"+category.id} />
                             <h3>{handelName(category.name)}</h3>
                         </div>
                     ))}
