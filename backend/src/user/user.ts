@@ -1,5 +1,6 @@
 export interface IUser{
     userId: number | null | undefined,
+    isAdmin: boolean,
     name: string,
     userName: string,
     email: string,
@@ -11,6 +12,7 @@ export interface IUser{
 
 export default class User implements IUser{
     userId: number | null | undefined = null;
+    isAdmin: boolean = false;
     name: string = "";
     userName: string = "";
     email: string = "";
@@ -21,6 +23,7 @@ export default class User implements IUser{
 
     constructor(user: IUser){
         this.userId = user.userId;
+        this.isAdmin = user.isAdmin;
         this.name = user.name;
         this.userName = user.userName;
         this.email = user.email;

@@ -12,7 +12,7 @@ export async function getProfileDatasById(req: any, res: any){
     try{
         const [result] = await connection.query(
             `SELECT 
-                profiles.id, 
+                profiles.id,
                 users.username, 
                 users.phone_number, 
                 profiles.profile_picture, 

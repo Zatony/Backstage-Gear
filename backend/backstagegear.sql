@@ -1,4 +1,4 @@
--- Active: 1765535940941@@127.0.0.1@3307@backstagegear
+-- Active: 1765535940941@@127.0.0.1@3307@backstagegear2
 CREATE DATABASE backstagegear
 CHARACTER SET = 'utf8' COLLATE = 'utf8_hungarian_ci';
 
@@ -11,6 +11,7 @@ ALTER TABLE users AUTO_INCREMENT = 1;
 */
 CREATE TABLE users(
     id INT AUTO_INCREMENT PRIMARY KEY,
+    is_admin TINYINT(1) DEFAULT 0,
     name VARCHAR(100) NOT NULL,
     username VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -27,6 +28,9 @@ RETURN SHA2(concat(pwd, 'sozas'), 256);
 CREATE TRIGGER insert_user BEFORE INSERT ON users
 FOR EACH ROW SET new.password = pwd_encrypt(new.password);
 
+CREATE TRIGGER insert_user_on_update BEFORE UPDATE ON users
+FOR EACH ROW SET new.password = pwd_encrypt(new.password);
+
 CREATE FUNCTION login(email VARCHAR(255), password VARCHAR(255))
 RETURNS INTEGER DETERMINISTIC
 BEGIN
@@ -37,13 +41,13 @@ BEGIN
 END
 
 
-INSERT INTO users (id, name, username, email, phone_number, date_of_birth, password)
+INSERT INTO users (id, is_admin, name, username, email, phone_number, date_of_birth, password)
 VALUES
-(NULL, 'admin', 'admin', 'admin@example.com', '36201234567', '1985-04-12', 'admin'),
-(NULL, 'Nagy Éva', 'nagy.eva', 'eva.nagy@example.com', '36309876543', '1992-11-30', 'jelszo1'),
-(NULL, 'Tóth Sándor', 'toth.sandor', 'sandor.toth@example.com', '36705551212', '1978-07-05', 'jelszo2'),
-(NULL, 'Major Zsuzsanna', 'major.zsuzsi', 'zsuzsa.major@example.com', '36204443333', '1989-02-18', 'jelszo3'),
-(NULL, 'János Péter', 'janos.peter', 'peter.janos@example.com', '36302109876', '2000-06-22', 'jelszo4');
+(NULL, 1, 'admin', 'admin', 'admin@example.com', '36201234567', '1985-04-12', 'admin'),
+(NULL, 0, 'Nagy Éva', 'nagy.eva', 'eva.nagy@example.com', '36309876543', '1992-11-30', 'jelszo1'),
+(NULL, 0, 'Tóth Sándor', 'toth.sandor', 'sandor.toth@example.com', '36705551212', '1978-07-05', 'jelszo2'),
+(NULL, 0, 'Major Zsuzsanna', 'major.zsuzsi', 'zsuzsa.major@example.com', '36204443333', '1989-02-18', 'jelszo3'),
+(NULL, 0, 'János Péter', 'janos.peter', 'peter.janos@example.com', '36302109876', '2000-06-22', 'jelszo4');
 
 
 
