@@ -1,11 +1,10 @@
-import { Request, Response } from "express";
 import { idIsNan } from "../validators/id.validator";
 import config from "../config/config";
 import mysql from "mysql2/promise";
 
 
-export async function getProfileDatasById(req: Request, res: Response){
-    const userId: number = parseInt(req.params.userId);
+export async function getProfileDatasById(req: any, res: any){
+    const userId: number = parseInt(req.user.id);
     idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
