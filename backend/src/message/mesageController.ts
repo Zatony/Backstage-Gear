@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import mysql from "mysql2/promise";
 import config from "../config/config";
 import { idIsNan } from "../validators/id.validator";
@@ -17,8 +17,8 @@ async function isUserExisted(id: number, res: Response, connection: any){
 };
 
 
-export async function getUserIncomingMessages(req: Request, res: Response){
-    const userId: number = parseInt(req.params.userId);
+export async function getUserIncomingMessages(req: any, res: any){
+    const userId: number = parseInt(req.user.id);
     idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
@@ -54,8 +54,8 @@ export async function getUserIncomingMessages(req: Request, res: Response){
 };
 
 
-export async function getUserIcomingMessageById(req: Request, res: Response){
-    const userId: number = parseInt(req.params.userId);
+export async function getUserIcomingMessageById(req: any, res: any){
+    const userId: number = parseInt(req.user.id);
     const messageId: number = parseInt(req.params.messageId);
 
     idIsNan(userId, res);
@@ -94,8 +94,8 @@ export async function getUserIcomingMessageById(req: Request, res: Response){
 };
 
 
-export async function getUserSentMessages(req: Request, res: Response){
-    const userId: number = parseInt(req.params.userId);
+export async function getUserSentMessages(req: any, res: any){
+    const userId: number = parseInt(req.user.id);
     idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
@@ -131,8 +131,8 @@ export async function getUserSentMessages(req: Request, res: Response){
 };
 
 
-export async function getUserSentMessageById(req: Request, res: Response){
-    const userId: number = parseInt(req.params.userId);
+export async function getUserSentMessageById(req: any, res: any){
+    const userId: number = parseInt(req.user.id);
     const messageId: number = parseInt(req.params.messageId);
 
     idIsNan(userId, res);
