@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import config from "../config/config";
 import mysql from "mysql2/promise";
 import { idIsNan } from "../validators/id.validator";
@@ -17,8 +17,8 @@ async function isUserExisted(id: number, res: Response, connection: any){
 };
 
 
-export async function getAdsFromUserCart(req: Request, res: Response) {
-    const userId: number = parseInt(req.params.userId);
+export async function getAdsFromUserCart(req: any, res: any) {
+    const userId: number = parseInt(req.user.id);
     idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
@@ -59,8 +59,8 @@ export async function getAdsFromUserCart(req: Request, res: Response) {
 };
 
 
-export async function getAdByIdFromUserCart(req: Request, res: Response) {
-    const userId: number = parseInt(req.params.userId);
+export async function getAdByIdFromUserCart(req: any, res: any) {
+    const userId: number = parseInt(req.user.id);
     const adId: number = parseInt(req.params.adId);
 
     idIsNan(userId, res);
