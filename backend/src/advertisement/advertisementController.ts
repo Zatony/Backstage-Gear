@@ -126,8 +126,8 @@ export async function getAdDatasById(req: Request, res: Response){
 };
 
 
-export async function getUserAds(req: Request, res: Response){
-    const userId: number = parseInt(req.params.userId);
+export async function getUserAds(req: any, res: any){
+    const userId: number = parseInt(req.user.id);
     idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
@@ -167,8 +167,8 @@ export async function getUserAds(req: Request, res: Response){
 };
 
 
-export async function getUserAdById(req: Request, res: Response){
-    const userId: number = parseInt(req.params.userId);
+export async function getUserAdById(req: any, res: any){
+    const userId: number = parseInt(req.user.id);
     const adId: number = parseInt(req.params.adId);
 
     idIsNan(adId, res);
@@ -208,7 +208,7 @@ export async function getUserAdById(req: Request, res: Response){
             return;
         };
 
-        res.status(404).send("Nincsenek lekérendő hirdetések.");
+        res.status(404).send("Nem létezik ilyen aznosítójú elem.");
     }
     catch(err){
         console.log(err);
@@ -216,8 +216,8 @@ export async function getUserAdById(req: Request, res: Response){
 };
 
 
-export async function getReportedAds(req: Request, res: Response) {
-    const userId: number = parseInt(req.params.userId);
+export async function getReportedAds(req: any, res: any) {
+    const userId: number = parseInt(req.user.id);
     idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
@@ -256,8 +256,8 @@ export async function getReportedAds(req: Request, res: Response) {
 };
 
 
-export async function getReportedAdById(req: Request, res: Response) {
-    const userId: number = parseInt(req.params.userId);
+export async function getReportedAdById(req: any, res: any) {
+    const userId: number = parseInt(req.user.id);
     const adId: number = parseInt(req.params.adId);
 
     idIsNan(adId, res);
