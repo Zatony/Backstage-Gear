@@ -4,19 +4,6 @@ import config from "../config/config";
 import { idIsNan } from "../validators/id.validator";
 
 
-async function isUserExisted(id: number, res: Response, connection: any){
-    const [result] = await connection.query(
-        'SELECT id FROM users WHERE id = ?',
-        [id]
-    ) as Array<any>;
-
-    if(result.length === 0){
-        res.status(404).send("Ez a felhasználó nem létezik.");
-        return;
-    };
-};
-
-
 export async function getAds(_req: Request, res: Response){
     const connection = await mysql.createConnection(config.database);
 
@@ -128,14 +115,10 @@ export async function getAdDatasById(req: Request, res: Response){
 
 export async function getUserAds(req: any, res: any){
     const userId: number = parseInt(req.user.id);
-    idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
 
     try{
-        isUserExisted(userId, res, connection);
-
-
         const [results] = await connection.query(
             `SELECT 
                 advertisements.id,
@@ -172,14 +155,10 @@ export async function getUserAdById(req: any, res: any){
     const adId: number = parseInt(req.params.adId);
 
     idIsNan(adId, res);
-    idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
     
     try{
-        isUserExisted(userId, res, connection);
-
-
         const [result] = await connection.query(
             `SELECT 
                 advertisements.id, 
@@ -216,16 +195,10 @@ export async function getUserAdById(req: any, res: any){
 };
 
 
-export async function getReportedAds(req: any, res: any) {
-    const userId: number = parseInt(req.user.id);
-    idIsNan(userId, res);
-
+export async function getReportedAds(_req: any, res: any) {
     const connection = await mysql.createConnection(config.database);
 
     try{
-        isUserExisted(userId, res, connection);
-
-
         const [results] = await connection.query(
             `SELECT
                 advertisements.id,
@@ -257,18 +230,13 @@ export async function getReportedAds(req: any, res: any) {
 
 
 export async function getReportedAdById(req: any, res: any) {
-    const userId: number = parseInt(req.user.id);
     const adId: number = parseInt(req.params.adId);
 
     idIsNan(adId, res);
-    idIsNan(userId, res);
 
     const connection = await mysql.createConnection(config.database);
 
     try{
-        isUserExisted(userId, res, connection);
-
-
         const [result] = await connection.query(
             `SELECT 
                 advertisements.id, 

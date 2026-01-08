@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getAds, getAdDatasById, getUserAds, getUserAdById, getLatestAds, getReportedAds, getReportedAdById } from "./advertisementController";
-import verifyToken from "../middleware/auth";
+import { verifyToken, requireAdmin } from "../middleware/auth";
 
 const router: Router = Router();
 
@@ -14,7 +14,7 @@ router.get('/backstagegear/me/my_ads/:adId', verifyToken, getUserAdById);
 router.get('/backstagegear/me/my_ads/update_ad/:adId', verifyToken, getUserAdById);
 
 // Csak adminnál kéne, hogy működjön
-router.get('/backstagegear/me/reported_ads', verifyToken, getReportedAds);
-router.get('/backstagegear/me/reported_ads/:adId', verifyToken, getReportedAdById);
+router.get('/backstagegear/me/reported_ads', verifyToken, requireAdmin, getReportedAds);
+router.get('/backstagegear/me/reported_ads/:adId', verifyToken, requireAdmin, getReportedAdById);
 
 export default router;

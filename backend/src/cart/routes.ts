@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getAdsFromUserCart, getAdByIdFromUserCart } from "./cartController";
-import verifyToken from "../middleware/auth";
+import { verifyToken } from "../middleware/auth";
 
 const router: Router = Router();
 

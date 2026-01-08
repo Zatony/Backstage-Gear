@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import config from "../config/config";
 
-export default function verifyToken(req: any, res: any, next: any){
+export function verifyToken(req: any, res: any, next: any){
     const token = req.body?.token || req.query?.token || req.headers?.['x-access-token'];
 
     if(!token){
@@ -11,7 +11,7 @@ export default function verifyToken(req: any, res: any, next: any){
     try{
         if(!config.jwtSecret){
             return res.status(500).send("Hiba van a titkos kulcsnál.");
-        };
+        }; 
 
         const decodedToken = jwt.verify(token, config.jwtSecret);
         req.user = decodedToken;
@@ -22,4 +22,17 @@ export default function verifyToken(req: any, res: any, next: any){
         console.log(err);
         return res.status(401).send("A hitelesítés nem sikerült.");
     }
+};
+
+
+export function requireAdmin(req: any, res: any, next: any) {
+    if (!req.user) {
+        return res.status(401).send("Nincs hitelesítés.");
+    };
+
+    if (req.user.is_admin !== 1) {
+        return res.status(403).send("Admin jogosultság szükséges.");
+    };
+
+    next();
 };

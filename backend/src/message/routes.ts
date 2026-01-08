@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getUserIncomingMessages, getUserIcomingMessageById, getUserSentMessages, getUserSentMessageById } from "./mesageController";
-import verifyToken from "../middleware/auth";
+import { verifyToken } from "../middleware/auth";
 
 const router: Router = Router();
 

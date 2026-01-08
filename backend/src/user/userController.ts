@@ -29,7 +29,19 @@ export async function signIn(req: any, res: any) {
             return;
         };
 
-        const token = jwt.sign({id: result[0].id}, config.jwtSecret, {expiresIn: "2h"});
+        const [adminRows] = await connection.query(
+            'SELECT is_admin FROM users WHERE id = ?',
+            [result[0].id]
+        ) as Array<any>;
+
+        const token = jwt.sign(
+            {
+                id: result[0].id,
+                is_admin: adminRows[0].is_admin
+            },
+            config.jwtSecret, 
+            {expiresIn: "2h"}
+        );
 
         res.status(201).send({token: token});
     }
