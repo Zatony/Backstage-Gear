@@ -8,6 +8,7 @@ import profileRouter from "../profile/routes";
 import messageRouter from "../message/routes";
 import cartRouter from "../cart/routes";
 import userRouter from "../user/routes";
+import fileRouter from "../upload/routes";
 
 
 const app = express();
@@ -23,5 +24,6 @@ app.use('/', profileRouter);
 app.use('/', messageRouter);
 app.use('/', cartRouter);
 app.use('/', userRouter);
+app.use('/', fileRouter);
 
 export default app;
