@@ -19,7 +19,5 @@ export class Message implements IMessage{
         this.receiverId = message.receiverId;
         this.content = message.content;
         this.sentAt = message.sentAt;
-
-        //Object.assign(this, message as Partial<Message>);
     };
 };

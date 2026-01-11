@@ -3,6 +3,6 @@ import { signIn } from "./userController";
 
 const router: Router = Router();
 
-router.post('/backstagegear', signIn);
+router.post('/backstagegear/login', signIn);
 
 export default router;

@@ -13,7 +13,7 @@ router.get('/backstagegear/me/my_ads', verifyToken, getUserAds);
 router.get('/backstagegear/me/my_ads/:adId', verifyToken, getUserAdById);
 router.get('/backstagegear/me/my_ads/update_ad/:adId', verifyToken, getUserAdById);
 
-// Csak adminnál kéne, hogy működjön
+// Admin
 router.get('/backstagegear/me/reported_ads', verifyToken, requireAdmin, getReportedAds);
 router.get('/backstagegear/me/reported_ads/:adId', verifyToken, requireAdmin, getReportedAdById);
 

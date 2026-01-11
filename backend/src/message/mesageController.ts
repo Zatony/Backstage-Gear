@@ -175,7 +175,6 @@ export async function getUserSentMessageById(req: any, res: any){
 export async function postNewMessage(req: any, res: any) {
     const sendId: number = parseInt(req.user.id);
     const recId: number = parseInt(req.params.recId);
-    //const date = new Date().toISOString().split('T')[0];
 
     idIsNan(recId, res);
     bodyIsUndefined(req, res);
@@ -205,6 +204,31 @@ export async function postNewMessage(req: any, res: any) {
 
 
         res.status(404).send("Nem sikerült elküldeni az üzenetet.");
+    }
+    catch(err){
+        console.log(err);
+    }
+};
+
+
+export async function deleteMessageById(req: any, res: any) {
+    const messId: number = parseInt(req.params.messId);
+    idIsNan(messId, res);
+
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        const [result] = await connection.query(
+            'DELETE FROM messages WHERE id = ?',
+            [messId]
+        ) as Array<any>;
+
+        if(result.affectedRows > 0){
+            res.status(204).send();
+            return;
+        };
+
+        res.status(404).send("Nem létezik ilyen azonosítójú üzenet.");
     }
     catch(err){
         console.log(err);
