@@ -1,7 +1,8 @@
 import { Response } from "express";
 import mysql from "mysql2/promise";
 import config from "../config/config";
-import { idIsNan } from "../validators/id.validator";
+import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
+import { Message, IMessage } from "./message";
 
 
 async function isUserExisted(id: number, res: Response, connection: any){
@@ -164,6 +165,46 @@ export async function getUserSentMessageById(req: any, res: any){
         };
 
         res.status(404).send("Nem létezik ilyen azonosítójú elem.");
+    }
+    catch(err){
+        console.log(err);
+    }
+};
+
+
+export async function postNewMessage(req: any, res: any) {
+    const sendId: number = parseInt(req.user.id);
+    const recId: number = parseInt(req.params.recId);
+    //const date = new Date().toISOString().split('T')[0];
+
+    idIsNan(recId, res);
+    bodyIsUndefined(req, res);
+
+    let newMessage: any = new Message(req.body as IMessage);
+
+    if(newMessage.content == "" || !newMessage.content){
+        res.status(400).send("Hibásan vagy nem megfelelően megadott adatok.");
+        return;
+    };
+
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        isUserExisted(recId, res, connection);
+
+
+        const [result] = await connection.query(
+            'INSERT INTO messages VALUES(?, ?, ?, ?, CURDATE())',
+            [null, sendId, recId, newMessage.content]
+        ) as Array<any>;
+
+        if(result.affectedRows > 0){
+            res.status(201).send("Sikeres üzenetküldés.");
+            return;
+        };
+
+
+        res.status(404).send("Nem sikerült elküldeni az üzenetet.");
     }
     catch(err){
         console.log(err);
