@@ -34,7 +34,7 @@ export async function getUserIncomingMessages(req: any, res: any){
                 messages.sender_id,
                 messages.receiver_id,
                 messages.content,
-                DATE_FORMAT(messages.sent_at, '%Y-%m-%d') AS sent_at
+                DATE_FORMAT(messages.sent_at, '%Y-%m-%d %H:%i:%s') AS sent_at
             FROM messages
             INNER JOIN users AS receiver ON messages.receiver_id = receiver.id
             WHERE messages.receiver_id = ?
@@ -74,7 +74,7 @@ export async function getUserIcomingMessageById(req: any, res: any){
                 messages.sender_id,
                 messages.receiver_id,
                 messages.content,
-                DATE_FORMAT(messages.sent_at, '%Y-%m-%d') AS sent_at
+                DATE_FORMAT(messages.sent_at, '%Y-%m-%d %H:%i:%s') AS sent_at
             FROM messages
             INNER JOIN users AS receiver ON messages.receiver_id = receiver.id
             WHERE messages.receiver_id = ? AND messages.id = ?
@@ -111,7 +111,7 @@ export async function getUserSentMessages(req: any, res: any){
                 messages.sender_id,
                 messages.receiver_id,
                 messages.content,
-                DATE_FORMAT(messages.sent_at, '%Y-%m-%d') AS sent_at
+                DATE_FORMAT(messages.sent_at, '%Y-%m-%d %H:%i:%s') AS sent_at
             FROM messages
             INNER JOIN users AS sender ON messages.sender_id = sender.id
             WHERE messages.sender_id = ?
@@ -151,7 +151,7 @@ export async function getUserSentMessageById(req: any, res: any){
                 messages.sender_id,
                 messages.receiver_id,
                 messages.content,
-                DATE_FORMAT(messages.sent_at, '%Y-%m-%d') AS sent_at
+                DATE_FORMAT(messages.sent_at, '%Y-%m-%d %H:%i:%s') AS sent_at
             FROM messages
             INNER JOIN users AS sender ON messages.sender_id = sender.id
             WHERE messages.sender_id = ? AND messages.id = ?
@@ -193,8 +193,8 @@ export async function postNewMessage(req: any, res: any) {
 
 
         const [result] = await connection.query(
-            'INSERT INTO messages VALUES(?, ?, ?, ?, CURDATE())',
-            [null, sendId, recId, newMessage.content]
+            'INSERT INTO messages(sender_id, receiver_id, content) VALUES(?, ?, ?)',
+            [sendId, recId, newMessage.content]
         ) as Array<any>;
 
         if(result.affectedRows > 0){

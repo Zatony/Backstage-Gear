@@ -76,17 +76,17 @@ VALUES
 
 
 
-/*
+
 DELETE FROM messages;
 DROP TABLE messages;
 ALTER TABLE messages AUTO_INCREMENT = 1;
-*/
+
 CREATE TABLE messages(
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
     content TEXT NOT NULL,
-    sent_at DATE,
+    sent_at DATETIME NOT NULL DEFAULT NOW(),
 
     FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
@@ -94,10 +94,10 @@ CREATE TABLE messages(
 
 INSERT INTO messages (id, sender_id, receiver_id, content, sent_at)
 VALUES
-(NULL, 3, 2, 'üzenet, üzenet', '2025-08-11'),
-(NULL, 4, 2, 'üzenet, üzenet', '2025-09-30'),
-(NULL, 3, 5, 'üzenet, üzenet', '2025-10-18'),
-(NULL, 2, 3, 'üzenet, üzenet', '2025-01-12');
+(NULL, 3, 2, 'üzenet, üzenet', '2025-08-11 12:08:45'),
+(NULL, 4, 2, 'üzenet, üzenet', '2025-09-30 10:12:13'),
+(NULL, 3, 5, 'üzenet, üzenet', '2025-10-18 09:01:54'),
+(NULL, 2, 3, 'üzenet, üzenet', '2025-01-12 21:10:10');
 
 
 
