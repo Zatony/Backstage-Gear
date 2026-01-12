@@ -213,24 +213,95 @@ export async function postNewMessage(req: any, res: any) {
 
 export async function deleteMessageById(req: any, res: any) {
     const messId: number = parseInt(req.params.messId);
+    const userId = req.user.id;
+
     idIsNan(messId, res);
 
     const connection = await mysql.createConnection(config.database);
 
     try{
-        const [result] = await connection.query(
-            'DELETE FROM messages WHERE id = ?',
-            [messId]
-        ) as Array<any>;
+        const [result]: any = await connection.query(
+            `
+            DELETE FROM messages
+            WHERE id = ?
+              AND (sender_id = ? OR receiver_id = ?)
+            `,
+            [messId, userId, userId]
+        );
 
-        if(result.affectedRows > 0){
+        if (result.affectedRows === 1) {
             res.status(204).send();
             return;
         };
 
-        res.status(404).send("Nem létezik ilyen azonosítójú üzenet.");
+
+        const [rows]: any = await connection.query(
+            'SELECT id FROM messages WHERE id = ?',
+            [messId]
+        );
+
+        if (rows.length === 0) {
+            res.status(404).send("Nem létezik ilyen azonosítójú üzenet.");
+            return;
+        };
+
+
+        res.status(403).send(
+            "Nincs jogosultságod törölni ezt az üzenetet."
+        );
     }
     catch(err){
         console.log(err);
+    }
+};
+
+
+export async function patchMessageById(req: any, res: any) {
+    const messId = parseInt(req.params.messId);
+    const userId = req.user.id;
+
+    idIsNan(messId, res);
+    bodyIsUndefined(req, res);
+
+    if (req.body.content.trim() === "") {
+        res.status(400).send("Hiányosan megadott adatok.");
+        return;
+    };
+
+    const sql = `
+        UPDATE messages
+        SET content = ?
+        WHERE id = ? AND sender_id = ?
+    `;
+
+    const connection = await mysql.createConnection(config.database);
+
+    try {
+        const [result]: any = await connection.query(sql, [
+            req.body.content,
+            messId,
+            userId
+        ]);
+
+        if (result.affectedRows === 1) {
+            res.status(204).send();
+            return;
+        }
+
+
+        const [rows]: any = await connection.query(
+            "SELECT id FROM messages WHERE id = ?",
+            [messId]
+        );
+
+        if (rows.length === 0) {
+            res.status(404).send("Nem létezik ilyen üzenet.");
+            return;
+        }
+
+        res.status(403).send("Nincs jogosultságod módosítani ezt az üzenetet.");
+    }
+    catch (err) {
+        console.error(err);
     }
 };
