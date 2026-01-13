@@ -1,11 +1,62 @@
 import userIco from "../assets/userIcon.png";
+import logoutIco from "../assets/logoutIco.png";
 import shoppingCart from "../assets/shoppingCart.png";
 import { Outlet, Link } from "react-router-dom";
 import Login from "../components/login";
 import Registration from "../components/registration";
+import { useEffect, useState } from "react";
 
 
-export default function NavBar({ callLogin, callCart, showLogin, handleCloseLogin, loginRequest, showRegister, handleCloseRegister, registerRequest, handleRegister, refEmail, refPassword, refUsername, refRePassword, refPhone, refBirthdate }) {
+export default function NavBar({ callLogin, callCart, showLogin, handleCloseLogin, showRegister, handleCloseRegister, handleShowRegister, handleShowLogin}) {
+  const isLoggedIn = !!sessionStorage.getItem('token');
+  const [userData, setUserData] = useState([]);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, right: 0 });
+
+  useEffect(() => {
+    if(!isLoggedIn) return;
+
+    const token = sessionStorage.getItem('token');
+
+    async function fetchUserProfile() {
+      try{
+        const response = await fetch("http://localhost:3000/backstagegear/me/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token
+          }
+        });
+
+        const resData = await response.json();
+        if(response.ok){
+          setUserData(resData[0]);
+        }
+      } catch(err){
+        console.error("Hiba történt a felhasználói adatok lekérése során: ", err);
+      }
+    }
+
+    fetchUserProfile();
+  }, [isLoggedIn]);
+
+  function handleLogout() {
+    sessionStorage.removeItem('token');
+    window.location.reload();
+  }
+
+  function onProfileOpen(e) {
+    if (isProfileOpen)
+      setIsProfileOpen(false);
+    else {
+      const rect = e.target.getBoundingClientRect();
+      setDropdownPos({
+        top: rect.bottom + 20,
+        right: window.innerWidth - (rect.right + 90)
+      });
+      setIsProfileOpen(true);
+    }
+  }
   return (
     <>
       <nav className="navbar">
@@ -22,10 +73,21 @@ export default function NavBar({ callLogin, callCart, showLogin, handleCloseLogi
 
         <img
           className="profile"
-          src={userIco}
-          alt="Profile"
-          onClick={callLogin}
+          src={isLoggedIn ? userData.profile_picture : userIco}
+          alt="User"
+          onClick={isLoggedIn ? onProfileOpen : callLogin}
         ></img>
+        {isLoggedIn && isProfileOpen && 
+          <div className="user-dropdown" style={{top: `${dropdownPos.top}px`, right: `${dropdownPos.right}px`}}>
+            <div className="user-header">{userData.username}</div>
+            <div className="userLine"></div>
+            <a className="userMenuLink" href="#">Profil</a>
+            <a className="userMenuLink" href="#">Üzenetek</a>
+            <a className="userMenuLink" href="#">Hirdetések</a>
+            <a className="userMenuLink" href="#">Új hirdetés</a>
+            <a className="userMenuLogout"  onClick={handleLogout}><img src={logoutIco} alt="Logout"></img> Kilépés</a>
+          </div>
+        }
         <img
           className="cart"
           src={shoppingCart}
@@ -37,22 +99,13 @@ export default function NavBar({ callLogin, callCart, showLogin, handleCloseLogi
       {showLogin && (
         <Login
           onClose={handleCloseLogin}
-          onLogin={loginRequest}
-          callRegister={handleRegister}
-          refEmail={refEmail}
-          refPassword={refPassword}
+          onShowRegister={handleShowRegister}
         />
       )}
       {showRegister && (
         <Registration
           onClose={handleCloseRegister}
-          onRegister={registerRequest}
-          refEmail={refEmail}
-          refPassword={refPassword}
-          refUsername={refUsername}
-          refRePassword={refRePassword}
-          refPhone={refPhone}
-          refBirthdate={refBirthdate}
+          onShowLogin={handleShowLogin}
         />
       )}
 

@@ -8,7 +8,6 @@
 /* Main area: stacks searchbar above ads and other content */
 .mainArea {
   flex: 1 1 auto;
-  display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
@@ -24,6 +23,7 @@
   border-radius: 60px;
   padding: 0 20px;
   margin: 0 auto;
+  margin-bottom: 70px;
 }
 .searchbar img {
   width: 25px;
@@ -210,7 +210,7 @@
   background-color: var(--white);
   padding: 20px;
   border-radius: 12px;
-  margin: 22px auto;
+  margin: 30px 50px;
   box-shadow: 0 18px 18px rgba(0, 0, 0, 0.5);
   position: relative;
 }

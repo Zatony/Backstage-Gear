@@ -52,7 +52,7 @@ body {
   margin-right: 8px;
   cursor: default;
 }
-.logo:hover{
+.logo:hover {
   transition: 0.3s;
   color: var(--accent-color-mix);
 }
@@ -97,7 +97,8 @@ body {
   align-items: center;
   color: var(--white);
   text-decoration: none;
-  padding: 10px 8px;
+  padding: 5px;
+  margin: 5px;
   gap: 8px;
   height: 32px;
   border-radius: 60px;
@@ -106,6 +107,61 @@ body {
 .cart:hover {
   transition: 0.5s;
   background-color: var(--accent-color);
+  cursor: pointer;
+}
+.user-dropdown {
+  position: fixed;
+  background: var(--primary-color);
+  color: var(--white);
+  border: 1px solid var(--muted);
+  border-radius: 12px;
+  width: 180px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  padding: 8px;
+  z-index: 1000;
+}
+.user-header {
+  padding: 8px 14px;
+  font-weight: 600;
+  text-align: center;
+}
+.userLine {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  margin-bottom: 10px;
+}
+.userLine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 75px;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 9999px;
+}
+.user-dropdown a {
+  display: block;
+  width: 90%;
+  text-align: left;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+}
+.user-dropdown img{
+  vertical-align: middle;
+  margin-right: 8px;
+  height: 25px;
+}
+.userMenuLink:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+}
+.userMenuLogout:hover {
+  background-color: var(--accent-60);
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -161,6 +217,10 @@ body {
   font-size: 16px;
   color: var(--white);
   margin-bottom: 15px;
+}
+.input-error {
+  color: #ff6b6b;
+  font-size: 14px;
 }
 .log_reg-row .forgot-psw {
   display: inline-block;
@@ -276,7 +336,7 @@ body {
 .footer {
   background-color: var(--primary-color);
   width: 100%;
-  position: absolute;
+  position: relative;
   bottom: 0px;
   left: 0px;
   text-align: center;

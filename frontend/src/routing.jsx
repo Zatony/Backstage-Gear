@@ -1,4 +1,4 @@
-import { useState,useRef } from "react";
+import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NavBar from "./components/navbar";
 import Home from "./page_home/Home";
@@ -9,14 +9,7 @@ import Products from "./page_products/Products";
 export default function Routing() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-
-  const refEmail = useRef(null);
-  const refPassword = useRef(null);
-  const refUsername = useRef(null);
-  const refRePassword = useRef(null);
-  const refPhone = useRef(null);
-  const refBirthdate = useRef(null);
-
+  
   //Login es register kezelok
   function handleLogin() {
     console.log("Login clicked");
@@ -25,19 +18,15 @@ export default function Routing() {
   function handleCloseLogin() {
     setShowLogin(false);
   }
-  function loginRequest() {
-    console.log(refEmail.current.value + " - " + refPassword.current.value);
-    setShowLogin(false);
-  }
-  function handleRegister() {
+  function handleShowRegister() {
     setShowRegister(true);
     setShowLogin(false);
   }
   function handleCloseRegister() {
     setShowRegister(false);
   }
-  function registerRequest() {
-    console.log(refEmail.current.value + " - " + refPassword.current.value + " - " + refUsername.current.value + " - " + refRePassword.current.value + " - " + refPhone.current.value + " - " + refBirthdate.current.value);
+  function handleShowLogin() {
+    setShowLogin(true);
     setShowRegister(false);
   }
 
@@ -55,17 +44,10 @@ export default function Routing() {
           callCart={handleCart}
           showLogin={showLogin}
           handleCloseLogin={handleCloseLogin}
-          loginRequest={loginRequest}
           showRegister={showRegister}
           handleCloseRegister={handleCloseRegister}
-          registerRequest={registerRequest}
-          handleRegister={handleRegister}
-          refEmail={refEmail}
-          refPassword={refPassword}
-          refUsername={refUsername}
-          refRePassword={refRePassword}
-          refPhone={refPhone}
-          refBirthdate={refBirthdate}
+          handleShowRegister={handleShowRegister}
+          handleShowLogin={handleShowLogin}
         />
       ),
       errorElement: <div>Hiba történt az oldal betöltésekor.</div>,
