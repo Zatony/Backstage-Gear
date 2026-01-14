@@ -10,7 +10,7 @@ export interface IUser{
     token: string | null
 };
 
-export default class User implements IUser{
+export class User implements IUser{
     userId: number | null | undefined = null;
     isAdmin: boolean = false;
     name: string = "";

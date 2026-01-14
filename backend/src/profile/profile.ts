@@ -6,7 +6,7 @@ export interface IProfile{
     userId: number | null | undefined
 };
 
-export default class Profile implements IProfile{
+export class Profile implements IProfile{
     profileId: number | null | undefined;
     profilePicture: string = "";
     downVote: number | null | undefined;
@@ -19,7 +19,5 @@ export default class Profile implements IProfile{
         this.downVote = profile.downVote;
         this.upVote = profile.upVote;
         this.userId = profile.userId;
-
-        //Object.assign(this, profile as Partial<Profile>);
     };
 };

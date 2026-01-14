@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyparser from "body-parser";
+import path from "path";
 
 import categoryRouter from "../category/routes";
 import adRouter from "../advertisement/routes";
@@ -17,6 +18,15 @@ app.use(cors({origin: "*"}));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(express.json());
+
+
+app.use(
+  "/profile-pictures",
+  express.static(
+    path.join(process.cwd(), "uploads", "profile-pictures")
+  )
+);
+
 
 app.use('/', categoryRouter);
 app.use('/', adRouter);

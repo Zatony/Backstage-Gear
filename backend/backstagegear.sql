@@ -1,4 +1,4 @@
--- Active: 1765535940941@@127.0.0.1@3307@backstagegear2
+-- Active: 1765535940941@@127.0.0.1@3307@backstagegear
 CREATE DATABASE backstagegear
 CHARACTER SET = 'utf8' COLLATE = 'utf8_hungarian_ci';
 
@@ -61,7 +61,7 @@ CREATE TABLE profiles(
     user_id INT NOT NULL,
     up_vote INT,
     down_vote INT,
-    profile_picture VARCHAR(255),
+    profile_picture VARCHAR(255) NOT NULL DEFAULT 'default-profile-picture.jpg',
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
