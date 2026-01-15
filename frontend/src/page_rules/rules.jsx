@@ -1,8 +1,8 @@
-import "./rules.css";
+import rules from "./rules.module.css";
 
 export default function Rules() {
   return (
-    <div className="text-box">
+    <div className={rules.textBox}>
       <h1>Szabályok</h1>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores

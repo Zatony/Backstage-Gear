@@ -42,17 +42,21 @@ export async function getLatestAds(_req: Request, res: Response){
     try{
         const [results] = await connection.query(
             `SELECT 
-                advertisements.id, 
-                items.name, 
-                advertisements.description, 
-                used_items.price, 
+                advertisements.id,
+                items.name,
+                advertisements.description,
+                used_items.price,
                 GROUP_CONCAT(files.file_name) AS files
             FROM advertisements
             INNER JOIN used_items ON advertisements.used_item_id = used_items.id
             INNER JOIN items ON used_items.item_id = items.id
-            INNER JOIN ad_files ON advertisements.id = ad_files.ad_id
-            INNER JOIN files ON ad_files.file_id = files.id
-            GROUP BY advertisements.id
+            LEFT JOIN ad_files ON advertisements.id = ad_files.ad_id
+            LEFT JOIN files ON ad_files.file_id = files.id
+            GROUP BY 
+                advertisements.id,
+                items.name,
+                advertisements.description,
+                used_items.price
             ORDER BY advertisements.date_of_ad DESC
             LIMIT 10;`
         ) as Array<any>;

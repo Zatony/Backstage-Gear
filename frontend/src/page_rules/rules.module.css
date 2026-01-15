@@ -1,11 +1,11 @@
-.text-box{
+.textBox{
   max-width: 800px;
   margin: 40px auto;
   padding: 0 20px;
   color: var(--white);
   cursor: default;
 }
-.text-box h1{
+.textBox h1{
   text-align: center;
   margin-bottom: 20px;
 }

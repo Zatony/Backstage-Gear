@@ -1,8 +1,8 @@
-import "./about.css";
+import about from"./about.module.css";
 
 export default function About() {
   return (
-    <div className="text-box">
+    <div className={about.textBox}>
       <h1>Rólunk</h1>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
