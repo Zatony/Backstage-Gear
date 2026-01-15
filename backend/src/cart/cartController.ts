@@ -98,13 +98,35 @@ export async function putNewAdIntoCartByAdId(req: any, res: any) {
     const connection = await mysql.createConnection(config.database);
 
     try{
-        const [adResult] = await connection.query(
+        const [isAdExistedCheck] = await connection.query(
             'SELECT id FROM advertisements WHERE id = ?',
             [adId]
         ) as Array<any>;
 
-        if(adResult.length === 0){
+        if(isAdExistedCheck.length === 0){
             res.status(404).send("Nem létezik ilyen azonosítójú hirdetés.");
+            return;
+        };
+
+
+        const [isAdAlreadyInCartCheck] = await connection.query(
+            'SELECT id FROM carts WHERE user_id = ? AND ad_id = ?',
+            [userId, adId]
+        ) as Array<any>;
+
+        if(isAdAlreadyInCartCheck.length > 0){
+            res.status(400).send("Ezt a hirdetést már beraktad a kosaradba.");
+            return;
+        };
+
+
+        const [selfAdCheck] = await connection.query(
+            'SELECT user_id AS uid FROM advertisements WHERE id = ?',
+            [adId]
+        ) as Array<any>;
+
+        if(selfAdCheck[0].uid === userId){
+            res.status(400).send("A saját hirdetésedet nem tudod a kosaradba tenni.");
             return;
         };
 
