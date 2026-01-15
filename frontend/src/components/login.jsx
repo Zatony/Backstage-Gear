@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
+import InputField from "./inputField";
 
 export default function Login({ onClose, onShowRegister }) {
   const refEmail = useRef(null);
   const refPassword = useRef(null);
 
-  const [isValided, setIsValid] = useState({
+  const [isValid, setIsValid] = useState({
     email: false,
     password: false,
   });
@@ -28,7 +29,7 @@ export default function Login({ onClose, onShowRegister }) {
 
     //console.log(refEmail.current.value + " - " + refPassword.current.value);
 
-    if(isEdited.email && isValided.email && isEdited.password && isValided.password){
+    if(isEdited.email && isValid.email && isEdited.password && isValid.password){
       const userData = {
         email: refEmail.current.value,
         password: refPassword.current.value,
@@ -56,7 +57,6 @@ export default function Login({ onClose, onShowRegister }) {
       } catch(err){
         console.error("Hiba történt a belépés során: ", err);
       }
-      
     }
     else{
       alert("Töltsd ki az összes mezőt!");
@@ -78,34 +78,15 @@ export default function Login({ onClose, onShowRegister }) {
         </div>
 
         <form className="login-form" onSubmit={handleLogin}>
-          <div className="log_reg-row">
-            <div className="row">
-              <div className="col-6">
-                <label htmlFor="email">E-mail cím:</label>
-              </div>
-              <div className="col-6 text-end">
-                {isEdited.email && !isValided.email && (<span className="input-error" >Kérlek töltsd ki a mezőt!</span>)}
-              </div>
-            </div>
-            <input type="email" id="email" name="email" autoComplete="email" ref={refEmail} onBlur={() => validateInputs(refEmail.current.value, "email")} onChange={() => validateInputs(refEmail.current.value, "email")}/>
-          </div>
-          <div className="log_reg-row">
-            <div className="row">
-              <div className="col-6">
-                <label htmlFor="password">Jelszó:</label>
-              </div>
-              <div className="col-6 text-end">
-                {isEdited.password && !isValided.password && (<span className="input-error">Kérlek töltsd ki a mezőt!</span>)}
-              </div>
-            </div>
-            <input type="password" id="password" name="password" ref={refPassword} onBlur={() => validateInputs(refPassword.current.value, "password")} onChange={() => validateInputs(refPassword.current.value, "password")} />
-            <p htmlFor="forgot-password" className="forgot-psw">Elfelejtetted a jelszavad?</p>
-          </div>
+          <InputField type="email" name="email" labelText="E-mail cím" refData={refEmail} isValid={isValid} isEdited={isEdited} validateInputs={validateInputs}/>
+          <InputField type="password" name="password" labelText="Jelszó" refData={refPassword} isValid={isValid} isEdited={isEdited} validateInputs={validateInputs}/>
+          <p htmlFor="forgot-password" className="forgot-psw">Elfelejtetted a jelszavad?</p>
           <div className="log_reg-actions">
             <button className="login-button">Belépés</button>
             <button type="button" className="register-button" onClick={handleSwitchToRegister}>Regisztráció</button>
           </div>
         </form>
+
       </div>
     </div>
   );

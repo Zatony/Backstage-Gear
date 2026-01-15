@@ -5,13 +5,17 @@ export default function Ad({adName, adDesc, adImg, adPrice, page}) {
 
       <div className={page.adText_Button}>
         <h3>{adName}</h3>
-        <div className={page.adDescPriceBtn}>
-          <p>{adDesc}</p>
-          <div className={page.priceButtonGroup}>
+        <div className="row">
+          <div className={`${page.adDescPriceBtn} col-sm-12 col-md-6 col-lg-4`}>
+            <p>{adDesc}</p>
+          </div>
+
+          <div className={`${page.priceButtonGroup} col-sm-12 col-md-6 col-lg-4 align-text-bottom`}>
             <h2>{adPrice.toLocaleString("hu-HU")} Ft</h2>
             <button>Kosárba</button>
           </div>
         </div>
+        
       </div>
     </div>
   );
