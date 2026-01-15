@@ -1,20 +1,6 @@
-import { Response } from "express";
 import config from "../config/config";
 import mysql from "mysql2/promise";
 import { idIsNan } from "../validators/id.validator";
-
-
-async function isUserExisted(id: number, res: Response, connection: any){
-    const [result] = await connection.query(
-        'SELECT id FROM users WHERE id = ?',
-        [id]
-    ) as Array<any>;
-
-    if(result.length === 0){
-        res.status(404).send("Ez a felhasználó nem létezik.");
-        return;
-    };
-};
 
 
 export async function getAdsFromUserCart(req: any, res: any) {
@@ -24,9 +10,6 @@ export async function getAdsFromUserCart(req: any, res: any) {
     const connection = await mysql.createConnection(config.database);
 
     try{
-        isUserExisted(userId, res, connection);
-        
-
         const [results] = await connection.query(
             `SELECT
                 advertisements.id,
@@ -69,9 +52,6 @@ export async function getAdByIdFromUserCart(req: any, res: any) {
     const connection = await mysql.createConnection(config.database);
 
     try{
-        isUserExisted(userId, res, connection);
-
-
         const [result] = await connection.query(
             `SELECT 
                 advertisements.id, 
@@ -102,6 +82,82 @@ export async function getAdByIdFromUserCart(req: any, res: any) {
         };
 
         res.status(404).send("Nincs ilyen azonosítójú hirdetés.");
+    }
+    catch(err){
+        console.log(err);
+    }
+};
+
+
+export async function putNewAdIntoCartByAdId(req: any, res: any) {
+    const userId: number = parseInt(req.user.id);
+    const adId: number = parseInt(req.params.adId);
+
+    idIsNan(adId, res);
+
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        const [adResult] = await connection.query(
+            'SELECT id FROM advertisements WHERE id = ?',
+            [adId]
+        ) as Array<any>;
+
+        if(adResult.length === 0){
+            res.status(404).send("Nem létezik ilyen azonosítójú hirdetés.");
+            return;
+        };
+
+
+        const [result] = await connection.query(
+            'INSERT INTO carts(user_id, ad_id) VALUES (?, ?)',
+            [userId, adId]
+        ) as Array<any>;
+
+        if(result.affectedRows > 0){
+            res.status(201).send("Sikeres a hirdetés kosárba helyezése.");
+            return;
+        };
+
+        res.status(404).send("Nem sikerült a hirdetés kosárba helyezése.");
+    }
+    catch(err){
+        console.log(err);
+    }
+};
+
+
+export async function deleteAdFromCartByAdId(req: any, res: any) {
+    const userId: number = parseInt(req.user.id);
+    const adId: number = parseInt(req.params.adId);
+
+    idIsNan(adId, res);
+
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        const [adResult] = await connection.query(
+            'SELECT id FROM advertisements WHERE id = ?',
+            [adId]
+        ) as Array<any>;
+
+        if(adResult.length === 0){
+            res.status(404).send("Nem létezik ilyen azonosítójú hirdetés.");
+            return;
+        };
+
+
+        const [result] = await connection.query(
+            'DELETE FROM carts WHERE user_id = ? AND ad_id = ?',
+            [userId, adId]
+        ) as Array<any>;
+
+        if(result.affectedRows > 0){
+            res.status(204).send();
+            return;
+        };
+
+        res.status(404).send("Nem sikerült az adattörlés.");
     }
     catch(err){
         console.log(err);
