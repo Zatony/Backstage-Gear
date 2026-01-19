@@ -27,6 +27,13 @@ app.use(
   )
 );
 
+app.use(
+  "/categories-pictures",
+  express.static(
+    path.join(process.cwd(), "uploads", "categories-pictures")
+  )
+);
+
 
 app.use('/', categoryRouter);
 app.use('/', adRouter);

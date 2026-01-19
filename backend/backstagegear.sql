@@ -1,4 +1,4 @@
--- Active: 1765535940941@@127.0.0.1@3307@backstagegear
+-- Active: 1768822618188@@127.0.0.1@3306@backstagegear
 CREATE DATABASE backstagegear
 CHARACTER SET = 'utf8' COLLATE = 'utf8_hungarian_ci';
 
@@ -115,12 +115,12 @@ CREATE TABLE categories(
 
 INSERT INTO categories (id, name, picture)
 VALUES
-(NULL, 'elektromos gitár, elektromos basszusgitár', 'https://drive.google.com/thumbnail?id=1hjp3fSglKFOJunlsJ5wFclTx6qBYzXz7&sz=w1000'),
-(NULL, 'akusztikus gitár, akusztikus basszusgitár', 'https://drive.google.com/thumbnail?id=12xK0bayGv89cfWAcGAWmUIqJtaOe3BUv&sz=w1000'),
-(NULL, 'billentyűs', 'https://drive.google.com/thumbnail?id=1NIAwfYStjq6x4bJgswe5lr-xVpcryzIY&sz=w1000'),
-(NULL, 'ütős', 'https://drive.google.com/thumbnail?id=11A2soFnAmXZ_Mp-eSAzfw4dm2r_t7_-3&sz=w1000'),
-(NULL, 'erősítők/kombók', 'https://drive.google.com/thumbnail?id=1soNkBYzSxkl25LIYMQ_lKLbd5Ohy67dF&sz=w1000'),
-(NULL, 'hangtechnika', 'https://drive.google.com/thumbnail?id=1cPTNirpPkQIJ3HPL3dvMgPlVh8M7Y0h6&sz=w1000');
+(NULL, 'elektromos gitár, elektromos basszusgitár', 'elektromos.png'),
+(NULL, 'akusztikus gitár, akusztikus basszusgitár', 'akusztikus.png'),
+(NULL, 'billentyűs', 'billentyus.png'),
+(NULL, 'ütős', 'utos.png'),
+(NULL, 'erősítők/kombók', 'erositok.png'),
+(NULL, 'hangtechnika', 'hangtechnika.png');
 
 
 
