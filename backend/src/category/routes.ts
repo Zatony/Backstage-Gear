@@ -3,6 +3,6 @@ import { getCategories } from "../category/categoryController";
 
 const router: Router = Router();
 
-router.get('/backstagegear', getCategories);
+router.get('/backstagegear/categories', getCategories);
 
 export default router;
