@@ -8,7 +8,7 @@ export default function NewAd({page}){
 
         useEffect(() => {
                 async function fetchAds() {
-                    const response = await fetch("http://localhost:3000/backstagegear/ads");
+                    const response = await fetch("http://localhost:3000/backstagegear/latest_ads");
                     const resAds = await response.json();
                     setAds(resAds);
                 }

@@ -1,4 +1,4 @@
-export default function Ad({adName, adDesc, adImg, adPrice, page}) {
+export default function Ad({adName, adDesc, adImg, adPrice, page, inCart}) {
   return (
     <div className={page.ad}>
         <img src={adImg} alt={adImg} />
@@ -12,7 +12,7 @@ export default function Ad({adName, adDesc, adImg, adPrice, page}) {
 
           <div className={`${page.priceButtonGroup} col-sm-12 col-md-6 col-lg-4 align-text-bottom`}>
             <h2>{adPrice.toLocaleString("hu-HU")} Ft</h2>
-            <button>Kosárba</button>
+            <button>{inCart ? "asd" : "Kosárba"}</button>
           </div>
         </div>
         

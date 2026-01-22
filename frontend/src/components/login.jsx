@@ -49,8 +49,10 @@ export default function Login({ onClose, onShowRegister }) {
         //console.log(response);
         const data = await response.json();
         sessionStorage.setItem('token', data.token);
+        sessionStorage.setItem('is_admin', data.is_admin);
         
         console.log("token: " + data.token);
+        console.log("is_admin: " + data.is_admin);
         console.log("Sikeres belépés!");
         onClose();
 

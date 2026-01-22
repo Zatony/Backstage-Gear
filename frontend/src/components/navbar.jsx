@@ -1,18 +1,24 @@
 import userIco from "../assets/userIcon.png";
 import logoutIco from "../assets/logoutIco.png";
 import shoppingCart from "../assets/shoppingCart.png";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import Login from "../components/login";
 import Registration from "../components/registration";
 import { useEffect, useState } from "react";
+import UserDropdownMenu from "./userDropdownMenu";
 
 
-export default function NavBar({ callLogin, callCart, showLogin, handleCloseLogin, showRegister, handleCloseRegister, handleShowRegister, handleShowLogin}) {
+export default function NavBar({ callLogin, showLogin, handleCloseLogin, showRegister, handleCloseRegister, handleShowRegister, handleShowLogin}) {
   const isLoggedIn = !!sessionStorage.getItem('token');
+  const isAdmin = sessionStorage.getItem('is_admin') == 1 ? true : false;
   const [userData, setUserData] = useState([]);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, right: 0 });
+  const navigate = useNavigate();
 
+  console.log("sessionStorage: ", sessionStorage);
+  console.log("isLoggedIn: ", isLoggedIn);
+  console.log("isAdmin: ", isAdmin);
   useEffect(() => {
     if(!isLoggedIn) return;
 
@@ -57,6 +63,10 @@ export default function NavBar({ callLogin, callCart, showLogin, handleCloseLogi
       setIsProfileOpen(true);
     }
   }
+
+  function onCartOpen(){
+    navigate("/cart");
+  }
   return (
     <>
       <nav className="navbar">
@@ -78,21 +88,13 @@ export default function NavBar({ callLogin, callCart, showLogin, handleCloseLogi
           onClick={isLoggedIn ? onProfileOpen : callLogin}
         ></img>
         {isLoggedIn && isProfileOpen && 
-          <div className="user-dropdown" style={{top: `${dropdownPos.top}px`, right: `${dropdownPos.right}px`}}>
-            <div className="user-header">{userData.username}</div>
-            <div className="userLine"></div>
-            <a className="userMenuLink" href="#">Profil</a>
-            <a className="userMenuLink" href="#">Üzenetek</a>
-            <a className="userMenuLink" href="#">Hirdetések</a>
-            <a className="userMenuLink" href="#">Új hirdetés</a>
-            <a className="userMenuLogout"  onClick={handleLogout}><img src={logoutIco} alt="Logout"></img> Kilépés</a>
-          </div>
+          <UserDropdownMenu userData={userData} dropdownPos={dropdownPos} isAdmin={isAdmin} handleLogout={handleLogout} logoutIcon={logoutIco}/>
         }
         <img
           className="cart"
           src={shoppingCart}
           alt="Cart"
-          onClick={callCart}
+          onClick={onCartOpen}
         ></img>
       </nav>
 

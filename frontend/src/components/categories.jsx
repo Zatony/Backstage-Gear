@@ -8,7 +8,7 @@ export default function Categories({page}) {
   useEffect(() => {
     async function fetchCategories() {
       setIsFetching(true);
-      const response = await fetch("http://localhost:3000/backstagegear");
+      const response = await fetch("http://localhost:3000/backstagegear/categories");
       const resCategories = await response.json();
       setCategories(resCategories);
       setIsFetching(false);

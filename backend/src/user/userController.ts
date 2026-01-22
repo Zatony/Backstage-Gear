@@ -45,7 +45,9 @@ export async function signIn(req: any, res: any) {
             {expiresIn: "2h"}
         );
 
-        res.status(201).send({token: token});
+        res.status(201).send({token: token,
+        is_admin: adminRows[0].is_admin
+        });
     }
     catch(err){
         console.log(err);

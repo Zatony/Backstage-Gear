@@ -5,6 +5,7 @@ import Home from "./page_home/Home";
 import About from "./page_about/About";
 import Rules from "./page_rules/Rules";
 import Products from "./page_products/Products";
+import List from "./page_list/List";
 
 export default function Routing() {
   const [showLogin, setShowLogin] = useState(false);
@@ -30,18 +31,12 @@ export default function Routing() {
     setShowRegister(false);
   }
 
-  //cart kezelo
-  function handleCart() {
-    console.log("Cart clicked");
-  }
-
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
         <NavBar
           callLogin={handleLogin}
-          callCart={handleCart}
           showLogin={showLogin}
           handleCloseLogin={handleCloseLogin}
           showRegister={showRegister}
@@ -67,6 +62,10 @@ export default function Routing() {
         {
           path: "/products",
           element: <Products />,
+        },
+        {
+          path: "/cart",
+          element: <List />,
         },
       ],
     },
