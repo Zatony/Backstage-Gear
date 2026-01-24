@@ -275,3 +275,70 @@ export async function getReportedAdById(req: any, res: any) {
         console.log(err);
     }
 };
+
+
+export async function reportAdById(req: any, res: any) {
+    const adId: number = parseInt(req.params.adId);
+    const userId: number = parseInt(req.user.id);
+
+    idIsNan(adId, res);
+
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        const [adResult] = await connection.query(
+            "SELECT user_id FROM advertisements WHERE id = ?",
+            [adId]
+        ) as Array<any>;
+
+        if(adResult.length === 0){
+            res.status(404).send("Nincs ilyen azonosítójú hirdetés.");
+            return;
+        };
+
+        if(adResult[0].user_id === userId){
+            res.status(403).send("A saját hirdetésedet nem tudod jelenteni.");
+            return;
+        };
+
+
+        const [result] = await connection.query(
+            "UPDATE advertisements SET is_reported = 1 WHERE id = ?",
+            [adId]
+        ) as Array<any>;
+
+        if(result.affectedRows > 0){
+            res.status(200).send("Sikeres jelentés.");
+            return;
+        };
+    }
+    catch(err){
+        console.log(err);
+    }
+};
+
+
+export async function deleteAdFromReportedAdsById(req: any, res: any) {
+    const adId: number = parseInt(req.params.adId);
+
+    idIsNan(adId, res);
+
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        const [result] = await connection.query(
+            "UPDATE advertisements SET is_reported = 0 WHERE id = ?",
+            [adId]
+        ) as Array<any>;
+
+        if(result.affectedRows > 0){
+            res.status(200).send("Sikeresen törölted a hirdetés jelentését.");
+            return;
+        };
+
+        res.status(404).send("Nincs ilyen azonosítójú jelentett hirdetés.");
+    }
+    catch(err){
+        console.log(err);
+    }
+};
