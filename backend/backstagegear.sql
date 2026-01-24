@@ -59,28 +59,45 @@ ALTER TABLE profiles AUTO_INCREMENT = 1;
 CREATE TABLE profiles(
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    up_vote INT,
-    down_vote INT,
     profile_picture VARCHAR(255) NOT NULL DEFAULT 'default-profile-picture.jpg',
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-INSERT INTO profiles (id, user_id, up_vote, down_vote, profile_picture)
+INSERT INTO profiles (id, user_id, profile_picture)
 VALUES
-(NULL, 1, 0, 0, 'https://i.pravatar.cc/150?img=1'),
-(NULL, 2, 20, 42, 'https://i.pravatar.cc/150?img=2'),
-(NULL, 3, 21, 12, 'https://i.pravatar.cc/150?img=3'),
-(NULL, 4, 12, 10, 'https://i.pravatar.cc/150?img=4'),
-(NULL, 5, 0, 0, 'https://i.pravatar.cc/150?img=5');
+(NULL, 1, 'https://i.pravatar.cc/150?img=1'),
+(NULL, 2, 'https://i.pravatar.cc/150?img=2'),
+(NULL, 3, 'https://i.pravatar.cc/150?img=3'),
+(NULL, 4, 'https://i.pravatar.cc/150?img=4'),
+(NULL, 5, 'https://i.pravatar.cc/150?img=5');
 
 
 
+/*
+DELETE FROM profile_votes;
+DROP TABLE profile_votes;
+ALTER TABLE profile_votes AUTO_INCREMENT = 1;
+*/
+CREATE TABLE profile_votes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    profile_id INT NOT NULL,
+    voter_user_id INT NOT NULL,
+    vote TINYINT NOT NULL, -- 1 = upvote, -1 = downvote
 
+    FOREIGN KEY (profile_id) REFERENCES profiles(id) ON DELETE CASCADE,
+    FOREIGN KEY (voter_user_id) REFERENCES users(id) ON DELETE CASCADE,
+
+    UNIQUE (profile_id, voter_user_id)
+);
+
+
+
+/*
 DELETE FROM messages;
 DROP TABLE messages;
 ALTER TABLE messages AUTO_INCREMENT = 1;
-
+*/
 CREATE TABLE messages(
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,

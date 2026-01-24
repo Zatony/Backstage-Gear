@@ -88,8 +88,8 @@ export async function signUp(req: any, res: any) {
 
 
         await connection.query(
-            'INSERT INTO profiles(user_id, up_vote, down_vote) VALUES (?, ?, ?)',
-            [userResult.insertId, 0, 0]
+            'INSERT INTO profiles (user_id) VALUES (?)',
+            [userResult.insertId]
         );
 
         await connection.commit();

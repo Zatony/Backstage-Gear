@@ -10,7 +10,7 @@ router.get('/backstagegear/ads/:adId', getAdDatasById);
 router.get('/backstagegear/me/my_ads', verifyToken, getUserAds);
 router.get('/backstagegear/me/my_ads/:adId', verifyToken, getUserAdById);
 router.get('/backstagegear/me/my_ads/update_ad/:adId', verifyToken, getUserAdById);
-router.patch('/backstagegear/me/:adId', verifyToken, reportAdById);
+router.patch('/backstagegear/me/ads/:adId', verifyToken, reportAdById);
 
 // Admin
 router.get('/backstagegear/me/reported_ads', verifyToken, requireAdmin, getReportedAds);
