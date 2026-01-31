@@ -345,3 +345,24 @@ export async function deleteAdFromReportedAdsById(req: any, res: any) {
         console.log(err);
     }
 };
+
+
+export async function getBrands(res: any) {
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        const [results] = await connection.query(
+            `SELECT * FROM brands`
+        ) as Array<any>;
+
+        if(results.length > 0){
+            res.status(200).send(results);
+            return;
+        };
+
+        res.status(404).send("Nincsenek lekérendő márkák.");
+    }
+    catch(err){
+        console.log(err);
+    }
+};
