@@ -57,7 +57,7 @@ export async function getAdByIdFromUserCart(req: any, res: any) {
                 advertisements.id, 
                 items.name, 
                 categories.name, 
-                items.brand, 
+                brands.brand_name, 
                 used_items.item_condition, 
                 used_items.price, 
                 GROUP_CONCAT(files.file_name) AS files,
@@ -71,6 +71,7 @@ export async function getAdByIdFromUserCart(req: any, res: any) {
             INNER JOIN ad_files ON advertisements.id = ad_files.ad_id
             INNER JOIN files ON ad_files.file_id = files.id
             INNER JOIN categories ON items.category_id = categories.id
+            INNER JOIN brands ON items.brand_id = brands.id
             WHERE users.id = ? AND advertisements.id = ?
             GROUP BY advertisements.id;`,
             [userId, adId]

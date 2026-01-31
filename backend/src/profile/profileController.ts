@@ -73,7 +73,14 @@ export async function getUsersProfileDatasById(req: any, res: any){
         ) as Array<any>;
 
         if(result.length > 0){
-            res.status(200).send(result);
+            const BASE_URL = "http://localhost:3000"; // később .env-be
+
+            const profile = {
+                ...result[0],
+                profile_picture: `${BASE_URL}/profile-pictures/${result[0].profile_picture}`
+            };
+
+            res.status(200).send(profile);
             return;
         };
 

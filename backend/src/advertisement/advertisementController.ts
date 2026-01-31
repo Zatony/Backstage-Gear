@@ -86,7 +86,7 @@ export async function getAdDatasById(req: Request, res: Response){
                 advertisements.id, 
                 items.name, 
                 categories.name, 
-                items.brand, 
+                brands.brand_name, 
                 used_items.item_condition, 
                 used_items.price, 
                 GROUP_CONCAT(files.file_name) AS files,
@@ -99,6 +99,7 @@ export async function getAdDatasById(req: Request, res: Response){
             INNER JOIN files ON ad_files.file_id = files.id
             INNER JOIN categories ON items.category_id = categories.id
             INNER JOIN users ON advertisements.user_id = users.id
+            INNER JOIN brands ON items.brand_id = brands.id
             WHERE advertisements.id = ?
             GROUP BY advertisements.id;`,
             [id]
@@ -168,7 +169,7 @@ export async function getUserAdById(req: any, res: any){
                 advertisements.id, 
                 items.name, 
                 categories.name, 
-                items.brand, 
+                brands.brand_name, 
                 used_items.item_condition, 
                 used_items.price, 
                 GROUP_CONCAT(files.file_name) AS files,
@@ -181,6 +182,7 @@ export async function getUserAdById(req: any, res: any){
             INNER JOIN files ON ad_files.file_id = files.id
             INNER JOIN categories ON items.category_id = categories.id
             INNER JOIN users ON advertisements.user_id = users.id
+            INNER JOIN brands ON items.brand_id = brands.id
             WHERE users.id = ? AND advertisements.id = ?
             GROUP BY advertisements.id;`,
             [userId, adId]
@@ -246,7 +248,7 @@ export async function getReportedAdById(req: any, res: any) {
                 advertisements.id, 
                 items.name, 
                 categories.name, 
-                items.brand, 
+                brands.brand_name, 
                 used_items.item_condition, 
                 used_items.price, 
                 GROUP_CONCAT(files.file_name) AS files,
@@ -259,6 +261,7 @@ export async function getReportedAdById(req: any, res: any) {
             INNER JOIN files ON ad_files.file_id = files.id
             INNER JOIN categories ON items.category_id = categories.id
             INNER JOIN users ON advertisements.user_id = users.id
+            INNER JOIN brands ON items.brand_id = brands.id
             WHERE advertisements.is_reported = 1 AND advertisements.id = ?
             GROUP BY advertisements.id;`,
             [adId]

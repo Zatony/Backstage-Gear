@@ -13,7 +13,7 @@ CREATE TABLE users(
     id INT AUTO_INCREMENT PRIMARY KEY,
     is_admin TINYINT(1) DEFAULT 0,
     name VARCHAR(100) NOT NULL,
-    username VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     phone_number VARCHAR(255) NOT NULL,
     date_of_birth DATE,
@@ -141,6 +141,62 @@ VALUES
 
 
 
+CREATE TABLE brands(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    brand_name VARCHAR(100) NOT NULL UNIQUE
+);
+
+INSERT INTO brands 
+VALUES
+(NULL, "AKG"),--
+(NULL, "Akai"),--
+(NULL, "Ampeg"),--
+(NULL, "Arturia"),--
+(NULL, "Behringer"),--
+(NULL, "Blackstar"),--
+(NULL, "Boss"),--
+(NULL, "Bromo"),--
+(NULL, "Casio"),--
+(NULL, "Clavia"),--
+(NULL, "Cort"),--
+(NULL, "Dixon"),--
+(NULL, "Electro-Voice"),--
+(NULL, "Epiphone"),--
+(NULL, "ESP LTD"),--
+(NULL, "Fender"),--
+(NULL, "Gallien-Krueger"),--
+(NULL, "Gibson"),--
+(NULL, "Gretsch"),--
+(NULL, "Harley Benton"),--
+(NULL, "Hiwatt"),--
+(NULL, "Ibanez"),--
+(NULL, "Jackson"),--
+(NULL, "Korg"),--
+(NULL, "Ludwig"),--
+(NULL, "Markbass"),--
+(NULL, "Marshall"),--
+(NULL, "Mesa/Boogie"),--
+(NULL, "Moog"),--
+(NULL, "Nord"),--
+(NULL, "Ortega"),--
+(NULL, "Pasadena"),--
+(NULL, "Pearl"),--
+(NULL, "Peavey"),--
+(NULL, "PRS"),--
+(NULL, "Roland"),--
+(NULL, "Sabian"),--
+(NULL, "Sennheiser"),--
+(NULL, "Shure"),--
+(NULL, "Squier"),--
+(NULL, "Takamine"),--
+(NULL, "Tama"),--
+(NULL, "Taylor"),--
+(NULL, "Traynor"),--
+(NULL, "Yamaha"),--
+(NULL, "Zildjian"),--
+(NULL, "Egyéb");
+
+
 
 /*
 DELETE FROM items;
@@ -150,20 +206,95 @@ ALTER TABLE items AUTO_INCREMENT = 1;
 CREATE TABLE items(
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT NOT NULL,
-    brand VARCHAR(100),
+    brand_id INT NOT NULL,
     name VARCHAR(255),
 
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    FOREIGN KEY (brand_id) REFERENCES brands(id)
+);
+
+INSERT INTO items (id, category_id, brand_id, name)
+VALUES
+(NULL, 1, 16, 'Fender American Professional II Stratocaster HSS, RW, Dark Night'),
+(NULL, 2, 11, 'Cort Earth-70 OP akusztikus gitár'),
+(NULL, 3, 45, 'Yamaha PSS E30 gyermek szintetizátor'),
+(NULL, 4, 36, 'Roland TD-07DMK Elektromos dobfelszerelés'),
+(NULL, 5, 27, 'Marshall DSL40CR csöves gitárkombó'),
+(NULL, 6, 5, 'Behringer Xenyx X2442USB keverő');
+
+
+
+CREATE TABLE brand_categories (
+    brand_id INT NOT NULL,
+    category_id INT NOT NULL,
+
+    PRIMARY KEY (brand_id, category_id),
+    FOREIGN KEY (brand_id) REFERENCES brands(id),
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
-INSERT INTO items (id, category_id, brand, name)
+INSERT INTO brand_categories
 VALUES
-(NULL, 1, 'Fender', 'Fender American Professional II Stratocaster HSS, RW, Dark Night'),
-(NULL, 2, 'Cort', 'Cort Earth-70 OP akusztikus gitár'),
-(NULL, 3, 'Yamaha', 'Yamaha PSS E30 gyermek szintetizátor'),
-(NULL, 4, 'Roland', 'Roland TD-07DMK Elektromos dobfelszerelés'),
-(NULL, 5, 'Marshall', 'Marshall DSL40CR csöves gitárkombó'),
-(NULL, 6, 'Behringer', 'Behringer Xenyx X2442USB keverő');
+(1, 6),
+(2, 3),
+(3, 5),
+(4, 3),
+(5, 3),
+(5, 4),
+(5, 6),
+(6, 5),
+(7, 5),
+(8, 2),
+(9, 3),
+(10, 3),
+(11, 1),
+(11, 2),
+(12, 4),
+(13, 6),
+(14, 1),
+(14, 2),
+(15, 1),
+(16, 1),
+(16, 2),
+(16, 5),
+(17, 4),
+(18, 1),
+(18, 2),
+(19, 1),
+(19, 4),
+(20, 1),
+(20, 2),
+(21, 5),
+(22, 1),
+(22, 2),
+(23, 1),
+(24, 3),
+(25, 4),
+(26, 5),
+(27, 5),
+(28, 5),
+(29, 3),
+(30, 3),
+(31, 2),
+(32, 2),
+(33, 4),
+(34, 5),
+(35, 1),
+(36, 3),
+(36, 4),
+(37, 4),
+(38, 6),
+(39, 6),
+(40, 1),
+(41, 2),
+(42, 4),
+(43, 2),
+(44, 5),
+(45, 1),
+(45, 2),
+(45, 3),
+(45, 4),
+(46, 4);
 
 
 
