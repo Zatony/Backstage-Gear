@@ -6,7 +6,7 @@ export default function Filter({page}) {
 
   useEffect(() => {
     async function fetchCategories() {
-      const response = await fetch("http://localhost:3000/backstagegear");
+      const response = await fetch("http://localhost:3000/backstagegear/categories");
       const resCategories = await response.json();
       setCategories(resCategories);
     }
@@ -14,7 +14,7 @@ export default function Filter({page}) {
     fetchCategories();
   }, []);
 
-  function handelName(name) {
+  function handleName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
 
@@ -28,7 +28,7 @@ export default function Filter({page}) {
           {categories.map((category) => (
             <div key={"filterCategoryCH-"+category.id} className={page.filterCategory + " " + page.filterCheckBox}>
                 <input type="checkbox" id={"filterCategory-"+category.id} name="categories" value={category.id}/>
-                <label htmlFor={"filterCategory-"+category.id}>{handelName(category.name)}</label>
+                <label htmlFor={"filterCategory-"+category.id}>{handleName(category.name)}</label>
             </div>
           ))}
         </div>

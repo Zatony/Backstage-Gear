@@ -26,7 +26,7 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
 
     async function fetchUserProfile() {
       try{
-        const response = await fetch("http://localhost:3000/backstagegear/me/profile", {
+        const response = await fetch("http://localhost:3000/backstagegear/me/my_profile", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -36,7 +36,8 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
 
         const resData = await response.json();
         if(response.ok){
-          setUserData(resData[0]);
+          console.log("Felhasználói adatok lekérve: ", resData);
+          setUserData(resData);
         }
       } catch(err){
         console.error("Hiba történt a felhasználói adatok lekérése során: ", err);

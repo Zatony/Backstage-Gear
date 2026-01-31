@@ -27,6 +27,19 @@ body {
   background-position: center top;
   background-color: var(--primary-color);
   backdrop-filter: blur(2px);
+
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
 }
 
 /*NAVBAR*/
@@ -336,9 +349,7 @@ body {
 .footer {
   background-color: var(--primary-color);
   width: 100%;
-  position: relative;
-  bottom: 0px;
-  left: 0px;
+  margin-top: auto;
   text-align: center;
   color: var(--white);
   height: 70px;

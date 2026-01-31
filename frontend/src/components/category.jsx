@@ -1,6 +1,6 @@
 export default function Category({ page, isLoading, loadingText, fallbackText, categories }) {
 
-    function handelName(name) {
+    function handleName(name) {
         return name.charAt(0).toUpperCase() + name.slice(1);
     }
 
@@ -13,7 +13,7 @@ export default function Category({ page, isLoading, loadingText, fallbackText, c
                     {categories.map((category) => (
                         <div key={"category" + category.id} className={page.categoryContainer}>
                             <img src={category.picture} alt={"category"+category.id} />
-                            <h3>{handelName(category.name)}</h3>
+                            <h3>{handleName(category.name)}</h3>
                         </div>
                     ))}
                 </>

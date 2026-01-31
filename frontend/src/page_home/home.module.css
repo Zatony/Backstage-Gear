@@ -218,7 +218,7 @@ main {
 }
 
 /*KATEGORIA*/
-.fallback-text {
+.fallbackText {
   text-align: center;
   color: var(--white);
   font-size: 2rem;
