@@ -64,13 +64,13 @@ CREATE TABLE profiles(
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-INSERT INTO profiles (id, user_id, profile_picture)
+INSERT INTO profiles (id, user_id)
 VALUES
-(NULL, 1, 'https://i.pravatar.cc/150?img=1'),
-(NULL, 2, 'https://i.pravatar.cc/150?img=2'),
-(NULL, 3, 'https://i.pravatar.cc/150?img=3'),
-(NULL, 4, 'https://i.pravatar.cc/150?img=4'),
-(NULL, 5, 'https://i.pravatar.cc/150?img=5');
+(NULL, 1),
+(NULL, 2),
+(NULL, 3),
+(NULL, 4),
+(NULL, 5);
 
 
 
