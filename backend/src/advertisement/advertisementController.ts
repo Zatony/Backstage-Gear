@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import mysql from "mysql2/promise";
 import config from "../config/config";
-import { idIsNan } from "../validators/id.validator";
+import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
 
 
 export async function getAds(_req: Request, res: Response){
@@ -366,3 +366,74 @@ export async function getBrands(res: any) {
         console.log(err);
     }
 };
+
+
+export async function postNewAdvertisement(req: any, res: any) {
+    const userId = parseInt(req.user.id);
+
+    bodyIsUndefined(req, res);
+
+    const {
+        categoryId,
+        brandId,
+        itemName,
+        price,
+        condition,
+        description
+    } = req.body;
+
+    if (
+        !categoryId || !brandId || !itemName ||
+        !price || !condition || !description
+    ) {
+        res.status(400).send("Hibásan vagy hiányosan megadott adatok.");
+        return;
+    };
+
+    const connection = await mysql.createConnection(config.database);
+
+    try {
+        await connection.beginTransaction();
+
+        const [itemResult]: any = await connection.query(
+            `INSERT INTO items (category_id, brand_id, name)
+             VALUES (?, ?, ?)`,
+            [categoryId, brandId, itemName]
+        );
+
+        const itemId = itemResult.insertId;
+
+        const [usedItemResult]: any = await connection.query(
+            `INSERT INTO used_items (item_id, price, item_condition)
+             VALUES (?, ?, ?)`,
+            [itemId, price, condition]
+        );
+
+        const usedItemId = usedItemResult.insertId;
+
+        const [adResult]: any = await connection.query(
+            `INSERT INTO advertisements (user_id, used_item_id, description, date_of_ad)
+             VALUES (?, ?, ?, CURDATE())`,
+            [userId, usedItemId, description]
+        );
+
+        const adId = adResult.insertId;
+
+        await connection.query(
+            `INSERT INTO ad_files (ad_id, file_id)
+             VALUES (?, ?)`,
+            [adId, "default-ad"]
+        );
+
+        await connection.commit();
+
+        res.status(201).json({
+            message: "Hirdetés sikeresen létrehozva.",
+            adId
+        });
+
+    } catch (err) {
+        await connection.rollback();
+        console.error(err);
+    }
+}

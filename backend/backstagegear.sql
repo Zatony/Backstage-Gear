@@ -335,6 +335,7 @@ CREATE TABLE files(
 
 INSERT INTO files (id, file_name, file_size)
 VALUES
+('default-ad', 'default-ad.jpg', 0),
 ('https://source.unsplash.com/400x300/?guitar1', 'file1.name', 300),
 ('https://source.unsplash.com/400x300/?guitar2', 'file2.name', 300),
 ('https://source.unsplash.com/400x300/?acguitar1', 'file3.name', 300),
