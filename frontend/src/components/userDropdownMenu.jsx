@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function UserDropdownMenu({ userData, dropdownPos, handleLogout, logoutIcon, isAdmin}) {
     return(
         <div className="user-dropdown" style={{top: `${dropdownPos.top}px`, right: `${dropdownPos.right}px`}}>
@@ -7,7 +9,7 @@ export default function UserDropdownMenu({ userData, dropdownPos, handleLogout, 
                 <>
                     <a className="userMenuLink" href="#">Profil</a>
                     <a className="userMenuLink" href="#">Üzenetek</a>
-                    <a className="userMenuLink" href="#">Hirdetések</a>
+                    <Link to="/my_ads" className="userMenuLink">Hirdetések</Link>
                     <a className="userMenuLink" href="#">Új hirdetés</a>
                 </>
             }

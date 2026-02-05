@@ -6,6 +6,7 @@ import About from "./page_about/About";
 import Rules from "./page_rules/Rules";
 import Products from "./page_products/Products";
 import List from "./page_list/List";
+import MyAds from "./page_myAds/MyAds";
 
 export default function Routing() {
   const [showLogin, setShowLogin] = useState(false);
@@ -66,6 +67,10 @@ export default function Routing() {
         {
           path: "/cart",
           element: <List />,
+        },
+        {
+          path: "/my_ads",
+          element: <MyAds />,
         },
       ],
     },

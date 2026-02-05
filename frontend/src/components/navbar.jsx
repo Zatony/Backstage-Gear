@@ -49,7 +49,9 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
 
   function handleLogout() {
     sessionStorage.removeItem('token');
-    window.location.reload();
+    sessionStorage.removeItem('is_admin');
+    setIsProfileOpen(false);
+    navigate("/");
   }
 
   function onProfileOpen(e) {

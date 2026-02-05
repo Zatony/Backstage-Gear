@@ -176,6 +176,42 @@
   box-shadow: 0 0 0 1em inset var(--black-40);
 }
 
+.priceInputs input[type="number"] {
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 1rem;
+  border: 1px solid var(--muted);
+  background-color: var(--white);
+  color: var(--black);
+  outline: none;
+}
+.priceInputs input[type="number"]:hover {
+  border-color: var(--accent-60);
+}
+.priceInputs input[type="number"]:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-12);
+}
+
+.filterBrands {
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid var(--muted);
+  border-radius: 8px;
+  background-color: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  outline: none;
+  min-width: 100px;
+}
+.filterBrands:hover {
+  border-color: var(--accent-60);
+}
+.filterBrands:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-12);
+}
+
 /*KATEGORIAK*/
 main {
   margin-top: 70px;

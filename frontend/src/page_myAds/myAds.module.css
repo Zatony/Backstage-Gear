@@ -1,4 +1,4 @@
-.listText {
+.myAdsText {
     color: var(--white);
     text-align: center;
     margin-bottom: 5px;
@@ -6,12 +6,12 @@
     font-size: 1.5rem;
     cursor: default;
 }
-.listLine {
+.myAdsLine {
     position: relative;
     width: 100%;
     height: 3px;
 }
-.listLine::before {
+.myAdsLine::before {
     content: "";
     position: absolute;
     left: 50%;

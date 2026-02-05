@@ -27,7 +27,7 @@ export default function NewAd({page}){
                             <button className={page.carouselArrow + " " + page.left} aria-label="Previous" onClick={() => scrollByOffset(-scrollerRef.current.clientWidth * 0.8)}>‹</button>
                             <div className={page.newAds} ref={scrollerRef}>
                                 {ads.map((ad) => (
-                                    <Ad key={ad.id} adName={ad.name} adDesc={ad.description} adImg={ad.image} adPrice={ad.price} page={page}/>
+                                    <Ad key={ad.id} adName={ad.name} adDesc={ad.description} adImg={ad.files} adPrice={ad.price} page={page}/>
                                 ))}
                             </div>
                             <button className={page.carouselArrow + " " + page.right} aria-label="Next" onClick={() => scrollByOffset(scrollerRef.current.clientWidth * 0.8)}>›</button>

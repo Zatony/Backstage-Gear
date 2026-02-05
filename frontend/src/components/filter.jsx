@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { BRAND_NAMES } from "../data";
 
 export default function Filter({page}) {
   const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -10,8 +10,15 @@ export default function Filter({page}) {
       const resCategories = await response.json();
       setCategories(resCategories);
     }
+    async function fetchBrands() {
+      const response = await fetch("http://localhost:3000/backstagegear/brands");
+      const resBrands = await response.json();
+      console.log("Fetched brands: ", resBrands);
+      setBrands(resBrands);
+    }
 
     fetchCategories();
+    fetchBrands();
   }, []);
 
   function handleName(name) {
@@ -55,8 +62,8 @@ export default function Filter({page}) {
             <div className={page.filterLineBrand}></div>
           </div>
 
-          <select name="filterBrands">
-            {BRAND_NAMES.map((brand) =>(<option key={brand.name} value={brand.name}>{brand.name}</option>))}
+          <select className={page.filterBrands} name="filterBrands">
+            {brands.map((brand) =>(<option key={brand.brand_name+brand.id} value={brand.id}>{brand.brand_name}</option>))}
           </select>
         </div>
         <div className={page.priceRow}>
@@ -66,9 +73,9 @@ export default function Filter({page}) {
           </div>
           
           <div className={page.priceInputs}>
-            <input type="number" placeholder="0" id={page.priceMin}/>
+            <input type="number" placeholder="0 Ft" id={page.priceMin}/>
             <span> - </span>
-            <input type="number" placeholder="1000000" id={page.priceMax} />
+            <input type="number" placeholder="10000 Ft" id={page.priceMax} />
           </div>
         </div>
       </div>

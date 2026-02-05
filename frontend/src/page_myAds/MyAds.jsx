@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import Ad from '../components/ad';
-import list from './list.module.css';
+import myAds from './myAds.module.css';
 
-export default function List() {
+export default function MyAds() {
   const isLoggedIn = !!sessionStorage.getItem('token');
   const [items, setItems] = useState([]);
 
@@ -16,7 +16,7 @@ export default function List() {
 
     async function fetchItems() {
       try {
-        const response = await fetch("http://localhost:3000/backstagegear/me/cart", {
+        const response = await fetch("http://localhost:3000/backstagegear/me/my_ads", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -39,14 +39,14 @@ export default function List() {
 
   return (
     <>
-      <div className={list.listTextContainer}>
-        <h1 className={list.listText}>Kívánságlista</h1>
-        <div className={list.listLine}></div>
+      <div className={myAds.myAdsTextContainer}>
+        <h1 className={myAds.myAdsText}>Hirdetéseim</h1>
+        <div className={myAds.myAdsLine}></div>
       </div>
 
       <div className="container">
-        {items.length === 0 ? <p className={list.emptyText}>Üres lista</p> : items.map((item) => (
-          <Ad key={item.id} adName={item.name} adDesc={item.description} adImg={item.files[0]} adPrice={item.price} page={list} inCart={true} />
+        {items.length === 0 ? <p className={myAds.emptyText}>Üres lista</p> : items.map((item) => (
+          <Ad key={item.id} adName={item.name} adDesc={item.description} adImg={item.files[0]} adPrice={item.price} page={myAds} inCart={true} />
         ))}
       </div>
 

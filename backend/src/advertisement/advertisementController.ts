@@ -347,7 +347,7 @@ export async function deleteAdFromReportedAdsById(req: any, res: any) {
 };
 
 
-export async function getBrands(res: any) {
+export async function getBrands(req: any, res: any) {
     const connection = await mysql.createConnection(config.database);
 
     try{
@@ -356,6 +356,7 @@ export async function getBrands(res: any) {
         ) as Array<any>;
 
         if(results.length > 0){
+            console.log("Fetched brands: ", results);
             res.status(200).send(results);
             return;
         };
