@@ -335,7 +335,7 @@ CREATE TABLE files(
 
 INSERT INTO files (id, file_name, file_size)
 VALUES
-('default-ad', 'default-ad.jpg', 0),
+('default-ad', 'default-ad-picture.png', 0),
 ('https://source.unsplash.com/400x300/?guitar1', 'file1.name', 300),
 ('https://source.unsplash.com/400x300/?guitar2', 'file2.name', 300),
 ('https://source.unsplash.com/400x300/?acguitar1', 'file3.name', 300),
@@ -345,10 +345,6 @@ VALUES
 ('https://source.unsplash.com/400x300/?amp', 'file7.name', 300),
 ('https://source.unsplash.com/400x300/?mix1', 'file8.name', 300),
 ('https://source.unsplash.com/400x300/?mix2', 'file9.name', 300);
-
-UPDATE files
-SET file_name = 'default-ad-picture.png'
-WHERE file_name = 'default-ad.png';
 
 
 
@@ -419,9 +415,10 @@ CREATE TABLE carts(
 );
 
 INSERT INTO carts (id, user_id, ad_id) VALUES
-(NULL, 2, 1),
-(NULL, 3, 2),
-(NULL, 4, 3),
-(NULL, 5, 4),
-(NULL, 5, 5),
-(NULL, 2, 6);
+(NULL, 2, 2),
+(NULL, 2, 3),
+(NULL, 3, 5),
+(NULL, 3, 6),
+(NULL, 4, 1),
+(NULL, 5, 3),
+(NULL, 5, 6);
