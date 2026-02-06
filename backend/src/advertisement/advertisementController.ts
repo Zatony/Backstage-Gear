@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import mysql from "mysql2/promise";
 import config from "../config/config";
 import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
 
 export async function getAds(_req: Request, res: Response){
@@ -62,7 +67,14 @@ export async function getLatestAds(_req: Request, res: Response){
         ) as Array<any>;
 
         if(results.length > 0){
-            res.status(200).send(results);
+            const formattedResults = results.map((ad: any) => ({
+                ...ad,
+                files: ad.files
+                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    : []
+            }));
+
+            res.status(200).send(formattedResults);
             return;
         };
 
@@ -347,7 +359,7 @@ export async function deleteAdFromReportedAdsById(req: any, res: any) {
 };
 
 
-export async function getBrands(req: any, res: any) {
+export async function getBrands(__req: any, res: any) {
     const connection = await mysql.createConnection(config.database);
 
     try{

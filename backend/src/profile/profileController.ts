@@ -1,7 +1,11 @@
 import { idIsNan } from "../validators/id.validator";
 import config from "../config/config";
 import mysql from "mysql2/promise";
+import dotenv from "dotenv";
 
+dotenv.config();
+
+const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
 export async function getProfileDatasById(req: any, res: any){
     const profileId: number = parseInt(req.params.profileId);
@@ -29,8 +33,6 @@ export async function getProfileDatasById(req: any, res: any){
         ) as Array<any>;
 
         if(result.length > 0){
-            const BASE_URL = "http://localhost:3000"; // később .env-be
-
             const profile = {
                 ...result[0],
                 profile_picture: `${BASE_URL}/profile-pictures/${result[0].profile_picture}`
@@ -73,8 +75,6 @@ export async function getUsersProfileDatasById(req: any, res: any){
         ) as Array<any>;
 
         if(result.length > 0){
-            const BASE_URL = "http://localhost:3000"; // később .env-be
-
             const profile = {
                 ...result[0],
                 profile_picture: `${BASE_URL}/profile-pictures/${result[0].profile_picture}`

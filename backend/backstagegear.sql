@@ -346,6 +346,10 @@ VALUES
 ('https://source.unsplash.com/400x300/?mix1', 'file8.name', 300),
 ('https://source.unsplash.com/400x300/?mix2', 'file9.name', 300);
 
+UPDATE files
+SET file_name = 'default-ad-picture.png'
+WHERE file_name = 'default-ad.png';
+
 
 
 /*
