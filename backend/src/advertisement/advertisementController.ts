@@ -29,7 +29,14 @@ export async function getAds(_req: Request, res: Response){
         ) as Array<any>;
 
         if(results.length > 0){
-            res.status(200).send(results);
+            const formattedResults = results.map((ad: any) => ({
+                ...ad,
+                files: ad.files
+                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    : []
+            }));
+
+            res.status(200).send(formattedResults);
             return;
         };
 
@@ -96,8 +103,8 @@ export async function getAdDatasById(req: Request, res: Response){
         const [result] = await connection.query(
             `SELECT 
                 advertisements.id, 
-                items.name, 
-                categories.name, 
+                items.name AS item_name, 
+                categories.name AS category_name, 
                 brands.brand_name, 
                 used_items.item_condition, 
                 used_items.price, 
@@ -118,7 +125,14 @@ export async function getAdDatasById(req: Request, res: Response){
         ) as Array<any>;
 
         if(result.length > 0){
-            res.status(200).send(result);
+            const formattedResults = result.map((ad: any) => ({
+                ...ad,
+                files: ad.files
+                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    : []
+            }));
+
+            res.status(200).send(formattedResults);
             return;
         };
 
@@ -155,7 +169,14 @@ export async function getUserAds(req: any, res: any){
         ) as Array<any>;
 
         if(results.length > 0){
-            res.status(200).send(results);
+            const formattedResults = results.map((ad: any) => ({
+                ...ad,
+                files: ad.files
+                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    : []
+            }));
+
+            res.status(200).send(formattedResults);
             return;
         };
 
@@ -179,8 +200,8 @@ export async function getUserAdById(req: any, res: any){
         const [result] = await connection.query(
             `SELECT 
                 advertisements.id, 
-                items.name, 
-                categories.name, 
+                items.name AS item_name, 
+                categories.name AS category_name, 
                 brands.brand_name, 
                 used_items.item_condition, 
                 used_items.price, 
@@ -201,7 +222,14 @@ export async function getUserAdById(req: any, res: any){
         ) as Array<any>;
 
         if(result.length > 0){
-            res.status(200).send(result);
+            const formattedResults = result.map((ad: any) => ({
+                ...ad,
+                files: ad.files
+                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    : []
+            }));
+
+            res.status(200).send(formattedResults);
             return;
         };
 
@@ -235,7 +263,14 @@ export async function getReportedAds(_req: any, res: any) {
         ) as Array<any>;
 
         if(results.length > 0){
-            res.status(200).send(results);
+            const formattedResults = results.map((ad: any) => ({
+                ...ad,
+                files: ad.files
+                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    : []
+            }));
+
+            res.status(200).send(formattedResults);
             return;
         };
 
@@ -258,8 +293,8 @@ export async function getReportedAdById(req: any, res: any) {
         const [result] = await connection.query(
             `SELECT 
                 advertisements.id, 
-                items.name, 
-                categories.name, 
+                items.name AS item_name, 
+                categories.name AS category_name, 
                 brands.brand_name, 
                 used_items.item_condition, 
                 used_items.price, 
@@ -280,7 +315,14 @@ export async function getReportedAdById(req: any, res: any) {
         ) as Array<any>;
 
         if(result.length > 0){
-            res.status(200).send(result);
+            const formattedResults = result.map((ad: any) => ({
+                ...ad,
+                files: ad.files
+                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    : []
+            }));
+
+            res.status(200).send(formattedResults);
             return;
         };
 
@@ -449,4 +491,4 @@ export async function postNewAdvertisement(req: any, res: any) {
         await connection.rollback();
         console.error(err);
     }
-}
+};
