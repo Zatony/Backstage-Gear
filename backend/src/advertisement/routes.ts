@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { getAds, getAdDatasById, getUserAds, getUserAdById, 
     getLatestAds, getReportedAds, getReportedAdById, reportAdById, 
-    deleteAdFromReportedAdsById, getBrands, postNewAdvertisement } from "./advertisementController";
+    deleteAdFromReportedAdsById, getBrands, postNewAdvertisement, getFilteredAdvertisements } from "./advertisementController";
 import { verifyToken, requireAdmin } from "../middleware/auth";
 
 const router: Router = Router();
 
 router.get('/backstagegear/ads', getAds)
+router.get('/backstagegear/filtered_ads', getFilteredAdvertisements);
 router.get('/backstagegear/latest_ads', getLatestAds);
 router.get('/backstagegear/brands', getBrands);
 router.get('/backstagegear/ads/:adId', getAdDatasById);

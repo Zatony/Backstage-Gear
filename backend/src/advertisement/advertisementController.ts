@@ -2,11 +2,8 @@ import { Request, Response } from "express";
 import mysql from "mysql2/promise";
 import config from "../config/config";
 import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+import db from "../database/db";
+import { RowDataPacket } from "mysql2";
 
 
 export async function getAds(_req: Request, res: Response){
@@ -32,7 +29,7 @@ export async function getAds(_req: Request, res: Response){
             const formattedResults = results.map((ad: any) => ({
                 ...ad,
                 files: ad.files
-                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
                     : []
             }));
 
@@ -80,7 +77,7 @@ export async function getLatestAds(_req: Request, res: Response){
             const formattedResults = results.map((ad: any) => ({
                 ...ad,
                 files: ad.files
-                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
                     : []
             }));
 
@@ -134,7 +131,7 @@ export async function getAdDatasById(req: Request, res: Response){
             const formattedResults = result.map((ad: any) => ({
                 ...ad,
                 files: ad.files
-                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
                     : []
             }));
 
@@ -181,7 +178,7 @@ export async function getUserAds(req: any, res: any){
             const formattedResults = results.map((ad: any) => ({
                 ...ad,
                 files: ad.files
-                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
                     : []
             }));
 
@@ -237,7 +234,7 @@ export async function getUserAdById(req: any, res: any){
             const formattedResults = result.map((ad: any) => ({
                 ...ad,
                 files: ad.files
-                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
                     : []
             }));
 
@@ -281,7 +278,7 @@ export async function getReportedAds(_req: any, res: any) {
             const formattedResults = results.map((ad: any) => ({
                 ...ad,
                 files: ad.files
-                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
                     : []
             }));
 
@@ -336,7 +333,7 @@ export async function getReportedAdById(req: any, res: any) {
             const formattedResults = result.map((ad: any) => ({
                 ...ad,
                 files: ad.files
-                    ? ad.files.split(",").map((file: string) => BASE_URL + "/ad-pictures/" + file)
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
                     : []
             }));
 
@@ -523,5 +520,89 @@ export async function postNewAdvertisement(req: any, res: any) {
     }
     finally{
         await connection.end();
+    }
+};
+
+
+export const getFilteredAdvertisements = async (req: Request, res: Response) => {
+    try {
+        const {
+            categoryId,
+            brandId,
+            minPrice,
+            maxPrice,
+            q,
+            page = "1",
+            limit = "20",
+        } = req.query;
+
+        const conditions: string[] = [];
+        const params: any[] = [];
+
+        // conditions.push("a.is_reported = 0");
+
+        if (categoryId) {
+            conditions.push("i.category_id = ?");
+            params.push(Number(categoryId));
+        };
+
+        if (brandId) {
+            conditions.push("i.brand_id = ?");
+            params.push(Number(brandId));
+        };
+
+        if (minPrice) {
+            conditions.push("ui.price >= ?");
+            params.push(Number(minPrice));
+        };
+
+        if (maxPrice) {
+            conditions.push("ui.price <= ?");
+            params.push(Number(maxPrice));
+        };
+
+        if (q) {
+            const like = `%${String(q)}%`;
+            conditions.push(`(i.name LIKE ? OR a.description LIKE ?)`);
+            params.push(like, like);
+        };
+
+        const pageNumber = parseInt(page as string);
+        const limitNumber = parseInt(limit as string);
+        const offset = (pageNumber - 1) * limitNumber;
+
+        const whereClause =
+        conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+
+        const sql = `
+            SELECT
+                a.id AS advertisementId,
+                a.description,
+                a.date_of_ad,
+                ui.price,
+                ui.item_condition,
+                i.name AS item_name,
+                c.name AS category,
+                b.brand_name AS brand
+            FROM advertisements a
+            JOIN used_items ui ON a.used_item_id = ui.id
+            JOIN items i ON ui.item_id = i.id
+            JOIN categories c ON i.category_id = c.id
+            JOIN brands b ON i.brand_id = b.id
+            ${whereClause}
+            ORDER BY a.date_of_ad DESC
+            LIMIT ${limitNumber} OFFSET ${offset}
+        `;
+
+        const [rows] = await db.execute<RowDataPacket[]>(sql, params);
+
+        res.status(200).json({
+            page: pageNumber,
+            limit: limitNumber,
+            count: rows.length,
+            data: rows,
+        });
+    } catch (error) {
+        console.error(error);
     }
 };

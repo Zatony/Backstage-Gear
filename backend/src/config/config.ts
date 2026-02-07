@@ -17,6 +17,7 @@ class DBConfig{
 
 const config: any = {
     jwtSecret: process.env.JWT_SECRET,
+    baseUrl: process.env.BASE_URL || "http://localhost:3000",
     database: new DBConfig(),
     maxSize: parseInt(process.env.MAX_FILE_SIZE ?? "2097152"),
     baseDir: path.win32.resolve(__dirname, "../../"),
