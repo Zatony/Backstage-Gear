@@ -47,6 +47,9 @@ export async function getProfileDatasById(req: any, res: any){
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -88,6 +91,9 @@ export async function getUsersProfileDatasById(req: any, res: any){
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };
 
@@ -136,5 +142,8 @@ export async function voteProfileById(req: any, res: any) {
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };

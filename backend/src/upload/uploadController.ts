@@ -35,6 +35,9 @@ export async function getFileList(req: any, res: any) {
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 

@@ -1,7 +1,11 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import InputField from "./inputField";
 
 export default function Registration({ onClose, onRegister }) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
   const refName = useRef(null);
   const refUsername = useRef(null);
   const refEmail = useRef(null);
@@ -80,11 +84,17 @@ export default function Registration({ onClose, onRegister }) {
         console.log(response)
 
         const data = await response.json();
-        sessionStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('is_admin', data.is_admin || 0);
+
+        const expiration = new Date();
+        expiration.setHours(expiration.getHours() + 2);
+        localStorage.setItem('expiration', expiration.toISOString());
         
         console.log("token: " + data.token);
         console.log("Sikeres regisztráció!");
         onClose();
+        try{ window.dispatchEvent(new Event('authChanged')); }catch(e){}
 
       } catch(err){
         console.error("Hiba történt a regisztráció során: ", err);

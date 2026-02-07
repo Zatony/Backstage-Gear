@@ -11,6 +11,8 @@
   --black-40: rgba(11, 11, 11, 0.4);
   --accent-12: rgba(125, 203, 21, 0.12);
   --accent-60: rgba(125, 203, 21, 0.6);
+  --warning: #ff6b6b;
+  --warning-70: #fa0303c2;
 }
 
 body {
@@ -159,7 +161,7 @@ body {
   display: block;
   width: 90%;
   text-align: left;
-  color: #fff;
+  color: var(--white);
   padding: 8px;
   text-decoration: none;
 }
@@ -173,9 +175,21 @@ body {
   border-radius: 6px;
 }
 .userMenuLogout:hover {
-  background-color: var(--accent-60);
+  background-color: var(--warning);
   border-radius: 6px;
   cursor: pointer;
+}
+.userMenuLogoutBtn {
+  background: none;
+  border: none;
+  color: var(--white);
+  font: inherit;
+  padding: 8px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 /*LOGIN és REGISZTRÁCIÓ*/
@@ -183,16 +197,18 @@ body {
   position: fixed;
   inset: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   background: var(--black-40);
   backdrop-filter: blur(var(--blur));
   z-index: 10000;
+  overflow-y: auto;
 }
 .log_reg-modal {
   width: 360px;
   max-width: calc(100% - 32px);
-  margin-top: -10%;
+  margin-top: 160px;
+  margin-bottom: 40px;
   background: var(--primary-color);
   color: var(--white);
   border-radius: 8px;
@@ -232,7 +248,7 @@ body {
   margin-bottom: 15px;
 }
 .input-error {
-  color: #ff6b6b;
+  color: var(--warning);
   font-size: 14px;
 }
 .log_reg-row .forgot-psw {

@@ -39,6 +39,9 @@ export async function getAdsFromUserCart(req: any, res: any) {
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -86,6 +89,9 @@ export async function getAdByIdFromUserCart(req: any, res: any) {
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };
 
@@ -147,6 +153,9 @@ export async function putNewAdIntoCartByAdId(req: any, res: any) {
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -184,5 +193,8 @@ export async function deleteAdFromCartByAdId(req: any, res: any) {
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };

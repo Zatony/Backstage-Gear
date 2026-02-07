@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react';
 import Ad from '../components/ad';
 import myAds from './myAds.module.css';
+import { getAuthToken } from '../util/auth';
 
 export default function MyAds() {
-  const isLoggedIn = !!sessionStorage.getItem('token');
+  const token = getAuthToken();
   const [items, setItems] = useState([]);
+  const [cartIds, setCartIds] = useState([]);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-
-      return;
-    }
-
-    const token = sessionStorage.getItem('token');
-
     async function fetchItems() {
       try {
         const response = await fetch("http://localhost:3000/backstagegear/me/my_ads", {
@@ -35,7 +30,29 @@ export default function MyAds() {
     }
 
     fetchItems();
-  }, [isLoggedIn]);
+  }, [token]);
+
+  useEffect(() => {
+    async function fetchCart() {
+      if (!token) return;
+      try {
+        const response = await fetch("http://localhost:3000/backstagegear/me/cart", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token
+          }
+        });
+        if (response.ok) {
+          const cartItems = await response.json();
+          setCartIds(cartItems.map((item) => item.id));
+        }
+      } catch (err) {
+        // ignore
+      }
+    }
+    fetchCart();
+  }, [token]);
 
   return (
     <>
@@ -46,7 +63,7 @@ export default function MyAds() {
 
       <div className="container">
         {items.length === 0 ? <p className={myAds.emptyText}>Üres lista</p> : items.map((item) => (
-          <Ad key={item.id} adName={item.name} adDesc={item.description} adImg={item.files[0]} adPrice={item.price} page={myAds} inCart={true} />
+          <Ad key={item.id} adId={item.id} adName={item.name} adDesc={item.description} adImg={item.files[0]} adPrice={item.price} page={myAds} cartIds={cartIds} />
         ))}
       </div>
 

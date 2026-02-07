@@ -1,19 +1,13 @@
 import { useEffect, useState } from 'react';
 import Ad from '../components/ad';
 import list from './list.module.css';
+import { getAuthToken } from '../util/auth';
 
 export default function List() {
-  const isLoggedIn = !!sessionStorage.getItem('token');
+  const token = getAuthToken();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-
-      return;
-    }
-
-    const token = sessionStorage.getItem('token');
-
     async function fetchItems() {
       try {
         const response = await fetch("http://localhost:3000/backstagegear/me/cart", {
@@ -35,7 +29,7 @@ export default function List() {
     }
 
     fetchItems();
-  }, [isLoggedIn]);
+  }, [token]);
 
   return (
     <>
@@ -46,7 +40,7 @@ export default function List() {
 
       <div className="container">
         {items.length === 0 ? <p className={list.emptyText}>Üres lista</p> : items.map((item) => (
-          <Ad key={item.id} adName={item.name} adDesc={item.description} adImg={item.files[0]} adPrice={item.price} page={list} inCart={true} />
+          <Ad key={item.id} adId={item.id} adName={item.name} adDesc={item.description} adImg={item.files[0]} adPrice={item.price} page={list} cartIds={items.map(i => i.id)} />
         ))}
       </div>
 

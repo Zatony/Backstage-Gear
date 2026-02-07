@@ -30,4 +30,7 @@ export async function getCategories(_req: Request, res: Response){
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 }

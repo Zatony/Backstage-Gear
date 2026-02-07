@@ -52,6 +52,9 @@ export async function signIn(req: any, res: any) {
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -127,5 +130,8 @@ export async function signUp(req: any, res: any) {
     catch(err){
         await connection.rollback();
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };

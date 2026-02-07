@@ -1,7 +1,11 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import InputField from "./inputField";
 
 export default function Login({ onClose, onShowRegister }) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
   const refEmail = useRef(null);
   const refPassword = useRef(null);
 
@@ -48,13 +52,18 @@ export default function Login({ onClose, onShowRegister }) {
         }
         //console.log(response);
         const data = await response.json();
-        sessionStorage.setItem('token', data.token);
-        sessionStorage.setItem('is_admin', data.is_admin);
-        
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('is_admin', data.is_admin);
+
+        const expiration = new Date();
+        expiration.setHours(expiration.getHours() + 2);
+        localStorage.setItem('expiration', expiration.toISOString());
+
         console.log("token: " + data.token);
         console.log("is_admin: " + data.is_admin);
         console.log("Sikeres belépés!");
         onClose();
+        try{ window.dispatchEvent(new Event('authChanged')); }catch(e){}
 
       } catch(err){
         console.error("Hiba történt a belépés során: ", err);

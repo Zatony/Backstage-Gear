@@ -45,6 +45,9 @@ export async function getAds(_req: Request, res: Response){
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -89,6 +92,9 @@ export async function getLatestAds(_req: Request, res: Response){
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };
 
@@ -141,6 +147,9 @@ export async function getAdDatasById(req: Request, res: Response){
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -184,6 +193,9 @@ export async function getUserAds(req: any, res: any){
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };
 
@@ -238,6 +250,9 @@ export async function getUserAdById(req: any, res: any){
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -278,6 +293,9 @@ export async function getReportedAds(_req: any, res: any) {
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };
 
@@ -331,6 +349,9 @@ export async function getReportedAdById(req: any, res: any) {
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -372,6 +393,9 @@ export async function reportAdById(req: any, res: any) {
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -398,6 +422,9 @@ export async function deleteAdFromReportedAdsById(req: any, res: any) {
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -419,6 +446,9 @@ export async function getBrands(__req: any, res: any) {
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };
 
@@ -490,5 +520,8 @@ export async function postNewAdvertisement(req: any, res: any) {
     } catch (err) {
         await connection.rollback();
         console.error(err);
+    }
+    finally{
+        await connection.end();
     }
 };

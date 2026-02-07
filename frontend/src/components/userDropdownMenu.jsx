@@ -1,29 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, Form } from "react-router-dom";
 
-export default function UserDropdownMenu({ userData, dropdownPos, handleLogout, logoutIcon, isAdmin}) {
+export default function UserDropdownMenu({ userData, dropdownPos, logoutIcon, isAdmin, ref, onClose }) {
     return(
-        <div className="user-dropdown" style={{top: `${dropdownPos.top}px`, right: `${dropdownPos.right}px`}}>
+        <div ref={ref} className="user-dropdown" style={{top: `${dropdownPos.top}px`, right: `${dropdownPos.right}px`}}>
             <div className="user-header">{userData.username}</div>
             <div className="userLine"></div>
             {!isAdmin &&
                 <>
-                    <a className="userMenuLink" href="#">Profil</a>
+                    <Link to="/my_profile" className="userMenuLink" onClick={onClose}>Profil</Link>
                     <a className="userMenuLink" href="#">Üzenetek</a>
-                    <Link to="/my_ads" className="userMenuLink">Hirdetések</Link>
+                    <Link to="/my_ads" className="userMenuLink" onClick={onClose}>Hirdetéseim</Link>
                     <a className="userMenuLink" href="#">Új hirdetés</a>
                 </>
             }
             {isAdmin &&
                 <>
-                    <a className="userMenuLink" href="#">Profil</a>
+                    <Link to="/my_profile" className="userMenuLink" onClick={onClose}>Profil</Link>
                     <a className="userMenuLink" href="#">Üzenetek</a>
-                    <a className="userMenuLink" href="#">Hirdetések</a>
+                    <Link to="/my_ads" className="userMenuLink" onClick={onClose}>Hirdetéseim</Link>
                     <a className="userMenuLink" href="#">Új hirdetés</a>
                     <a className="userMenuLink" href="#">Jelentett hirdetés</a>
                     <a className="userMenuLink" href="#">Jelentett felhasználók</a>
                 </>
             }
-            <a className="userMenuLogout"  onClick={handleLogout}><img src={logoutIcon} alt="Logout"></img> Kilépés</a>
+            <Form action="/logout" method="post" className="userMenuLogout" onSubmit={onClose}>
+              <button type="submit" className="userMenuLogoutBtn"><img src={logoutIcon} alt="Logout"></img> Kilépés</button>
+            </Form>
         </div>
     )
 }

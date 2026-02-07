@@ -52,6 +52,9 @@ export async function getUserIncomingMessages(req: any, res: any){
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -92,6 +95,9 @@ export async function getUserIcomingMessageById(req: any, res: any){
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -128,6 +134,9 @@ export async function getUserSentMessages(req: any, res: any){
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };
 
@@ -169,6 +178,9 @@ export async function getUserSentMessageById(req: any, res: any){
     catch(err){
         console.log(err);
     }
+    finally{
+        await connection.end();
+    }
 };
 
 
@@ -207,6 +219,9 @@ export async function postNewMessage(req: any, res: any) {
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };
 
@@ -252,6 +267,9 @@ export async function deleteMessageById(req: any, res: any) {
     }
     catch(err){
         console.log(err);
+    }
+    finally{
+        await connection.end();
     }
 };
 
@@ -303,5 +321,8 @@ export async function patchMessageById(req: any, res: any) {
     }
     catch (err) {
         console.error(err);
+    }
+    finally{
+        await connection.end();
     }
 };
