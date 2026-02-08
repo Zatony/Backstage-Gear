@@ -75,8 +75,13 @@ export default function Profile() {
   }, []);
 
   return (
+    <div>
+      <div className={profile.profileTextContainer}>
+        <h1 className={profile.profileTitle}>Profil szerkesztése</h1>
+        <div className={profile.profileLine}></div>
+      </div>
+
     <div className={profile.profileContainer}>
-      <h1 className={profile.profileTitle}>Profil szerkesztése</h1>
 
       <div className={profile.profileMain}>
         <div className={profile.profilePicture}>
@@ -95,6 +100,7 @@ export default function Profile() {
         <button className={profile.changePasswordButton}>Jelszó módosítása</button>
         <button className={profile.changeDataButton}>Adatok módosítása</button>
       </div>
+    </div>
     </div>
   );
 }

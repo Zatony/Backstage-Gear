@@ -7,6 +7,7 @@ import Products from "./page_products/Products";
 import List from "./page_list/List";
 import MyAds from "./page_myAds/MyAds";
 import Profile from "./page_profile/Profile";
+import NewAd from "./page_newAd/NewAd";
 import { tokenLoader, checkAuthLoader } from "./util/auth";
 import { action as logoutAction } from "./util/logout";
 
@@ -45,6 +46,11 @@ export default function Routing() {
         {
           path: "/my_profile",
           element: <Profile />,
+          loader: checkAuthLoader,
+        },
+        {
+          path: "/new_ad",
+          element: <NewAd />,
           loader: checkAuthLoader,
         },
         {

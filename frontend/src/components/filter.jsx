@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 
-export default function Filter({page}) {
+export default function Filter({ page, onFilterChange }) {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
   useEffect(() => {
     async function fetchCategories() {
@@ -13,13 +17,47 @@ export default function Filter({page}) {
     async function fetchBrands() {
       const response = await fetch("http://localhost:3000/backstagegear/brands");
       const resBrands = await response.json();
-      console.log("Fetched brands: ", resBrands);
       setBrands(resBrands);
     }
 
     fetchCategories();
     fetchBrands();
   }, []);
+
+  function emitChange(newCategories, newBrand, newMin, newMax) {
+    if (onFilterChange) {
+      onFilterChange({
+        categoryId: newCategories.length === 1 ? newCategories[0] : "",
+        brandId: newBrand,
+        minPrice: newMin,
+        maxPrice: newMax,
+      });
+    }
+  }
+
+  function handleCategoryChange(e) {
+    const val = parseInt(e.target.value);
+    const updated = e.target.checked
+      ? [...selectedCategories, val]
+      : selectedCategories.filter((id) => id !== val);
+    setSelectedCategories(updated);
+    emitChange(updated, selectedBrand, minPrice, maxPrice);
+  }
+
+  function handleBrandChange(e) {
+    setSelectedBrand(e.target.value);
+    emitChange(selectedCategories, e.target.value, minPrice, maxPrice);
+  }
+
+  function handleMinPrice(e) {
+    setMinPrice(e.target.value);
+    emitChange(selectedCategories, selectedBrand, e.target.value, maxPrice);
+  }
+
+  function handleMaxPrice(e) {
+    setMaxPrice(e.target.value);
+    emitChange(selectedCategories, selectedBrand, minPrice, e.target.value);
+  }
 
   function handleName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1);
@@ -34,7 +72,7 @@ export default function Filter({page}) {
         <div className={page.filterCategoriesList}>
           {categories.map((category) => (
             <div key={"filterCategoryCH-"+category.id} className={page.filterCategory + " " + page.filterCheckBox}>
-                <input type="checkbox" id={"filterCategory-"+category.id} name="categories" value={category.id}/>
+                <input type="checkbox" id={"filterCategory-"+category.id} name="categories" value={category.id} onChange={handleCategoryChange}/>
                 <label htmlFor={"filterCategory-"+category.id}>{handleName(category.name)}</label>
             </div>
           ))}
@@ -62,7 +100,8 @@ export default function Filter({page}) {
             <div className={page.filterLineBrand}></div>
           </div>
 
-          <select className={page.filterBrands} name="filterBrands">
+          <select className={page.filterBrands} name="filterBrands" value={selectedBrand} onChange={handleBrandChange}>
+            <option value="">Összes</option>
             {brands.map((brand) =>(<option key={brand.brand_name+brand.id} value={brand.id}>{brand.brand_name}</option>))}
           </select>
         </div>
@@ -73,9 +112,9 @@ export default function Filter({page}) {
           </div>
           
           <div className={page.priceInputs}>
-            <input type="number" placeholder="0 Ft" id={page.priceMin}/>
+            <input type="number" placeholder="0 Ft" id={page.priceMin} value={minPrice} onChange={handleMinPrice}/>
             <span> - </span>
-            <input type="number" placeholder="10000 Ft" id={page.priceMax} />
+            <input type="number" placeholder="10000 Ft" id={page.priceMax} value={maxPrice} onChange={handleMaxPrice}/>
           </div>
         </div>
       </div>

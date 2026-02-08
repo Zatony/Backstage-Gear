@@ -48,7 +48,7 @@ export default function MyAds() {
           setCartIds(cartItems.map((item) => item.id));
         }
       } catch (err) {
-        // ignore
+        console.error("Hiba történt a kosár lekérése során: ", err);
       }
     }
     fetchCart();

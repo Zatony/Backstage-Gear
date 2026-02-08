@@ -17,7 +17,8 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, right: 0 });
   const navigate = useNavigate();
-  
+  const [cartCount, setCartCount] = useState(0);
+
   useEffect(() => {
     function handleAuthChange() {
       setToken(localStorage.getItem("token"));
@@ -33,7 +34,7 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
   useEffect(() => {
     async function fetchUserProfile() {
       if (!token) return;
-
+      setCartCount(0);
       try {
         const response = await fetch(
           "http://localhost:3000/backstagegear/me/my_profile",
@@ -52,14 +53,35 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
           setUserData(resData);
         }
       } catch (err) {
-        console.error(
-          "Hiba történt a felhasználói adatok lekérése során: ",
-          err,
-        );
+        console.error("Hiba történt a felhasználói adatok lekérése során: ", err);
       }
     }
 
     fetchUserProfile();
+  }, [token]);
+
+  useEffect(() => {
+    async function fetchCart() {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      try {
+        const response = await fetch("http://localhost:3000/backstagegear/me/cart", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token
+          }
+        });
+        if (response.ok) {
+          const cartItems = await response.json();
+          setCartCount(cartItems.length);
+        }
+      } catch (err) {
+        setCartCount(0);
+        console.error("Hiba történt a kosár lekérése során: ", err);
+      }
+    }
+    fetchCart();
   }, [token]);
 
   const dropdownRef = useRef(null);
@@ -129,7 +151,12 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
           src={shoppingCart}
           alt="Cart"
           onClick={onCartOpen}
-        ></img>
+        />
+        {token && cartCount > 0 && (
+          <span className="cartCount">
+            {cartCount}
+          </span>
+        )}
       </nav>
 
       {showLogin && (

@@ -1,26 +1,49 @@
 .profileContainer {
-  width: 1000px;
+  max-width: 700px;
   margin: auto;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 16px #0002;
   padding: 32px;
+  margin-bottom: 30px;
+}
+.profileTextContainer {
+  text-align: center;
+  margin-bottom: 30px;
 }
 .profileTitle {
+  color: var(--white);
   text-align: center;
-  margin: 24px 0px;
-    font-size: 2rem;
+  margin-bottom: 5px;
+  margin-top: 50px;
+  font-size: 1.5rem;
+  cursor: default;
+}
+.profileLine {
+  position: relative;
+  width: 100%;
+  height: 3px;
+}
+.profileLine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 9999px;
 }
 .profileMain {
   display: flex;
-  gap: 32px;
+  flex-direction: column;
   align-items: center;
+  gap: 24px;
   padding: 32px;
   border-radius: 12px;
 }
 .profilePicture {
-  width: 25%;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,13 +53,14 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
+  box-shadow: 0 0 12px 3px var(--black-40);
   background: #f5f5f5;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .profileFields {
-  flex: 1;
+  width: 50%;
 }
 .profilePictureMark {
   font-size: 80px;
@@ -69,9 +93,8 @@
   justify-content: center;
   gap: 24px;
   margin-top: 32px;
-  
 }
-.profileButtons button{
+.profileButtons button {
   padding: 10px 32px;
   border-radius: 8px;
   border: none;
@@ -86,7 +109,9 @@
 .profileButtons button:hover {
   background-color: var(--accent-60);
   color: var(--black-60);
-  transition: background-color 0.2s ease, color 0.12s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.12s ease;
 }
 .profileButtons .deleteButton {
   background-color: var(--warning);
@@ -94,5 +119,7 @@
 .profileButtons .deleteButton:hover {
   background-color: var(--warning-70);
   color: var(--black-60);
-  transition: background-color 0.2s ease, color 0.12s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.12s ease;
 }

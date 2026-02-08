@@ -1,7 +1,14 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Category({ page, isLoading, loadingText, fallbackText, categories }) {
+    const navigate = useNavigate();
 
     function handleName(name) {
         return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+
+    function handleClick(categoryId) {
+        navigate(`/products?categoryId=${categoryId}`);
     }
 
     return(        
@@ -11,7 +18,7 @@ export default function Category({ page, isLoading, loadingText, fallbackText, c
             {!isLoading && categories.length > 0 && (
                 <>
                     {categories.map((category) => (
-                        <div key={"category" + category.id} className={page.categoryContainer}>
+                        <div key={"category" + category.id} className={page.categoryContainer} onClick={() => handleClick(category.id)} style={{cursor: "pointer"}}>
                             <img src={category.picture} alt={"category"+category.id} />
                             <h3>{handleName(category.name)}</h3>
                         </div>

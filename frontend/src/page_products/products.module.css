@@ -1,4 +1,4 @@
-.searchFilter{
+.searchFilter {
   display: flex;
   align-items: flex-start;
   gap: 24px;
@@ -56,7 +56,7 @@
   top: 20px;
   height: calc(100vh - 40px);
   overflow: auto;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 .filterCategories {
   margin-bottom: 18px;
@@ -180,10 +180,40 @@
 .filterBrandPrice {
   margin-top: 6px;
 }
-.priceInputs {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.priceInputs input[type="number"] {
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 1rem;
+  border: 1px solid var(--muted);
+  background-color: var(--white);
+  color: var(--black);
+  outline: none;
+}
+.priceInputs input[type="number"]:hover {
+  border-color: var(--accent-60);
+}
+.priceInputs input[type="number"]:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-12);
+}
+
+.filterBrands {
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid var(--muted);
+  border-radius: 8px;
+  background-color: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  outline: none;
+  min-width: 100px;
+}
+.filterBrands:hover {
+  border-color: var(--accent-60);
+}
+.filterBrands:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-12);
 }
 
 @media screen and (max-width: 900px) {
@@ -222,7 +252,7 @@
   object-fit: cover;
   background-position: center;
   border-radius: 8px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 5px 3px var(--black-40);
 }
 .adText_Button {
   display: flex;
@@ -288,7 +318,9 @@
   color: var(--white);
   cursor: pointer;
   font-weight: 600;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
   box-sizing: border-box;
   white-space: nowrap;
 }

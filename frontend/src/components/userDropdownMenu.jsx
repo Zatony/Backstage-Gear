@@ -10,7 +10,7 @@ export default function UserDropdownMenu({ userData, dropdownPos, logoutIcon, is
                     <Link to="/my_profile" className="userMenuLink" onClick={onClose}>Profil</Link>
                     <a className="userMenuLink" href="#">Üzenetek</a>
                     <Link to="/my_ads" className="userMenuLink" onClick={onClose}>Hirdetéseim</Link>
-                    <a className="userMenuLink" href="#">Új hirdetés</a>
+                    <Link to="/new_ad" className="userMenuLink" onClick={onClose}>Új hirdetés</Link>
                 </>
             }
             {isAdmin &&
@@ -18,7 +18,7 @@ export default function UserDropdownMenu({ userData, dropdownPos, logoutIcon, is
                     <Link to="/my_profile" className="userMenuLink" onClick={onClose}>Profil</Link>
                     <a className="userMenuLink" href="#">Üzenetek</a>
                     <Link to="/my_ads" className="userMenuLink" onClick={onClose}>Hirdetéseim</Link>
-                    <a className="userMenuLink" href="#">Új hirdetés</a>
+                    <Link to="/new_ad" className="userMenuLink" onClick={onClose}>Új hirdetés</Link>
                     <a className="userMenuLink" href="#">Jelentett hirdetés</a>
                     <a className="userMenuLink" href="#">Jelentett felhasználók</a>
                 </>

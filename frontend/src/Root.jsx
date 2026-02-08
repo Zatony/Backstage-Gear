@@ -26,7 +26,6 @@ export default function Root() {
     }
 
     const duration = getTokenDuration();
-    console.log("Auto-logout in", duration, "ms");
 
     const timer = setTimeout(() => {
       submit(null, { action: "/logout", method: "post" });
