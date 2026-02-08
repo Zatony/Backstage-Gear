@@ -30,7 +30,14 @@ export async function getAdsFromUserCart(req: any, res: any) {
         ) as Array<any>;
 
         if(results.length > 0){
-            res.status(200).send(results);
+            const formattedResults = results.map((ad: any) => ({
+                ...ad,
+                files: ad.files
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
+                    : []
+            }));
+
+            res.status(200).send(formattedResults);
             return;
         };
 
@@ -81,7 +88,14 @@ export async function getAdByIdFromUserCart(req: any, res: any) {
         ) as Array<any>;
 
         if(result.length > 0){
-            res.status(200).send(result);
+            const formattedResults = result.map((ad: any) => ({
+                ...ad,
+                files: ad.files
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
+                    : []
+            }));
+
+            res.status(200).send(formattedResults);
             return;
         };
 

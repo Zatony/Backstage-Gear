@@ -335,7 +335,8 @@ CREATE TABLE files(
 
 INSERT INTO files (id, file_name, file_size)
 VALUES
-('default-ad', 'default-ad-picture.png', 0),
+('default-ad-picture', 'default-ad-picture.png', 0);
+/*
 ('https://source.unsplash.com/400x300/?guitar1', 'file1.name', 300),
 ('https://source.unsplash.com/400x300/?guitar2', 'file2.name', 300),
 ('https://source.unsplash.com/400x300/?acguitar1', 'file3.name', 300),
@@ -345,6 +346,7 @@ VALUES
 ('https://source.unsplash.com/400x300/?amp', 'file7.name', 300),
 ('https://source.unsplash.com/400x300/?mix1', 'file8.name', 300),
 ('https://source.unsplash.com/400x300/?mix2', 'file9.name', 300);
+*/
 
 
 
@@ -388,15 +390,12 @@ CREATE TABLE ad_files(
 );
 
 INSERT INTO ad_files (ad_id, file_id) VALUES
-(1, 'https://source.unsplash.com/400x300/?guitar1'),
-(1, 'https://source.unsplash.com/400x300/?guitar2'),
-(2, 'https://source.unsplash.com/400x300/?acguitar1'),
-(2, 'https://source.unsplash.com/400x300/?acguitar2'),
-(3, 'https://source.unsplash.com/400x300/?piano'),
-(4, 'https://source.unsplash.com/400x300/?drum'),
-(5, 'https://source.unsplash.com/400x300/?amp'),
-(6, 'https://source.unsplash.com/400x300/?mix1'),
-(6, 'https://source.unsplash.com/400x300/?mix2');
+(1, 'default-ad-picture'),
+(2, 'default-ad-picture'),
+(3, 'default-ad-picture'),
+(4, 'default-ad-picture'),
+(5, 'default-ad-picture'),
+(6, 'default-ad-picture');
 
 
 
