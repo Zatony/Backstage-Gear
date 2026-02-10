@@ -336,17 +336,6 @@ CREATE TABLE files(
 INSERT INTO files (id, file_name, file_size)
 VALUES
 ('default-ad-picture', 'default-ad-picture.png', 0);
-/*
-('https://source.unsplash.com/400x300/?guitar1', 'file1.name', 300),
-('https://source.unsplash.com/400x300/?guitar2', 'file2.name', 300),
-('https://source.unsplash.com/400x300/?acguitar1', 'file3.name', 300),
-('https://source.unsplash.com/400x300/?acguitar2', 'file4.name', 300),
-('https://source.unsplash.com/400x300/?piano', 'file5.name', 300),
-('https://source.unsplash.com/400x300/?drum', 'file6.name', 300),
-('https://source.unsplash.com/400x300/?amp', 'file7.name', 300),
-('https://source.unsplash.com/400x300/?mix1', 'file8.name', 300),
-('https://source.unsplash.com/400x300/?mix2', 'file9.name', 300);
-*/
 
 
 
@@ -364,7 +353,7 @@ CREATE TABLE advertisements(
     date_of_ad DATE,
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (used_item_id) REFERENCES used_items(id) ON DELETE CASCADE
+    FOREIGN KEY (used_item_id) REFERENCES used_items(id)
 );
 
 INSERT INTO advertisements (id, user_id, used_item_id, is_reported, description, date_of_ad) VALUES
