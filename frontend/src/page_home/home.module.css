@@ -420,7 +420,7 @@ main {
   white-space: nowrap;
   text-align: right;
 }
-.adText_Button button {
+.adText_Button .notInCart {
   padding: 10px 32px;
   border-radius: 8px;
   border: none;
@@ -434,7 +434,45 @@ main {
   box-sizing: border-box;
   white-space: nowrap;
 }
-.adText_Button button:hover {
+.adText_Button .notInCart:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+}
+.adText_Button .inCart {
+  padding: 10px 32px;
+  border-radius: 8px;
+  border: none;
+  background: var(--warning-70);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.adText_Button .inCart:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+}
+.adText_Button .myAd {
+  padding: 10px 32px;
+  border-radius: 8px;
+  border: none;
+  background: var(--secondary-color);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.adText_Button .myAd:hover {
+  background-color: var(--accent-60);
+  color: var(--black);
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
 }
