@@ -113,7 +113,8 @@ export async function getAdDatasById(req: Request, res: Response){
                 used_items.price, 
                 GROUP_CONCAT(files.file_name) AS files,
                 users.email, 
-                advertisements.description
+                advertisements.description,
+                DATE_FORMAT(advertisements.date_of_ad, '%Y-%m-%d %H:%i:%s') as date_of_ad
             FROM advertisements
             INNER JOIN used_items ON advertisements.used_item_id = used_items.id
             INNER JOIN items ON used_items.item_id = items.id
@@ -216,7 +217,8 @@ export async function getUserAdById(req: any, res: any){
                 used_items.price, 
                 GROUP_CONCAT(files.file_name) AS files,
                 users.email, 
-                advertisements.description
+                advertisements.description,
+                DATE_FORMAT(advertisements.date_of_ad, '%Y-%m-%d %H:%i:%s') as date_of_ad
             FROM advertisements
             INNER JOIN used_items ON advertisements.used_item_id = used_items.id
             INNER JOIN items ON used_items.item_id = items.id
@@ -366,8 +368,8 @@ export async function postNewAdvertisement(req: any, res: any) {
         const usedItemId = usedItemResult.insertId;
 
         const [adResult]: any = await connection.query(
-            `INSERT INTO advertisements (user_id, used_item_id, description, date_of_ad)
-             VALUES (?, ?, ?, CURDATE())`,
+            `INSERT INTO advertisements (user_id, used_item_id, description)
+             VALUES (?, ?, ?)`,
             [userId, usedItemId, description]
         );
 
@@ -450,7 +452,6 @@ export const getFilteredAdvertisements = async (req: Request, res: Response) => 
             SELECT
                 a.id AS advertisementId,
                 a.description,
-                a.date_of_ad,
                 ui.price,
                 ui.item_condition,
                 i.name AS item_name,
@@ -514,6 +515,12 @@ export async function deleteOwnAdById(req: any, res: any) {
         );
 
         await connection.query(
+            `DELETE FROM advertisements WHERE id = ?`,
+            [adId]
+        );
+
+
+        await connection.query(
             `DELETE FROM used_items WHERE id = ?`,
             [usedItemId]
         );
@@ -524,11 +531,6 @@ export async function deleteOwnAdById(req: any, res: any) {
                 [itemId]
             );
         }
-
-        await connection.query(
-            `DELETE FROM advertisements WHERE id = ?`,
-            [adId]
-        );
 
         await connection.commit();
         res.status(204).send();
@@ -611,7 +613,8 @@ export async function getReportedAdById(req: any, res: any) {
                 used_items.price, 
                 GROUP_CONCAT(files.file_name) AS files,
                 users.email, 
-                advertisements.description
+                advertisements.description,
+                DATE_FORMAT(advertisements.date_of_ad, '%Y-%m-%d %H:%i:%s') as date_of_ad
             FROM advertisements
             INNER JOIN used_items ON advertisements.used_item_id = used_items.id
             INNER JOIN items ON used_items.item_id = items.id
@@ -677,11 +680,74 @@ export async function deleteAdFromReportedAdsById(req: any, res: any) {
 };
 
 
-export async function deleteUserById(_req: any, _res: any) {
-    
-};
+export async function deleteUsersAdById(req: any, res: any) {
+    const adId: number = parseInt(req.params.adId);
 
+    idIsNan(adId, res);
 
-export async function deleteUsersAdById(_req: any, _res: any) {
-    
+    const connection = await mysql.createConnection(config.database);
+
+    try {
+        await connection.beginTransaction();
+
+        const [reportedAdCheck] = await connection.query(
+            'SELECT id FROM advertisements WHERE is_reported = 1 AND id = ?',
+            [adId]
+        ) as Array<any>;
+
+        if(reportedAdCheck.length < 1){
+            res.status(404).send("Nincs ilyen azonosítójú jelentett hirdetés.");
+            return;
+        };
+
+        const [[ad]]: any = await connection.query(
+            `SELECT id, used_item_id FROM advertisements WHERE id = ?`,
+            [adId]
+        );
+
+        if (!ad) {
+            await connection.rollback();
+            return res.status(403).send("Nincs jogosultság vagy nem létező hirdetés.");
+        };
+
+        const usedItemId = ad.used_item_id;
+
+        const [[row]]: any = await connection.query(
+            `SELECT item_id FROM used_items WHERE id = ?`,
+            [usedItemId]
+        );
+
+        const itemId = row?.item_id;
+
+        await connection.query(
+            `DELETE FROM carts WHERE ad_id = ?`,
+            [adId]
+        );
+
+        await connection.query(
+            `DELETE FROM advertisements WHERE id = ?`,
+            [adId]
+        );
+
+        await connection.query(
+            `DELETE FROM used_items WHERE id = ?`,
+            [usedItemId]
+        );
+
+        if (itemId) {
+            await connection.query(
+                `DELETE FROM items WHERE id = ?`,
+                [itemId]
+            );
+        };
+
+        await connection.commit();
+        res.status(204).send();
+
+    } catch (err) {
+        await connection.rollback();
+        console.error(err);
+    } finally {
+        await connection.end();
+    }
 };

@@ -1,7 +1,7 @@
 import config from "../config/config";
 import jwt from "jsonwebtoken";
 import mysql from "mysql2/promise";
-import { bodyIsUndefined } from "../validators/id.validator";
+import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
 import { IUser, User } from "./user";
 
 
@@ -137,13 +137,110 @@ export async function signUp(req: any, res: any) {
 };
 
 
-export async function deleteUserById(req: any, res: any){
+export async function deleteOwnUserById(req: any, res: any){
     const userId: number = parseInt(req.user.id);
 
     const connection = await mysql.createConnection(config.database);
 
     try{
         await connection.beginTransaction();
+
+        const [rows]: any = await connection.query(`
+            SELECT DISTINCT ui.item_id
+            FROM used_items ui
+            INNER JOIN advertisements a ON a.used_item_id = ui.id
+            WHERE a.user_id = ?
+        `, [userId]);
+
+        const itemIds = rows.map((r: any) => r.item_id);
+
+        await connection.query(`
+            DELETE ui
+            FROM used_items ui
+            INNER JOIN advertisements a ON a.used_item_id = ui.id
+            WHERE a.user_id = ?
+        `, [userId]);
+
+        if (itemIds.length > 0) {
+            await connection.query(
+                `DELETE FROM items WHERE id IN (?)`,
+                [itemIds]
+            );
+        };
+
+        await connection.query(
+            `DELETE FROM users WHERE id = ?`,
+            [userId]
+        );
+
+        await connection.commit();
+        res.status(204).send();
+    }
+    catch(err){
+        await connection.rollback();
+        console.log(err);
+    }
+    finally{
+        await connection.end();
+    }
+};
+
+
+export async function updateOwnPasswordById(req: any, res: any) {
+    const userId: number = parseInt(req.user.id);
+
+    bodyIsUndefined(req, res);
+
+    if (req.body.password.trim() === "") {
+        res.status(400).send("Hiányosan megadott adatok.");
+        return;
+    };
+
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        const [result] = await connection.query(
+            'UPDATE users SET password = ? WHERE id = ?',
+            [req.body.password, userId]
+        ) as Array<any>;
+
+        if(result.affectedRows === 1){
+            res.status(204).send();
+            return;
+        };
+
+        res.status(404).send("Nem sikerült a jelszó módosítása.");
+    }
+    catch(err){
+        console.log(err);
+    }
+    finally{
+        await connection.end();
+    }
+};
+
+
+////// ADMIN
+
+export async function deleteUserById(req: any, res: any) {
+    const userId: number = parseInt(req.params.userId);
+
+    idIsNan(userId, res);
+
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        await connection.beginTransaction();
+
+        const [userCheck] = await connection.query(
+            'SELECT id FROM users WHERE id = ?',
+            [userId]
+        ) as Array<any>;
+
+        if(userCheck.length < 1){
+            res.status(404).send("Nem létezik ilyen azonosítójú felhasználó.");
+            return;
+        };
 
         const [rows]: any = await connection.query(`
             SELECT DISTINCT ui.item_id

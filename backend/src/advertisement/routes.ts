@@ -2,7 +2,7 @@ import { Router } from "express";
 import { getAds, getAdDatasById, getUserAds, getUserAdById, 
     getLatestAds, getReportedAds, getReportedAdById, reportAdById, 
     deleteAdFromReportedAdsById, getBrands, postNewAdvertisement, 
-    getFilteredAdvertisements, deleteOwnAdById } from "./advertisementController";
+    getFilteredAdvertisements, deleteOwnAdById, deleteUsersAdById } from "./advertisementController";
 import { verifyToken, requireAdmin } from "../middleware/auth";
 
 const router: Router = Router();
@@ -23,5 +23,6 @@ router.delete('/backstagegear/me/my_ads/:adId', verifyToken, deleteOwnAdById);
 router.get('/backstagegear/me/reported_ads', verifyToken, requireAdmin, getReportedAds);
 router.get('/backstagegear/me/reported_ads/:adId', verifyToken, requireAdmin, getReportedAdById);
 router.patch('/backstagegear/me/reported_ads/:adId', verifyToken, requireAdmin, deleteAdFromReportedAdsById);
+router.delete('/backstagegear/me/reported_ads/:adId', verifyToken, requireAdmin, deleteUsersAdById);
 
 export default router;

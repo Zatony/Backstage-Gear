@@ -350,19 +350,19 @@ CREATE TABLE advertisements(
     used_item_id INT NOT NULL,
     is_reported TINYINT DEFAULT false,
     description TEXT NOT NULL,
-    date_of_ad DATE,
+    date_of_ad DATETIME NOT NULL DEFAULT NOW(),
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (used_item_id) REFERENCES used_items(id)
 );
 
 INSERT INTO advertisements (id, user_id, used_item_id, is_reported, description, date_of_ad) VALUES
-(NULL, 2, 1, FALSE, 'leírás, leírás', '2025-02-03'),
-(NULL, 3, 2, TRUE, 'leírás, leírás', '2025-03-15'),
-(NULL, 4, 3, TRUE, 'leírás, leírás', '2025-04-09'),
-(NULL, 5, 4, FALSE, 'leírás, leírás', '2025-05-01'),
-(NULL, 5, 5, FALSE, 'leírás, leírás', '2025-06-14'),
-(NULL, 2, 6, TRUE, 'leírás, leírás', '2025-07-22');
+(NULL, 2, 1, FALSE, 'leírás, leírás', '2025-02-03 10:10:02'),
+(NULL, 3, 2, TRUE, 'leírás, leírás', '2025-03-15 12:01:01'),
+(NULL, 4, 3, TRUE, 'leírás, leírás', '2025-04-09 20:20:10'),
+(NULL, 5, 4, FALSE, 'leírás, leírás', '2025-05-01 15:56:11'),
+(NULL, 5, 5, FALSE, 'leírás, leírás', '2025-06-14 08:07:06'),
+(NULL, 2, 6, TRUE, 'leírás, leírás', '2025-07-22 09:13:56');
 
 
 
