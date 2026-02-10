@@ -6,7 +6,7 @@ import { getAuthToken } from '../util/auth';
 export default function MyAds() {
   const token = getAuthToken();
   const [items, setItems] = useState([]);
-  const [cartIds, setCartIds] = useState([]);
+  const [myAdIds, setMyAdIds] = useState([]);
 
   useEffect(() => {
     async function fetchItems() {
@@ -23,6 +23,7 @@ export default function MyAds() {
         console.log(resData);
         if (response.ok) {
           setItems(resData);
+          setMyAdIds(resData.map((item) => item.id));
         }
       } catch (err) {
         console.error("Hiba történt a felhasználói adatok lekérése során: ", err);
@@ -30,28 +31,6 @@ export default function MyAds() {
     }
 
     fetchItems();
-  }, [token]);
-
-  useEffect(() => {
-    async function fetchCart() {
-      if (!token) return;
-      try {
-        const response = await fetch("http://localhost:3000/backstagegear/me/cart", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": token
-          }
-        });
-        if (response.ok) {
-          const cartItems = await response.json();
-          setCartIds(cartItems.map((item) => item.id));
-        }
-      } catch (err) {
-        console.error("Hiba történt a kosár lekérése során: ", err);
-      }
-    }
-    fetchCart();
   }, [token]);
 
   return (
@@ -63,7 +42,7 @@ export default function MyAds() {
 
       <div className="container">
         {items.length === 0 ? <p className={myAds.emptyText}>Üres lista</p> : items.map((item) => (
-          <Ad key={item.id} adId={item.id} adName={item.name} adDesc={item.description} adImg={item.files[0]} adPrice={item.price} page={myAds} cartIds={cartIds} />
+          <Ad key={item.id} adId={item.id} adName={item.name} adDesc={item.description} adImg={item.files[0]} adPrice={item.price} page={myAds} myAdIds={myAdIds}/>
         ))}
       </div>
 

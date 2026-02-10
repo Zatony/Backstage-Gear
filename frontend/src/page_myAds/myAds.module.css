@@ -115,11 +115,11 @@
   white-space: nowrap;
   text-align: right;
 }
-.adText_Button button {
+.adText_Button .myAd {
   padding: 10px 32px;
   border-radius: 8px;
   border: none;
-  background: var(--accent-color);
+  background: var(--secondary-color);
   color: var(--white);
   cursor: pointer;
   font-weight: 600;
@@ -129,7 +129,9 @@
   box-sizing: border-box;
   white-space: nowrap;
 }
-.adText_Button button:hover {
+.adText_Button .myAd:hover {
+  background-color: var(--accent-60);
+  color: var(--black);
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
 }

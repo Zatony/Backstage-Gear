@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import { getAuthToken } from "../util/auth";
 
-export default function Ad({ adName, adDesc, adImg, adPrice, page, adId, cartIds = [] }) {
+export default function Ad({ adName, adDesc, adImg, adPrice, page, adId, cartIds = [], myAdIds = [] }) {
   const [inCart, setInCart] = useState(false);
+  const [isMyAd, setIsMyAd] = useState(false);
   const [loading, setLoading] = useState(false);
+  const token = getAuthToken();
 
   useEffect(() => {
-    setInCart(cartIds.includes(adId));
-  }, [adId, cartIds]);
+   if(cartIds.length > 0)
+      setInCart(cartIds.includes(adId))
+
+    setIsMyAd(myAdIds.includes(adId))
+  }, [adId, myAdIds, cartIds]);
 
   async function handleToggleCart() {
-    const token = getAuthToken();
     if (!token || !adId) return;
     setLoading(true);
     try {
@@ -38,7 +42,7 @@ export default function Ad({ adName, adDesc, adImg, adPrice, page, adId, cartIds
     }
     setLoading(false);
   }
-
+ 
   return (
     <div className={page.ad}>
         <img src={adImg} alt={adImg} />
@@ -52,8 +56,8 @@ export default function Ad({ adName, adDesc, adImg, adPrice, page, adId, cartIds
 
           <div className={`${page.priceButtonGroup} col-sm-12 col-md-6 col-lg-4 align-text-bottom`}>
             <h2>{adPrice.toLocaleString("hu-HU")} Ft</h2>
-            <button onClick={handleToggleCart} disabled={loading}>
-              {inCart ? "asd" : "Kosárba"}
+            <button onClick={handleToggleCart} disabled={loading} className={inCart ? page.inCart: isMyAd ? page.myAd : page.notInCart}>
+              {inCart ? "Eltávolítás a kosárból" : isMyAd ? "Módosítás" : "Kosárba"}
             </button>
           </div>
         </div>

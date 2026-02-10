@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from "react"
 import Ad from "./ad"
+import { getAuthToken } from "../util/auth";
 
 export default function NewAd({page}){
-
+        const token = getAuthToken();
         const [ads, setAds] = useState([]);
         const [cartIds, setCartIds] = useState([]);
+        const [myAdIds, setMyAdIds] = useState([]);
         const scrollerRef = useRef(null);
 
         useEffect(() => {
@@ -18,7 +20,6 @@ export default function NewAd({page}){
 
         useEffect(() => {
                 async function fetchCart() {
-                    const token = localStorage.getItem("token");
                     if (!token) return;
                     try {
                         const response = await fetch("http://localhost:3000/backstagegear/me/cart", {
@@ -33,10 +34,28 @@ export default function NewAd({page}){
                             setCartIds(cartItems.map((item) => item.id));
                         }
                     } catch (err) {
-                        // ignore
                     }
                 }
+                async function fetchMyAds() {
+                    if (!token) return;
+                    try {
+                        const response = await fetch("http://localhost:3000/backstagegear/me/my_ads", {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "x-access-token": token
+                            }
+                        });
+                        if (response.ok) {
+                            const myAdsData = await response.json();
+                            setMyAdIds(myAdsData.map((item) => item.id));
+                        }
+                    } catch (err) {
+                    }
+                }
+
                 fetchCart();
+                fetchMyAds();
         }, []);
 
         function scrollByOffset(offset){
@@ -51,7 +70,7 @@ export default function NewAd({page}){
                             <button className={page.carouselArrow + " " + page.left} aria-label="Previous" onClick={() => scrollByOffset(-scrollerRef.current.clientWidth * 0.8)}>‹</button>
                             <div className={page.newAds} ref={scrollerRef}>
                                 {ads.map((ad) => (
-                                    <Ad key={ad.id} adId={ad.id} adName={ad.name} adDesc={ad.description} adImg={ad.files} adPrice={ad.price} page={page} cartIds={cartIds} />
+                                    <Ad key={ad.id} adId={ad.id} adName={ad.name} adDesc={ad.description} adImg={ad.files} adPrice={ad.price} page={page} cartIds={cartIds} myAdIds={myAdIds}/>
                                 ))}
                             </div>
                             <button className={page.carouselArrow + " " + page.right} aria-label="Next" onClick={() => scrollByOffset(scrollerRef.current.clientWidth * 0.8)}>›</button>
