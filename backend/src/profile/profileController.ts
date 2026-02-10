@@ -147,3 +147,8 @@ export async function voteProfileById(req: any, res: any) {
         await connection.end();
     }
 };
+
+
+export async function patchProfileById(_req: any, _res: any) {
+    
+};

@@ -135,3 +135,52 @@ export async function signUp(req: any, res: any) {
         await connection.end();
     }
 };
+
+
+export async function deleteUserById(req: any, res: any){
+    const userId: number = parseInt(req.user.id);
+
+    const connection = await mysql.createConnection(config.database);
+
+    try{
+        await connection.beginTransaction();
+
+        const [rows]: any = await connection.query(`
+            SELECT DISTINCT ui.item_id
+            FROM used_items ui
+            INNER JOIN advertisements a ON a.used_item_id = ui.id
+            WHERE a.user_id = ?
+        `, [userId]);
+
+        const itemIds = rows.map((r: any) => r.item_id);
+
+        await connection.query(`
+            DELETE ui
+            FROM used_items ui
+            INNER JOIN advertisements a ON a.used_item_id = ui.id
+            WHERE a.user_id = ?
+        `, [userId]);
+
+        if (itemIds.length > 0) {
+            await connection.query(
+                `DELETE FROM items WHERE id IN (?)`,
+                [itemIds]
+            );
+        };
+
+        await connection.query(
+            `DELETE FROM users WHERE id = ?`,
+            [userId]
+        );
+
+        await connection.commit();
+        res.status(204).send();
+    }
+    catch(err){
+        await connection.rollback();
+        console.log(err);
+    }
+    finally{
+        await connection.end();
+    }
+};
