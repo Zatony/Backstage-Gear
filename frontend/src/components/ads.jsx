@@ -32,7 +32,10 @@ export default function Ads({ page, filters = {} }) {
     useEffect(() => {
         async function fetchCart() {
             const token = localStorage.getItem("token");
-            if (!token) return;
+            if (!token) {
+                setCartIds([]);
+                return;
+            }
             try {
                 const response = await fetch("http://localhost:3000/backstagegear/me/cart", {
                     method: "GET",
@@ -50,6 +53,10 @@ export default function Ads({ page, filters = {} }) {
             }
         }
         fetchCart();
+
+        function handleAuthChange() { fetchCart(); }
+        window.addEventListener("authChanged", handleAuthChange);
+        return () => window.removeEventListener("authChanged", handleAuthChange);
     }, []);
 
     return (

@@ -63,7 +63,10 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
   useEffect(() => {
     async function fetchCart() {
       const token = localStorage.getItem("token");
-      if (!token) return;
+      if (!token) {
+        setCartCount(0);
+        return;
+      }
       try {
         const response = await fetch("http://localhost:3000/backstagegear/me/cart", {
           method: "GET",
@@ -82,6 +85,10 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
       }
     }
     fetchCart();
+
+    function handleCartChange() { fetchCart(); }
+    window.addEventListener("cartChanged", handleCartChange);
+    return () => window.removeEventListener("cartChanged", handleCartChange);
   }, [token]);
 
   const dropdownRef = useRef(null);

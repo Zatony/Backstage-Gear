@@ -124,6 +124,8 @@
   background-color: var(--accent-60);
   color: var(--black-60);
   transition: background-color 0.2s ease, color 0.12s ease;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+
 }
 .submitBtn:disabled {
   opacity: 0.6;
@@ -131,13 +133,6 @@
 }
 .errorMsg {
   color: var(--warning-70);
-  text-align: center;
-  margin-top: 12px;
-  font-weight: 600;
-}
-
-.successMsg {
-  color: var(--accent-color);
   text-align: center;
   margin-top: 12px;
   font-weight: 600;

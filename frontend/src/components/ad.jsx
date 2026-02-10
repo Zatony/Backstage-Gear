@@ -5,14 +5,27 @@ export default function Ad({ adName, adDesc, adImg, adPrice, page, adId, cartIds
   const [inCart, setInCart] = useState(false);
   const [isMyAd, setIsMyAd] = useState(false);
   const [loading, setLoading] = useState(false);
-  const token = getAuthToken();
+  const [token, setToken] = useState(getAuthToken());
 
   useEffect(() => {
-   if(cartIds.length > 0)
-      setInCart(cartIds.includes(adId))
+    function handleAuthChange() {
+      setToken(getAuthToken());
+    }
+    window.addEventListener("authChanged", handleAuthChange);
+    return () => window.removeEventListener("authChanged", handleAuthChange);
+  }, []);
 
-    setIsMyAd(myAdIds.includes(adId))
-  }, [adId, myAdIds, cartIds]);
+  useEffect(() => {
+    if (!token) {
+      setInCart(false);
+      setIsMyAd(false);
+      return;
+    }
+    if(cartIds.length > 0)
+      setInCart(cartIds.includes(adId));
+
+    setIsMyAd(myAdIds.includes(adId));
+  }, [adId, myAdIds, cartIds, token]);
 
   async function handleToggleCart() {
     if (!token || !adId) return;
@@ -27,6 +40,7 @@ export default function Ad({ adName, adDesc, adImg, adPrice, page, adId, cartIds
           }
         });
         setInCart(false);
+        window.dispatchEvent(new Event('cartChanged'));
       } else {
         await fetch(`http://localhost:3000/backstagegear/me/cart/ads/${adId}`, {
           method: "POST",
@@ -36,6 +50,7 @@ export default function Ad({ adName, adDesc, adImg, adPrice, page, adId, cartIds
           }
         });
         setInCart(true);
+        window.dispatchEvent(new Event('cartChanged'));
       }
     } catch (err) {
       console.error("Hiba történt a kosár frissítése során: ", err);

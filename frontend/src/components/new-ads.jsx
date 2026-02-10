@@ -20,13 +20,17 @@ export default function NewAd({page}){
 
         useEffect(() => {
                 async function fetchCart() {
-                    if (!token) return;
+                    const currentToken = localStorage.getItem("token");
+                    if (!currentToken) {
+                        setCartIds([]);
+                        return;
+                    }
                     try {
                         const response = await fetch("http://localhost:3000/backstagegear/me/cart", {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
-                                "x-access-token": token
+                                "x-access-token": currentToken
                             }
                         });
                         if (response.ok) {
@@ -37,13 +41,17 @@ export default function NewAd({page}){
                     }
                 }
                 async function fetchMyAds() {
-                    if (!token) return;
+                    const currentToken = localStorage.getItem("token");
+                    if (!currentToken) {
+                        setMyAdIds([]);
+                        return;
+                    }
                     try {
                         const response = await fetch("http://localhost:3000/backstagegear/me/my_ads", {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
-                                "x-access-token": token
+                                "x-access-token": currentToken
                             }
                         });
                         if (response.ok) {
@@ -56,6 +64,10 @@ export default function NewAd({page}){
 
                 fetchCart();
                 fetchMyAds();
+
+                function handleAuthChange() { fetchCart(); fetchMyAds(); }
+                window.addEventListener("authChanged", handleAuthChange);
+                return () => window.removeEventListener("authChanged", handleAuthChange);
         }, []);
 
         function scrollByOffset(offset){
