@@ -5,6 +5,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+import { uploadMiddleware } from "../middleware/upload";
+import fs from "fs";
+
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
 export async function getProfileDatasById(req: any, res: any){
@@ -149,6 +152,100 @@ export async function voteProfileById(req: any, res: any) {
 };
 
 
-export async function patchProfileById(_req: any, _res: any) {
-    
+export async function patchProfileById(req: any, res: any) {
+    try {
+        await uploadMiddleware(req, res);
+    } catch (err) {
+        return res.status(400).send({ error: "Fájlok feltöltése sikertelen." });
+    }
+
+    const userId = parseInt(req.user.id);
+    const connection = await mysql.createConnection(config.database);
+
+    try {
+        await connection.beginTransaction();
+
+        const [rows] = await connection.query(
+            `SELECT id, profile_picture FROM profiles WHERE user_id = ?`,
+            [userId]
+        ) as Array<any>;
+
+        if (!rows || rows.length === 0) {
+            await connection.rollback();
+            return res.status(404).send("Profil nem található.");
+        }
+
+        const profile = rows[0];
+
+        const { username, phone_number } = req.body;
+        if (username || phone_number) {
+            await connection.query(
+                `UPDATE users SET username = COALESCE(?, username), phone_number = COALESCE(?, phone_number) WHERE id = ?`,
+                [username ?? null, phone_number ?? null, userId]
+            );
+        }
+
+        if (req.file) {
+            const fileId = req.file.filename;
+
+            const profilePicturesDir = config.baseDir + config.uploadDir + "profile-pictures/";
+            try { fs.mkdirSync(profilePicturesDir, { recursive: true }); } catch (e) { /* ignore */ }
+
+            try {
+                fs.renameSync(
+                    config.baseDir + config.uploadDir + fileId,
+                    profilePicturesDir + fileId
+                );
+            } catch (e) {
+                console.error('Fájl áthelyezése sikertelen:', e);
+                throw e;
+            }
+
+            try {
+                await connection.query(
+                    'INSERT INTO files(id, file_name, file_size) VALUES(?, ?, ?)',
+                    [fileId, req.file.originalname, req.file.size]
+                );
+            } catch (e) {
+                try { fs.unlinkSync(profilePicturesDir + fileId); } catch (_) { /* ignore */ }
+                throw e;
+            }
+
+            if (profile.profile_picture && profile.profile_picture !== 'default-profile-picture.jpg') {
+                try {
+                    const oldPath = profilePicturesDir + profile.profile_picture;
+                    fs.unlinkSync(oldPath);
+                } catch (e) { /* ignore deletion errors */ }
+            }
+
+            await connection.query(
+                `UPDATE profiles SET profile_picture = ? WHERE id = ?`,
+                [fileId, profile.id]
+            );
+        }
+
+        await connection.commit();
+        res.status(200).send({ message: 'Profil frissítve.' });
+    } catch (err: any) {
+        await connection.rollback();
+
+        try {
+            if (req.file) {
+                const adPicturesPath = config.baseDir + config.uploadDir + "profile-pictures/" + req.file.filename;
+                const rootPath = config.baseDir + config.uploadDir + req.file.filename;
+                try { fs.unlinkSync(adPicturesPath); } catch (e) { try { fs.unlinkSync(rootPath); } catch (_) { /* ignore */ } }
+            }
+        } catch (e) {
+            console.error('Fájl törlése sikertelen:', e);
+        }
+
+        if (err && err.code === 'ER_DUP_ENTRY') {
+            return res.status(409).send('A felhasználónév már foglalt.');
+        }
+
+        console.error(err);
+        res.status(500).send({ error: 'Hiba történt a profil frissítése során.' });
+    } finally {
+        await connection.end();
+    }
 };

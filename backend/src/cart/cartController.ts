@@ -16,7 +16,7 @@ export async function getAdsFromUserCart(req: any, res: any) {
                 items.name,
                 advertisements.description,
                 used_items.price,
-                GROUP_CONCAT(files.file_name) AS files
+                GROUP_CONCAT(files.id) AS files
             FROM carts
             INNER JOIN users ON carts.user_id = users.id
             INNER JOIN advertisements ON carts.ad_id = advertisements.id
@@ -33,7 +33,7 @@ export async function getAdsFromUserCart(req: any, res: any) {
             const formattedResults = results.map((ad: any) => ({
                 ...ad,
                 files: ad.files
-                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + (file === "default-ad-picture" ? file + ".png" : file))
                     : []
             }));
 
@@ -70,7 +70,7 @@ export async function getAdByIdFromUserCart(req: any, res: any) {
                 brands.brand_name, 
                 used_items.item_condition, 
                 used_items.price, 
-                GROUP_CONCAT(files.file_name) AS files,
+                GROUP_CONCAT(files.id) AS files,
                 users.email, 
                 advertisements.description
             FROM carts
@@ -91,7 +91,7 @@ export async function getAdByIdFromUserCart(req: any, res: any) {
             const formattedResults = result.map((ad: any) => ({
                 ...ad,
                 files: ad.files
-                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + file)
+                    ? ad.files.split(",").map((file: string) => config.baseUrl + "/ad-pictures/" + (file === "default-ad-picture" ? file + ".png" : file))
                     : []
             }));
 
