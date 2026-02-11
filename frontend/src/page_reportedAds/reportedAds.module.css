@@ -1,0 +1,155 @@
+.reportedAdsContainer {
+  max-width: 900px;
+  margin: 50px auto 30px auto;
+  padding: 0 16px;
+}
+.reportedAdsTitle {
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 1.5rem;
+  cursor: default;
+}
+.reportedAdsLine {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  margin-bottom: 30px;
+}
+.reportedAdsLine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 9999px;
+}
+.reportedAdCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px #0002;
+  padding: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: stretch;
+}
+.adImageSection {
+  flex: 0 0 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.adImage {
+  flex: 0 0 200px;
+  width: 220px;
+  height: 220px;
+  display: block;
+  object-fit: cover;
+  background-position: center;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  margin: 5px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+.adInfoSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.adTitle {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0;
+  color: var(--black);
+}
+.adDescription {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.4;
+}
+.userSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 15px;
+  margin-bottom: 15px;
+}
+.userIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #bbb;
+  object-fit: cover;
+}
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.userName {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--black);
+}
+.userContact {
+  font-size: 0.85rem;
+  color: #666;
+}
+.actionsSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  min-width: 180px;
+}
+.actionsSection button {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  background: var(--secondary-color);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.actionsSection button:hover {
+  background-color: var(--accent-60);
+  color: var(--black);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+.deleteAdBtn {
+  background: var(--secondary-color);
+}
+.deleteUserBtn {
+  background: var(--secondary-color);
+}
+.dismissBtn {
+  background: var(--accent-color);
+}
+.dismissBtn:hover {
+  background-color: var(--accent-60);
+}
+.noReports {
+  text-align: center;
+  color: var(--white);
+  font-size: 1.1rem;
+  margin-top: 40px;
+}

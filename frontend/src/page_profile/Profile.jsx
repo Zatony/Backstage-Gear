@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import profile from "./profile.module.css";
 import { getAuthToken } from "../util/auth";
+import PasswordChange from "../components/passwordChange";
 
 function ProfileField({ label, value }) {
   return (
@@ -44,6 +45,7 @@ export default function Profile() {
     up_vote: 0,
     down_vote: 0
   });
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
 
   useEffect(() => {
     async function fetchUser() {
@@ -97,10 +99,13 @@ export default function Profile() {
 
       <div className={profile.profileButtons}>
         <button className={profile.deleteButton}>Profil törlése</button>
-        <button className={profile.changePasswordButton}>Jelszó módosítása</button>
+        <button className={profile.changePasswordButton} onClick={() => setShowPasswordChange(true)}>
+          Jelszó módosítása
+        </button>
         <button className={profile.changeDataButton}>Adatok módosítása</button>
       </div>
     </div>
+    {showPasswordChange && <PasswordChange onClose={() => setShowPasswordChange(false)} />}
     </div>
   );
 }

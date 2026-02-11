@@ -8,15 +8,18 @@ import List from "./page_list/List";
 import MyAds from "./page_myAds/MyAds";
 import Profile from "./page_profile/Profile";
 import NewAd from "./page_newAd/NewAd";
-import { tokenLoader, checkAuthLoader } from "./util/auth";
+import ViewAd from "./page_ViewAd/viewAd";
+import EditAd from "./page_EditAd/editAd";
+import { tokenLoader, checkAuthLoader, checkEditAdAccess } from "./util/auth";
 import { action as logoutAction } from "./util/logout";
+import ReportedAds from "./page_reportedAds/ReportedAds";
 
 export default function Routing() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Root />,
-      errorElement: <div>Hiba történt az oldal betöltésekor.</div>,
+      errorElement: <div className="fallbackText">Hiba történt az oldal betöltésekor.</div>,
       id: "root",
       loader: tokenLoader,
       children: [
@@ -32,6 +35,15 @@ export default function Routing() {
         {
           path: "/products",
           element: <Products />,
+        },
+        {
+          path: "/product",
+          element: <ViewAd />,
+        },
+        {
+          path: "/edit_ad",
+          element: <EditAd />,
+          loader: checkEditAdAccess,
         },
         {
           path: "/cart",
@@ -51,6 +63,11 @@ export default function Routing() {
         {
           path: "/new_ad",
           element: <NewAd />,
+          loader: checkAuthLoader,
+        },
+        {
+          path: "/reported_ads",
+          element: <ReportedAds />,
           loader: checkAuthLoader,
         },
         {

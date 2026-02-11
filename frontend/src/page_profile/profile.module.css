@@ -95,35 +95,44 @@
   margin-top: 32px;
 }
 .profileButtons button {
-  padding: 10px 32px;
+  padding: 10px 28px;
   border-radius: 8px;
   border: none;
-  width: 200px;
   background: var(--secondary-color);
   color: var(--white);
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
   box-sizing: border-box;
   white-space: nowrap;
 }
 .profileButtons button:hover {
   background-color: var(--accent-60);
-  color: var(--black-60);
-  transition:
-    background-color 0.2s ease,
-    color 0.12s ease;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
-
+  color: var(--black);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 .profileButtons .deleteButton {
-  background-color: var(--warning);
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: none;
+  background: var(--warning-70);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 .profileButtons .deleteButton:hover {
   background-color: var(--warning-70);
-  color: var(--black-60);
-  transition:
-    background-color 0.2s ease,
-    color 0.12s ease;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
-
+  color: var(--black);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }

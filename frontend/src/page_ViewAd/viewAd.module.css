@@ -1,0 +1,282 @@
+.adCardColumn {
+  max-width: 700px;
+  margin: 50px auto 30px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px #0002;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.adInfoBlock {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+.adImageAndUser {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 160px;
+}
+.adTextBlock {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.priceButtonsFullWidth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 32px;
+  gap: 16px;
+}
+.priceButtonsFullWidth .price {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--black);
+  margin-bottom: 8px;
+  text-align: center;
+}
+.buttonRow {
+  text-align: center;
+}
+.priceButtons {
+  margin-top: 32px;
+}
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.username {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.ratingRow {
+  margin-top: 2px;
+}
+.rating {
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+.buttonRow {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 0;
+}
+.viewAdContainer {
+  background: rgba(0, 0, 0, 0.2);
+}
+.adCard {
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  max-width: 900px;
+  width: 100%;
+  padding: 32px;
+  gap: 32px;
+}
+.leftSection {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mainImg {
+  flex: 0 0 225px;
+  width: 225px;
+  height: 225px;
+  display: block;
+  object-fit: cover;
+  background-position: center;
+  border-radius: 8px;
+  box-shadow: 0 0 5px 3px var(--black-40);
+  margin: 35px;
+}
+.thumbnailRow {
+  display: flex;
+  gap: 8px;
+}
+.thumbnail {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: var(--white);
+  border: 1px solid var(--muted);
+}
+.rightSection {
+  flex: 2 1 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.adTitle {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.adMeta {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.userIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--white);
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--muted);
+}
+.userInfoBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.rating {
+  margin-left: 12px;
+  color: var(--muted);
+}
+
+.adDescBlock {
+  margin: 12px 0;
+}
+.adDescLabel {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.adDescText {
+  color: var(--black);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+.priceRow {
+  margin: 18px 0 8px 0;
+}
+.buttonRow {
+  margin-top: 20px;
+}
+.buttonRow .reportBtn {
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: none;
+  background: var(--warning);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.buttonRow .reportBtn:hover {
+  background-color: var(--warning-70);
+  color: var(--black-60);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+.buttonRow .notInCart {
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent-color);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.buttonRow .notInCart:hover {
+  background-color: var(--accent-60);
+  color: var(--black-60);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+.buttonRow .inCart {
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: none;
+  background: var(--warning-70);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.buttonRow .inCart:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+.buttonRow .myAd {
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: none;
+  background: var(--secondary-color);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.buttonRow .myAd:hover {
+  background-color: var(--accent-60);
+  color: var(--black);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+.buttonRow .reachOutBtn {
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: none;
+  background: var(--secondary-color);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.buttonRow .reachOutBtn:hover {
+  background-color: var(--accent-60);
+  color: var(--black);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}

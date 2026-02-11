@@ -116,6 +116,7 @@ body {
   margin: 5px;
   gap: 8px;
   height: 32px;
+  width: 32px;
   border-radius: 60px;
 }
 .profile:hover,
@@ -220,7 +221,7 @@ body {
 .log_reg-modal {
   width: 360px;
   max-width: calc(100% - 32px);
-  margin-top: 160px;
+  margin-top: 90px;
   margin-bottom: 40px;
   background: var(--primary-color);
   color: var(--white);
