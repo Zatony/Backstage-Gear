@@ -5,6 +5,7 @@ export default function Filter({ page, onFilterChange }) {
   const [brands, setBrands] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedConditions, setSelectedConditions] = useState([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
@@ -24,11 +25,12 @@ export default function Filter({ page, onFilterChange }) {
     fetchBrands();
   }, []);
 
-  function emitChange(newCategories, newBrand, newMin, newMax) {
+  function emitChange(newCategories, newBrand, newConditions, newMin, newMax) {
     if (onFilterChange) {
       onFilterChange({
-        categoryId: newCategories.length === 1 ? newCategories[0] : "",
+        categoryIds: newCategories.length > 0 ? newCategories : [],
         brandId: newBrand,
+        conditions: newConditions.length > 0 ? newConditions : [],
         minPrice: newMin,
         maxPrice: newMax,
       });
@@ -41,22 +43,31 @@ export default function Filter({ page, onFilterChange }) {
       ? [...selectedCategories, val]
       : selectedCategories.filter((id) => id !== val);
     setSelectedCategories(updated);
-    emitChange(updated, selectedBrand, minPrice, maxPrice);
+    emitChange(updated, selectedBrand, selectedConditions, minPrice, maxPrice);
   }
 
   function handleBrandChange(e) {
     setSelectedBrand(e.target.value);
-    emitChange(selectedCategories, e.target.value, minPrice, maxPrice);
+    emitChange(selectedCategories, e.target.value, selectedConditions, minPrice, maxPrice);
+  }
+
+  function handleConditionChange(e) {
+    const val = e.target.value;
+    const updated = e.target.checked
+      ? [...selectedConditions, val]
+      : selectedConditions.filter((c) => c !== val);
+    setSelectedConditions(updated);
+    emitChange(selectedCategories, selectedBrand, updated, minPrice, maxPrice);
   }
 
   function handleMinPrice(e) {
     setMinPrice(e.target.value);
-    emitChange(selectedCategories, selectedBrand, e.target.value, maxPrice);
+    emitChange(selectedCategories, selectedBrand, selectedConditions, e.target.value, maxPrice);
   }
 
   function handleMaxPrice(e) {
     setMaxPrice(e.target.value);
-    emitChange(selectedCategories, selectedBrand, minPrice, e.target.value);
+    emitChange(selectedCategories, selectedBrand, selectedConditions, minPrice, e.target.value);
   }
 
   function handleName(name) {
@@ -84,11 +95,11 @@ export default function Filter({ page, onFilterChange }) {
         <div className={page.filterLine}></div>
         
         <div className={page.filterConditionList}>
-          <input type="checkbox" id="filterCondition1" name="conditions" value="új" />
+          <input type="checkbox" id="filterCondition1" name="conditions" value="Új" onChange={handleConditionChange} />
           <label htmlFor="filterCondition1">Új</label>
-          <input type="checkbox" id="filterCondition2" name="conditions" value="használt" />
+          <input type="checkbox" id="filterCondition2" name="conditions" value="Használt" onChange={handleConditionChange} />
           <label htmlFor="filterCondition2">Használt</label>
-          <input type="checkbox" id="filterCondition3" name="conditions" value="sérült" />
+          <input type="checkbox" id="filterCondition3" name="conditions" value="Sérült" onChange={handleConditionChange} />
           <label htmlFor="filterCondition3">Sérült</label>
         </div>
       </div>

@@ -10,8 +10,13 @@ export default function Ads({ page, filters = {} }) {
   useEffect(() => {
     async function fetchAds() {
       const params = new URLSearchParams();
-      if (filters.categoryId) params.append("categoryId", filters.categoryId);
+      if (filters.categoryIds && filters.categoryIds.length > 0) {
+        params.append("categoryIds", filters.categoryIds.join(","));
+      }
       if (filters.brandId) params.append("brandId", filters.brandId);
+      if (filters.conditions && filters.conditions.length > 0) {
+        params.append("conditions", filters.conditions.join(","));
+      }
       if (filters.minPrice) params.append("minPrice", filters.minPrice);
       if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
       if (filters.q) params.append("q", filters.q);
@@ -30,8 +35,9 @@ export default function Ads({ page, filters = {} }) {
     }
     fetchAds();
   }, [
-    filters.categoryId,
+    filters.categoryIds,
     filters.brandId,
+    filters.conditions,
     filters.minPrice,
     filters.maxPrice,
     filters.q,

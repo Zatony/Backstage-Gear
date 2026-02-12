@@ -8,14 +8,16 @@ import Ads from "../components/ads";
 export default function Products(){
     const [searchParams] = useSearchParams();
     const initialQuery = searchParams.get("q") || "";
-    const initialCategoryId = searchParams.get("categoryId") || "";
+    const initialCategoryIds = searchParams.get("categoryIds") ? searchParams.get("categoryIds").split(",") : [];
     const initialBrandId = searchParams.get("brandId") || "";
+    const initialConditions = searchParams.get("conditions") ? searchParams.get("conditions").split(",") : [];
     const initialMinPrice = searchParams.get("minPrice") || "";
     const initialMaxPrice = searchParams.get("maxPrice") || "";
     const [filters, setFilters] = useState({
         q: initialQuery,
-        categoryId: initialCategoryId,
+        categoryIds: initialCategoryIds,
         brandId: initialBrandId,
+        conditions: initialConditions,
         minPrice: initialMinPrice,
         maxPrice: initialMaxPrice,
     });

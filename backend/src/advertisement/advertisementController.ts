@@ -454,8 +454,9 @@ export const getFilteredAdvertisements = async (req: Request, res: Response) => 
     const connection = await db.getConnection();
     try {
         const {
-            categoryId,
+            categoryIds,
             brandId,
+            conditions,
             minPrice,
             maxPrice,
             q,
@@ -463,33 +464,42 @@ export const getFilteredAdvertisements = async (req: Request, res: Response) => 
             limit = "20",
         } = req.query;
 
-        const conditions: string[] = [];
+        const sqlConditions: string[] = [];
         const params: any[] = [];
 
 
-        if (categoryId) {
-            conditions.push("i.category_id = ?");
-            params.push(Number(categoryId));
+        if (categoryIds) {
+            const categoryArray = String(categoryIds).split(",").map(c => c.trim());
+            const categoryPlaceholders = categoryArray.map(() => "i.category_id = ?").join(" OR ");
+            sqlConditions.push(`(${categoryPlaceholders})`);
+            categoryArray.forEach(c => params.push(Number(c)));
         };
 
         if (brandId) {
-            conditions.push("i.brand_id = ?");
+            sqlConditions.push("i.brand_id = ?");
             params.push(Number(brandId));
         };
 
+        if (conditions) {
+            const conditionArray = String(conditions).split(",").map(c => c.trim());
+            const conditionPlaceholders = conditionArray.map(() => "ui.item_condition = ?").join(" OR ");
+            sqlConditions.push(`(${conditionPlaceholders})`);
+            conditionArray.forEach(c => params.push(c));
+        };
+
         if (minPrice) {
-            conditions.push("ui.price >= ?");
+            sqlConditions.push("ui.price >= ?");
             params.push(Number(minPrice));
         };
 
         if (maxPrice) {
-            conditions.push("ui.price <= ?");
+            sqlConditions.push("ui.price <= ?");
             params.push(Number(maxPrice));
         };
 
         if (q) {
             const like = `%${String(q)}%`;
-            conditions.push(`(i.name LIKE ? OR a.description LIKE ?)`);
+            sqlConditions.push(`(i.name LIKE ? OR a.description LIKE ?)`);
             params.push(like, like);
         };
 
@@ -498,7 +508,7 @@ export const getFilteredAdvertisements = async (req: Request, res: Response) => 
         const offset = (pageNumber - 1) * limitNumber;
 
         const whereClause =
-        conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+        sqlConditions.length > 0 ? `WHERE ${sqlConditions.join(" AND ")}` : "";
 
         const sql = `
             SELECT
