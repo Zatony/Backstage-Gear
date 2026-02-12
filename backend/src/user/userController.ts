@@ -38,8 +38,7 @@ export async function signIn(req: any, res: any) {
 
         const token = jwt.sign(
             {
-                id: result[0].id,
-                is_admin: adminRows[0].is_admin
+                id: result[0].id
             },
             config.jwtSecret, 
             {expiresIn: "2h"}
