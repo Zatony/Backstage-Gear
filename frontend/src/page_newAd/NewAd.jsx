@@ -18,7 +18,7 @@ export default function NewAd() {
   const brandId = useRef("");
   const condition = useRef("");
   const price = useRef("");
-  const image = useRef(null);
+  const image = useRef("");
   const availability = useRef("");
   const description = useRef("");
 
@@ -28,9 +28,7 @@ export default function NewAd() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch(
-          "http://localhost:3000/backstagegear/categories",
-        );
+        const response = await fetch("http://localhost:3000/backstagegear/categories");
         const data = await response.json();
 
         if (response.ok) setCategories(data);
@@ -40,9 +38,7 @@ export default function NewAd() {
     }
     async function fetchBrands() {
       try {
-        const response = await fetch(
-          "http://localhost:3000/backstagegear/brands",
-        );
+        const response = await fetch("http://localhost:3000/backstagegear/brands");
         const data = await response.json();
 
         if (response.ok) setBrands(data);
@@ -75,6 +71,8 @@ export default function NewAd() {
       condition: condition.current.value,
       description: description.current.value,
     };
+
+    const imageFile = image.current.files[0] ? [image.current.files[0].name] : [];
     console.log("Hirdetés adatai:", newAdData);
 
     setSubmitting(true);
@@ -86,7 +84,7 @@ export default function NewAd() {
           "Content-Type": "application/json",
           "x-access-token": token,
         },
-        body: JSON.stringify(newAdData),
+        body: JSON.stringify(newAdData, imageFile)
       });
 
       if (res.ok) {

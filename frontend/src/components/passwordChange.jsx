@@ -36,6 +36,7 @@ export default function PasswordChange({ onClose }) {
   async function handlePasswordChange(e) {
     e.preventDefault();
 
+
     if (!isEdited.currentPassword || !isValid.currentPassword ||
         !isEdited.newPassword || !isValid.newPassword ||
         !isEdited.newPasswordRepeat || !isValid.newPasswordRepeat) {
@@ -55,13 +56,15 @@ export default function PasswordChange({ onClose }) {
     }
 
     const passwordData = {
-      currentPassword: refCurrentPassword.current.value,
-      newPassword: refNewPassword.current.value,
+      //currentPassword: refCurrentPassword.current.value,
+      password: refNewPassword.current.value,
     };
 
+    console.log("Jelszó módosítás adatai:", passwordData);
+
     try {
-      const response = await fetch("http://localhost:3000/backstagegear/me/change_password", {
-        method: "PUT",
+      const response = await fetch("http://localhost:3000/backstagegear/me/my_profile/update_password", {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           "x-access-token": token

@@ -172,6 +172,7 @@ export default function ViewAd() {
             <h2 className={viewAd.adTitle}>{getAd.item_name}</h2>
             <div className={viewAd.adMeta}>{getAd.date_of_ad !== undefined && getAd.date_of_ad !== null ? getAd.date_of_ad.substring(0, 16) : "-"}</div>
             <div className={viewAd.adDescBlock}>
+              <div className={viewAd.adDescLabel}>{`Állapot: ${getAd.item_condition}`}</div>
               <div className={viewAd.adDescLabel}>Leírás:</div>
               <div className={viewAd.adDescText}>{getAd.description}</div>
             </div>

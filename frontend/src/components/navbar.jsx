@@ -119,6 +119,10 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
   }
 
   function onCartOpen() {
+    if (!token) {
+      alert ("Jelentkezz vagy regisztrálj a művelethez!");
+      return;
+    }
     navigate("/cart");
   }
   return (
