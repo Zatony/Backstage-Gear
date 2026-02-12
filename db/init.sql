@@ -407,6 +407,27 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
+DELIMITER $$
+CREATE FUNCTION pwd_encrypt(pwd VARCHAR(100))
+RETURNS VARCHAR(255) DETERMINISTIC
+RETURN SHA2(CONCAT(pwd, 'sozas'), 256);
+$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER insert_user BEFORE INSERT ON users
+FOR EACH ROW
+SET NEW.password = pwd_encrypt(NEW.password);
+$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER insert_user_on_update BEFORE UPDATE ON users
+FOR EACH ROW
+SET NEW.password = pwd_encrypt(NEW.password);
+$$
+DELIMITER ;
+
 --
 -- A tábla adatainak kiíratása `users`
 --
@@ -417,6 +438,20 @@ INSERT INTO `users` (`id`, `is_admin`, `name`, `username`, `email`, `phone_numbe
 (3, 0, 'Tóth Sándor', 'toth.sandor', 'sandor.toth@example.com', '36705551212', '1978-07-05', 'jelszo2'),
 (4, 0, 'Major Zsuzsanna', 'major.zsuzsi', 'zsuzsa.major@example.com', '36204443333', '1989-02-18', 'jelszo3'),
 (5, 0, 'János Péter', 'janos.peter', 'peter.janos@example.com', '36302109876', '2000-06-22', 'jelszo4');
+
+DELIMITER $$
+CREATE FUNCTION login(email VARCHAR(255), password VARCHAR(255))
+RETURNS INTEGER DETERMINISTIC
+BEGIN
+    DECLARE OK INTEGER DEFAULT 0;
+    SELECT id INTO OK 
+    FROM users 
+    WHERE users.email COLLATE utf8mb4_hungarian_ci = email COLLATE utf8mb4_hungarian_ci
+      AND users.password COLLATE utf8mb4_hungarian_ci = pwd_encrypt(password) COLLATE utf8mb4_hungarian_ci;
+    RETURN OK;
+END;
+$$
+DELIMITER ;
 
 --
 -- Indexek a kiírt táblákhoz
