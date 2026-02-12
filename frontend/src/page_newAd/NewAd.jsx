@@ -19,7 +19,6 @@ export default function NewAd() {
   const condition = useRef("");
   const price = useRef("");
   const image = useRef("");
-  const availability = useRef("");
   const description = useRef("");
 
   const [error, setError] = useState("");
@@ -128,7 +127,6 @@ export default function NewAd() {
 
           <FormInput page={styles} label="Ár" type="number" refInput={price} min="0" />
           <FormInput page={styles} label="Kép feltöltése" type="file" accept="image/*" refInput={image} />
-          <FormInput page={styles} label="Elérhetőség" refInput={availability} />
           <TextAreaField page={styles} label="Leírás" refInput={description} />
 
           <div className={styles.submitBtnWrapper}>
