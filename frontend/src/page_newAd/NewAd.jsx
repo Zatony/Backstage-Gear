@@ -84,6 +84,8 @@ export default function NewAd() {
         body: formData
       });
 
+      console.log(formData);
+
       if (res.ok) {
         alert("Hirdetés sikeresen létrehozva!");
         navigate("/my_ads");
