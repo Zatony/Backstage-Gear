@@ -1,15 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./Root";
 import Home from "./page_home/Home";
-import About from "./page_about/About";
-import Rules from "./page_rules/Rules";
+import About from "./page_about/about";
+import Rules from "./page_rules/rules";
 import Products from "./page_products/Products";
 import List from "./page_list/List";
 import MyAds from "./page_myAds/MyAds";
 import Profile from "./page_profile/Profile";
 import NewAd from "./page_newAd/NewAd";
 import ViewAd from "./page_ViewAd/viewAd";
-import EditAd from "./page_EditAd/editAd";
+import EditAd from "./page_editAd/EditAd";
 import Message from "./page_message/Message";
 import { tokenLoader, checkAuthLoader, checkEditAdAccess } from "./util/auth";
 import { action as logoutAction } from "./util/logout";
