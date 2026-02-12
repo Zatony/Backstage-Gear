@@ -41,3 +41,21 @@ const uploadFiles = multer({
 
 export const uploadMiddleware = util.promisify(uploadFile);
 export const uploadMiddlewareMultiple = util.promisify(uploadFiles);
+
+export const uploadMiddlewareExpress = (req: any, res: any, next: any) => {
+    uploadFile(req, res, (err: any) => {
+        if (err) {
+            return res.status(400).json({ error: err.message || "Fájl feltöltése sikertelen." });
+        }
+        next();
+    });
+};
+
+export const uploadMiddlewareMultipleExpress = (req: any, res: any, next: any) => {
+    uploadFiles(req, res, (err: any) => {
+        if (err) {
+            return res.status(400).json({ error: err.message || "Fájlok feltöltése sikertelen." });
+        }
+        next();
+    });
+};

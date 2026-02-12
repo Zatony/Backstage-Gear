@@ -4,6 +4,7 @@ import { getAds, getAdDatasById, getUserAds, getUserAdById,
     deleteAdFromReportedAdsById, getBrands, postNewAdvertisement, 
     getFilteredAdvertisements, deleteOwnAdById, deleteUsersAdById, patchAdById } from "./advertisementController";
 import { verifyToken, requireAdmin } from "../middleware/auth";
+import { uploadMiddlewareMultipleExpress } from "../middleware/upload";
 
 const router: Router = Router();
 
@@ -16,8 +17,8 @@ router.get('/backstagegear/me/my_ads', verifyToken, getUserAds);
 router.get('/backstagegear/me/my_ads/:adId', verifyToken, getUserAdById);
 router.get('/backstagegear/me/my_ads/update_ad/:adId', verifyToken, getUserAdById);
 router.patch('/backstagegear/me/ads/:adId', verifyToken, reportAdById);
-router.post('/backstagegear/me/new_ad', verifyToken, postNewAdvertisement);
-router.patch('/backstagegear/me/my_ads/update_ad/:adId', verifyToken, patchAdById);
+router.post('/backstagegear/me/new_ad', verifyToken, uploadMiddlewareMultipleExpress, postNewAdvertisement);
+router.patch('/backstagegear/me/my_ads/update_ad/:adId', verifyToken, uploadMiddlewareMultipleExpress, patchAdById);
 router.delete('/backstagegear/me/my_ads/:adId', verifyToken, deleteOwnAdById);
 
 // Admin

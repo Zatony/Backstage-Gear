@@ -16,8 +16,8 @@ const pool = mysql.createPool({
 // (tables use utf8mb4_hungarian_ci in init.sql)
 (pool as any).on?.('connection', (connection: any) => {
   // Set character set and collation for each new connection
-  connection.query("SET NAMES utf8mb4 COLLATE 'utf8mb4_hungarian_ci'").catch(() => {});
-  connection.query("SET collation_connection = 'utf8mb4_hungarian_ci'").catch(() => {});
+  connection.promise().query("SET NAMES utf8mb4 COLLATE 'utf8mb4_hungarian_ci'").catch(() => {});
+  connection.promise().query("SET collation_connection = 'utf8mb4_hungarian_ci'").catch(() => {});
 });
 
 export default pool;

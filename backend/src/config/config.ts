@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import path from "path";
 
 dotenv.config();
 
@@ -20,8 +19,8 @@ const config: any = {
     baseUrl: process.env.BASE_URL || "http://localhost:3000",
     database: new DBConfig(),
     maxSize: parseInt(process.env.MAX_FILE_SIZE ?? "2097152"),
-    baseDir: path.win32.resolve(__dirname, "../../"),
-    uploadDir: process.env.UPLOAD_DIR_NAME ?? "/uploads/"
+    baseDir: process.cwd(),
+    uploadDir: "/uploads/"
 };
 
 export default config;

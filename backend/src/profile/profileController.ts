@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import { uploadMiddleware } from "../middleware/upload";
 import fs from "fs";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
@@ -153,12 +152,6 @@ export async function voteProfileById(req: any, res: any) {
 
 
 export async function patchProfileById(req: any, res: any) {
-    try {
-        await uploadMiddleware(req, res);
-    } catch (err) {
-        return res.status(400).send({ error: "Fájlok feltöltése sikertelen." });
-    }
-
     const userId = parseInt(req.user.id);
     const connection = await mysql.createConnection(config.database);
 

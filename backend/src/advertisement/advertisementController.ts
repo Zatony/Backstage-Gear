@@ -4,7 +4,6 @@ import config from "../config/config";
 import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
 import db from "../database/db";
 import { RowDataPacket } from "mysql2";
-import { uploadMiddlewareMultiple } from "../middleware/upload";
 import fs from "fs";
 
 
@@ -329,12 +328,6 @@ export async function getBrands(__req: any, res: any) {
 
 
 export async function postNewAdvertisement(req: any, res: any) {
-    try {
-        await uploadMiddlewareMultiple(req, res);
-    } catch (err) {
-        return res.status(400).send({ error: "Fájlok feltöltése sikertelen." });
-    }
-
     const userId = parseInt(req.user.id);
 
     bodyIsUndefined(req, res);
@@ -458,6 +451,7 @@ export async function postNewAdvertisement(req: any, res: any) {
 
 
 export const getFilteredAdvertisements = async (req: Request, res: Response) => {
+    const connection = await db.getConnection();
     try {
         const {
             categoryId,
@@ -529,7 +523,7 @@ export const getFilteredAdvertisements = async (req: Request, res: Response) => 
             LIMIT ${limitNumber} OFFSET ${offset}
         `;
 
-        const [rows] = await db.execute<RowDataPacket[]>(sql, params);
+        const [rows] = await connection.query<RowDataPacket[]>(sql, params);
 
         const formattedResults = rows.map((ad: any) => ({
             ...ad,
@@ -549,6 +543,8 @@ export const getFilteredAdvertisements = async (req: Request, res: Response) => 
         });
     } catch (error) {
         console.error(error);
+    } finally {
+        connection.release();
     }
 };
 
@@ -617,12 +613,6 @@ export async function deleteOwnAdById(req: any, res: any) {
 
 
 export async function patchAdById(req: any, res: any) {
-    try {
-        await uploadMiddlewareMultiple(req, res);
-    } catch (err) {
-        return res.status(400).send({ error: "Fájlok feltöltése sikertelen." });
-    }
-
     const adId = parseInt(req.params.adId);
     const userId = parseInt(req.user.id);
 
