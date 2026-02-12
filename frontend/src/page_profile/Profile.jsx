@@ -4,21 +4,7 @@ import { getAuthToken } from "../util/auth";
 import { useNavigate } from "react-router-dom";
 import PasswordChange from "../components/passwordChange";
 import FormInput from "../components/formInput";
-
-function ProfileField({ label, value, isReadOnly = true, refInput, type = "text" }) {
-  return (
-    <div className={profile.profileField}>
-      <span className={profile.profileFieldLabel}>{label}</span>
-      <input
-        className={profile.profileFieldInput}
-        defaultValue={value}
-        readOnly={isReadOnly}
-        ref={refInput}
-        type={type}
-      />
-    </div>
-  );
-}
+import ProfileField from "../components/profileField";
 
 function formatHungarianPhone(input) {
   if (!input) return "";
@@ -71,7 +57,7 @@ export default function Profile() {
 
   const username = useRef(null);
   const phoneNumber = useRef(null);
-  const image = useRef(null);
+  const image = useRef("#");
 
   useEffect(() => {
     async function fetchUser() {
@@ -118,7 +104,6 @@ export default function Profile() {
       if (response.ok) {
         alert("Profil sikeresen törölve!");
         localStorage.removeItem("token");
-        localStorage.removeItem("is_admin");
         localStorage.removeItem("expiration");
         window.dispatchEvent(new Event("authChanged"));
         navigate("/");
@@ -202,8 +187,8 @@ export default function Profile() {
           </div>
 
           <div className={profile.profileFields}>
-            <ProfileField label="Felhasználónév:" value={userData.username} isReadOnly={!isEditing} refInput={username} />
-            <ProfileField label="Telefonszám:" value={formatHungarianPhone(userData.phone)} isReadOnly={!isEditing} refInput={phoneNumber} />
+            <ProfileField page={profile} label="Felhasználónév:" value={userData.username} isReadOnly={!isEditing} refInput={username} />
+            <ProfileField page={profile} label="Telefonszám:" value={formatHungarianPhone(userData.phone)} isReadOnly={!isEditing} refInput={phoneNumber} />
             <FormInput page={profile} label="Kép feltöltése" type="file" accept="image/*" refInput={image} disabled={!isEditing} />
           </div>
         </div>

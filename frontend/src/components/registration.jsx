@@ -85,7 +85,6 @@ export default function Registration({ onClose, onRegister }) {
 
         const data = await response.json();
         localStorage.setItem('token', data.token);
-        localStorage.setItem('is_admin', data.is_admin || 0);
 
         const expiration = new Date();
         expiration.setHours(expiration.getHours() + 2);

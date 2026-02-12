@@ -10,6 +10,7 @@ import Profile from "./page_profile/Profile";
 import NewAd from "./page_newAd/NewAd";
 import ViewAd from "./page_ViewAd/viewAd";
 import EditAd from "./page_EditAd/editAd";
+import Message from "./page_message/Message";
 import { tokenLoader, checkAuthLoader, checkEditAdAccess } from "./util/auth";
 import { action as logoutAction } from "./util/logout";
 import ReportedAds from "./page_reportedAds/ReportedAds";
@@ -56,13 +57,18 @@ export default function Routing() {
           loader: checkAuthLoader,
         },
         {
+          path: "/new_ad",
+          element: <NewAd />,
+          loader: checkAuthLoader,
+        },
+        {
           path: "/my_profile",
           element: <Profile />,
           loader: checkAuthLoader,
         },
         {
-          path: "/new_ad",
-          element: <NewAd />,
+          path: "/message",
+          element: <Message />, 
           loader: checkAuthLoader,
         },
         {

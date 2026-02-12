@@ -10,9 +10,6 @@ import UserDropdownMenu from "./userDropdownMenu";
 export default function NavBar({ callLogin, showLogin, handleCloseLogin, showRegister, handleCloseRegister, handleShowRegister, handleShowLogin, }) {
   const tokenFromLoader = useRouteLoaderData("root");
   const [token, setToken] = useState(tokenFromLoader);
-  const [isAdmin, setIsAdmin] = useState(
-    localStorage.getItem("is_admin") == 1 ? true : false,
-  );
   const [userData, setUserData] = useState([]);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, right: 0 });
@@ -22,7 +19,6 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
   useEffect(() => {
     function handleAuthChange() {
       setToken(localStorage.getItem("token"));
-      setIsAdmin(localStorage.getItem("is_admin") == 1 ? true : false);
       setIsProfileOpen(false);
     }
     window.addEventListener("authChanged", handleAuthChange);
@@ -30,7 +26,6 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
   }, []);
 
   console.log("localStorage: ", localStorage);
-  console.log("isAdmin: ", isAdmin);
   useEffect(() => {
     async function fetchUserProfile() {
       if (!token) return;
@@ -152,7 +147,6 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
             ref={dropdownRef}
             userData={userData}
             dropdownPos={dropdownPos}
-            isAdmin={isAdmin}
             logoutIcon={logoutIco}
             onClose={() => setIsProfileOpen(false)}
           />

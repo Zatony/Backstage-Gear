@@ -53,14 +53,12 @@ export default function Login({ onClose, onShowRegister }) {
         //console.log(response);
         const data = await response.json();
         localStorage.setItem('token', data.token);
-        localStorage.setItem('is_admin', data.is_admin);
 
         const expiration = new Date();
         expiration.setHours(expiration.getHours() + 2);
         localStorage.setItem('expiration', expiration.toISOString());
 
         console.log("token: " + data.token);
-        console.log("is_admin: " + data.is_admin);
         console.log("Sikeres belépés!");
         onClose();
         try{ window.dispatchEvent(new Event('authChanged')); }catch(e){}

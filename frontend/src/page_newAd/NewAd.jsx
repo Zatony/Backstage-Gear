@@ -63,17 +63,16 @@ export default function NewAd() {
       return;
     }
 
-    const newAdData = {
-      categoryId: categoryId.current.value,
-      brandId: brandId.current.value,
-      itemName: itemName.current.value,
-      price: price.current.value,
-      condition: condition.current.value,
-      description: description.current.value,
-    };
-
-    const imageFile = image.current.files[0] ? [image.current.files[0].name] : [];
-    console.log("Hirdetés adatai:", newAdData);
+    const formData = new FormData();
+    formData.append("categoryId", categoryId.current.value);
+    formData.append("brandId", brandId.current.value);
+    formData.append("itemName", itemName.current.value);
+    formData.append("price", price.current.value);
+    formData.append("condition", condition.current.value);
+    formData.append("description", description.current.value);
+    if (image.current.files[0]) {
+      formData.append("files", image.current.files[0]);
+    }
 
     setSubmitting(true);
 
@@ -81,10 +80,9 @@ export default function NewAd() {
       const res = await fetch("http://localhost:3000/backstagegear/me/new_ad", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           "x-access-token": token,
         },
-        body: JSON.stringify(newAdData, imageFile)
+        body: formData
       });
 
       if (res.ok) {
