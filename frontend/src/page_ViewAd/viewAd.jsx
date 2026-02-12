@@ -224,25 +224,33 @@ export default function ViewAd() {
             Ft
           </span>
           <div className={viewAd.buttonRow}>
-            {isMyAd && (
-              <>
-                <button
-                  onClick={handleToggle}
-                  className={ isMyAd ? viewAd.myAd : inCart ? viewAd.inCart : viewAd.notInCart }>
-                  {isMyAd ? "Módosítás" : inCart ? "Eltávolítás a kosárból" : "Kosárba"}
-                </button>
-                <button onClick={() => handleDeleteAd(getAd.id)} className={viewAd.reportBtn}>
-                  Hirdetés törlése
-                </button>
-              </>
-            )}
+            <button
+              onClick={() => isMyAd ? nav(`/edit_ad?id=${getAd.id}`) : handleToggle()}
+              className={ isMyAd ? viewAd.myAd : inCart ? viewAd.inCart : viewAd.notInCart }>
+              {isMyAd ? "Módosítás" : inCart ? "Eltávolítás a kosárból" : "Kosárba"}
+            </button>
 
-            {!isMyAd && (
+            {isMyAd ? (
+              <button onClick={() => handleDeleteAd(getAd.id)} className={viewAd.reportBtn}>
+                Hirdetés törlése
+              </button>
+            ) : (
               <>
                 <button onClick={handleReport} className={viewAd.reportBtn}>
                   Hirdetés jelentése
                 </button>
-                <button className={viewAd.reachOutBtn}>Érdeklődés</button>
+                <button 
+                  className={viewAd.reachOutBtn}
+                  onClick={() => nav("/message", { 
+                    state: { 
+                      recipientId: getAd.user_id, 
+                      recipientName: userData.username,
+                      adTitle: getAd.item_name
+                    } 
+                  })}
+                >
+                  Érdeklődés
+                </button>
               </>
             )}
           </div>
