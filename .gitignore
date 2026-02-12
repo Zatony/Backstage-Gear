@@ -1,0 +1,19 @@
+# environment variables
+.env
+*.env
+
+# docker
+docker-compose.override.yml
+
+# volumes
+db_data/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+
+# node
+node_modules/
