@@ -137,36 +137,84 @@ export async function signUp(req: any, res: any) {
 };
 
 
-export async function deleteOwnUserById(req: any, res: any){
+export async function getIsAdminById(req: any, res: any){
     const userId: number = parseInt(req.user.id);
 
     const connection = await mysql.createConnection(config.database);
 
     try{
+        const [adminRows] = await connection.query(
+            'SELECT is_admin FROM users WHERE id = ?',
+            [userId]
+        ) as Array<any>;
+
+        if(adminRows.length > 0){
+            if(adminRows[0].is_admin === 1){
+                res.status(200).send({is_admin: true});
+                return;
+            }
+            else{
+                res.status(200).send({is_admin: false});
+                return;
+            }
+        };
+
+        res.status(404).send("Nem létezik ilyen azonosítójú felhasználó.");
+    }
+    catch(err){
+        console.log(err);
+    }
+    finally{
+        await connection.end();
+    }
+};
+
+
+export async function deleteOwnUserById(req: any, res: any) {
+    const userId: number = parseInt(req.user.id);
+
+    const connection = await mysql.createConnection(config.database);
+
+    try {
         await connection.beginTransaction();
 
-        const [rows]: any = await connection.query(`
-            SELECT DISTINCT ui.item_id
-            FROM used_items ui
-            INNER JOIN advertisements a ON a.used_item_id = ui.id
-            WHERE a.user_id = ?
-        `, [userId]);
+        const [ads]: any = await connection.query(
+            `SELECT id, used_item_id 
+             FROM advertisements 
+             WHERE user_id = ?`,
+            [userId]
+        );
 
-        const itemIds = rows.map((r: any) => r.item_id);
+        const usedItemIds = ads.map((a: any) => a.used_item_id);
 
-        await connection.query(`
-            DELETE ui
-            FROM used_items ui
-            INNER JOIN advertisements a ON a.used_item_id = ui.id
-            WHERE a.user_id = ?
-        `, [userId]);
+        await connection.query(
+            `DELETE FROM advertisements WHERE user_id = ?`,
+            [userId]
+        );
 
-        if (itemIds.length > 0) {
-            await connection.query(
-                `DELETE FROM items WHERE id IN (?)`,
-                [itemIds]
+        if (usedItemIds.length > 0) {
+
+            const [itemRows]: any = await connection.query(
+                `SELECT item_id 
+                 FROM used_items 
+                 WHERE id IN (?)`,
+                [usedItemIds]
             );
-        };
+
+            const itemIds = itemRows.map((r: any) => r.item_id);
+
+            await connection.query(
+                `DELETE FROM used_items WHERE id IN (?)`,
+                [usedItemIds]
+            );
+
+            if (itemIds.length > 0) {
+                await connection.query(
+                    `DELETE FROM items WHERE id IN (?)`,
+                    [itemIds]
+                );
+            }
+        }
 
         await connection.query(
             `DELETE FROM users WHERE id = ?`,
@@ -174,13 +222,14 @@ export async function deleteOwnUserById(req: any, res: any){
         );
 
         await connection.commit();
+
         res.status(204).send();
-    }
-    catch(err){
+
+    } catch (err) {
         await connection.rollback();
-        console.log(err);
-    }
-    finally{
+        console.error(err);
+        res.status(500).send("A felhasználó törlése nem sikerült.");
+    } finally {
         await connection.end();
     }
 };
@@ -242,28 +291,38 @@ export async function deleteUserById(req: any, res: any) {
             return;
         };
 
-        const [rows]: any = await connection.query(`
-            SELECT DISTINCT ui.item_id
-            FROM used_items ui
-            INNER JOIN advertisements a ON a.used_item_id = ui.id
-            WHERE a.user_id = ?
-        `, [userId]);
+        const [ads]: any = await connection.query(
+            `SELECT id, used_item_id FROM advertisements WHERE user_id = ?`,
+            [userId]
+        );
 
-        const itemIds = rows.map((r: any) => r.item_id);
+        const usedItemIds = ads.map((a: any) => a.used_item_id);
+        
+        await connection.query(
+            `DELETE FROM advertisements WHERE user_id = ?`,
+            [userId]
+        );
 
-        await connection.query(`
-            DELETE ui
-            FROM used_items ui
-            INNER JOIN advertisements a ON a.used_item_id = ui.id
-            WHERE a.user_id = ?
-        `, [userId]);
+        if (usedItemIds.length > 0) {
+            await connection.query(
+                `DELETE FROM used_items WHERE id IN (?)`,
+                [usedItemIds]
+            );
+        }
+
+        const [itemRows]: any = await connection.query(
+            `SELECT item_id FROM used_items WHERE id IN (?)`,
+            [usedItemIds]
+        );
+
+        const itemIds = itemRows.map((r: any) => r.item_id);
 
         if (itemIds.length > 0) {
             await connection.query(
                 `DELETE FROM items WHERE id IN (?)`,
                 [itemIds]
             );
-        };
+        }
 
         await connection.query(
             `DELETE FROM users WHERE id = ?`,
