@@ -680,6 +680,229 @@ ALTER TABLE `profile_votes`
 --
 ALTER TABLE `used_items`
   ADD CONSTRAINT `used_items_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`);
+
+-- =====================================================
+-- MOCK DATA: 15 New Profiles with 2-4 Ads Each
+-- =====================================================
+
+--
+-- Insert 15 new users
+--
+INSERT INTO `users` (`id`, `is_admin`, `name`, `username`, `email`, `phone_number`, `date_of_birth`, `password`) VALUES
+(6, 0, 'Kiss Gábor', 'kiss.gabor', 'kiss.gabor@example.com', '36701234567', '1995-03-15', 'jelszo5'),
+(7, 0, 'Szabo Rita', 'szabo.rita', 'szabo.rita@example.com', '36302345678', '1988-07-22', 'jelszo6'),
+(8, 0, 'Molnár Attila', 'molnar.attila', 'molnar.attila@example.com', '36704556789', '1992-11-05', 'jelszo7'),
+(9, 0, 'Varga Katalin', 'varga.katalin', 'varga.katalin@example.com', '36703667890', '1985-01-18', 'jelszo8'),
+(10, 0, 'Kovacs Dani', 'kovacs.dani', 'kovacs.dani@example.com', '36301778901', '1999-06-30', 'jelszo9'),
+(11, 0, 'Nemes Zsolt', 'nemes.zsolt', 'nemes.zsolt@example.com', '36707889012', '1990-09-12', 'jelszo10'),
+(12, 0, 'Farkas Júlia', 'farkas.julia', 'farkas.julia@example.com', '36309990123', '1987-04-28', 'jelszo11'),
+(13, 0, 'Horvath Bence', 'horvath.bence', 'horvath.bence@example.com', '36708001234', '1993-12-03', 'jelszo12'),
+(14, 0, 'Csondor Eva', 'csondor.eva', 'csondor.eva@example.com', '36302112345', '1989-05-14', 'jelszo13'),
+(15, 0, 'Balazs Peter', 'balazs.peter', 'balazs.peter@example.com', '36709223456', '1991-08-25', 'jelszo14'),
+(16, 0, 'Takacs Beatrix', 'takacs.beatrix', 'takacs.beatrix@example.com', '36307334567', '1986-02-11', 'jelszo15'),
+(17, 0, 'Marton Tamas', 'marton.tamas', 'marton.tamas@example.com', '36704445678', '1994-10-19', 'jelszo16'),
+(18, 0, 'Szendroi Andras', 'szendroi.andras', 'szendroi.andras@example.com', '36308556789', '1988-07-07', 'jelszo17'),
+(19, 0, 'Bodnár Mónika', 'bodnar.monika', 'bodnar.monika@example.com', '36706667890', '1992-03-21', 'jelszo18'),
+(20, 0, 'Lengyel Csaba', 'lengyel.csaba', 'lengyel.csaba@example.com', '36309778901', '1987-11-09', 'jelszo19');
+
+--
+-- Insert 15 new profiles for the new users
+--
+INSERT INTO `profiles` (`id`, `user_id`, `profile_picture`) VALUES
+(6, 6, 'default-profile-picture.jpg'),
+(7, 7, 'default-profile-picture.jpg'),
+(8, 8, 'default-profile-picture.jpg'),
+(9, 9, 'default-profile-picture.jpg'),
+(10, 10, 'default-profile-picture.jpg'),
+(11, 11, 'default-profile-picture.jpg'),
+(12, 12, 'default-profile-picture.jpg'),
+(13, 13, 'default-profile-picture.jpg'),
+(14, 14, 'default-profile-picture.jpg'),
+(15, 15, 'default-profile-picture.jpg'),
+(16, 16, 'default-profile-picture.jpg'),
+(17, 17, 'default-profile-picture.jpg'),
+(18, 18, 'default-profile-picture.jpg'),
+(19, 19, 'default-profile-picture.jpg'),
+(20, 20, 'default-profile-picture.jpg');
+
+--
+-- Insert new items for mock ads
+--
+INSERT INTO `items` (`id`, `category_id`, `brand_id`, `name`) VALUES
+(7, 1, 16, 'Fender Stratocaster HSS'),
+(8, 1, 18, 'Gibson Les Paul elektromos gitár'),
+(9, 5, 3, 'Ampeg BA110 basszus erősítő'),
+(10, 2, 43, 'Taylor GS Mini akusztikus gitár'),
+(11, 3, 24, 'Korg Volca Keys szintetizátor'),
+(12, 5, 27, 'Marshall MG100HCFX fejegység'),
+(13, 2, 31, 'Ortega R121 klasszikus gitár'),
+(14, 4, 25, 'Ludwig Classic Maple dobfelszerelés'),
+(15, 3, 36, 'Roland TR-909 drum machine'),
+(16, 6, 38, 'Sennheiser e901 érzékelő mikrofon'),
+(17, 1, 40, 'Squier Stratocaster elektromos gitár'),
+(18, 5, 7, 'Boss Katana-50 MkII'),
+(19, 4, 42, 'Tama Imperialstar dobfelszerelés'),
+(20, 2, 41, 'Takamine Dreadnought Western gitár'),
+(21, 3, 29, 'Moog One szintetizátor'),
+(22, 5, 28, 'Mesa/Boogie Dual Rectifier Classic'),
+(23, 6, 39, 'Shure SM7B stúdió mikrofon'),
+(24, 1, 15, 'ESP LTD EC-256 elektromos gitár'),
+(25, 4, 33, 'Pearl Masters Maple dobszett'),
+(26, 2, 8, 'Bromo klasszikus akusztikus gitár'),
+(27, 5, 26, 'Markbass Little Mark III basszus erősítő');
+
+--
+-- Insert used_items for the new items
+--
+INSERT INTO `used_items` (`id`, `item_id`, `price`, `item_condition`) VALUES
+(7, 7, 95000, 'Új'),
+(8, 8, 130000, 'Használt'),
+(9, 9, 75000, 'Új'),
+(10, 10, 200000, 'Használt'),
+(11, 11, 65000, 'Sérült'),
+(12, 12, 180000, 'Új'),
+(13, 13, 85000, 'Használt'),
+(14, 14, 350000, 'Sérült'),
+(15, 15, 120000, 'Új'),
+(16, 16, 45000, 'Új'),
+(17, 17, 125000, 'Használt'),
+(18, 18, 140000, 'Új'),
+(19, 19, 280000, 'Használt'),
+(20, 20, 105000, 'Új'),
+(21, 21, 95000, 'Sérült'),
+(22, 22, 520000, 'Új'),
+(23, 23, 55000, 'Használt'),
+(24, 24, 110000, 'Új'),
+(25, 25, 165000, 'Használt'),
+(26, 26, 75000, 'Új'),
+(27, 27, 310000, 'Sérült');
+
+--
+-- Insert mock advertisements
+--
+INSERT INTO `advertisements` (`id`, `user_id`, `used_item_id`, `is_reported`, `description`, `date_of_ad`) VALUES
+(7, 6, 7, 0, 'Szép állapotban, eredeti dobozzal és papírokkal. Van kis karc csak a test hátulján.', '2025-01-20 14:30:45'),
+(8, 6, 8, 0, 'Klasszikus rock hangulat, kiváló állapot. Alkalmas kezdőknek és haladó játékosoknak is.', '2025-02-05 10:15:22'),
+(9, 6, 9, 0, 'Kompakt erősítő, tökéletes szobahasználathoz. 5W, 2 csatorna, hatás processzor.', '2025-02-18 16:45:30'),
+(10, 7, 10, 0, 'Prémium klasszikus gitár, mellékelt case és cleaner. Professzionális minőség.', '2025-01-15 09:20:15'),
+(11, 7, 11, 1, 'Kompakt szintetizátor, 16-track sequencer, 100 hang. USB MIDI támogatás.', '2025-02-10 11:30:00'),
+(12, 7, 12, 0, 'Nagy teljesítményű gitárerősítő, 100W, 2 csatorna, Reverb. Szép állapot.', '2025-02-22 13:45:20'),
+(13, 8, 13, 0, 'Német kézműves dobfelszerelés, maple shell, szuperb hang. Kevés használt.', '2025-01-25 15:20:45'),
+(14, 8, 14, 0, 'Fafajta струнолу, kiváló hangtartomány. Oka a vétel: hobbim vált munkává.', '2025-02-08 12:10:30'),
+(15, 8, 15, 0, 'Digitális szintetizátor 61 billentyu, 900+ hang bank, USB-s conectare.', '2025-02-20 10:00:00'),
+(16, 8, 16, 0, 'Profi minőségű stúdió mikrofon rendszer. Teljes kiépítés, kardioid szenzor.', '2025-03-01 14:30:15'),
+(17, 9, 17, 0, 'Fender-ből licencelt közepes szintű modell. Jó intonáció, stabil frekvencia.', '2025-01-18 08:45:20'),
+(18, 9, 18, 0, 'Legújabb modell, Twin Reverb kicsinyített változata. Világszínvonalú hangzás.', '2025-02-12 16:15:40'),
+(19, 10, 19, 0, 'Vezetékkészlet, vintage ütős hangszerre. Kristálytiszta, réz kerek.', '2025-01-22 11:20:10'),
+(20, 10, 20, 0, 'Egyedi klasszikus gitár, nádkészítés, egész fa konstrukció. 20 éves gyűjtés vége.', '2025-02-05 09:30:55'),
+(21, 10, 21, 1, 'Nagy teljesítmény, ritka kínálat hazánkban. Limitált kiadás, szériaszerű.', '2025-02-25 14:50:20'),
+(22, 11, 22, 0, 'Asztali erősítő Dual Rectifier kicsi modellel. Korábbi verziója, még ritkaságnak számít.', '2025-01-30 13:15:45'),
+(23, 11, 23, 0, 'Stúdió mikrofon, rádiófrekv. típus. TV és rádió felvételekre ideális.', '2025-02-14 10:25:30'),
+(24, 12, 24, 0, 'Elektromos gitár, közepes típus Squier licencia. Kezdőknek és haladóknak egyaránt.', '2025-01-12 15:40:15'),
+(25, 12, 25, 0, 'Zenei szimbólumok, vezetékkapcsoló készlettel. Szóló és trió játékhoz egyaránt alkalmas.', '2025-02-03 12:05:00'),
+(26, 12, 26, 0, 'Klasszikus dobfelszerelés, Brazília tárgyból, szép mintázat. Professzionális minőségű.', '2025-02-16 14:30:25'),
+(27, 12, 27, 1, 'Ritkán talált teacsatorna erősítő, nagy teljesítménnyel. Szuperb vintage hang.', '2025-03-02 11:45:50'),
+(28, 13, 7, 0, 'Szintetizátor szű oszlop szerkezettel. Rezonancia és reverb hatások. Kiváló stúdió alapegység.', '2025-01-28 09:50:35'),
+(29, 13, 8, 0, 'Erősítő 50 watt, fedél nélküli típus. Moduláris felépítés, javítható az otthonában.', '2025-02-11 16:20:10'),
+(30, 13, 9, 0, 'Klasszikus gitár melegfa felsővel. Világszínvonalú értékelést kapott a szakértőktől.', '2025-02-28 13:35:45'),
+(31, 14, 10, 0, 'Mid-range szintetizátor 88 billentűvel, hammer akcióval. Kezdésre ideális.', '2025-02-01 10:15:20'),
+(32, 14, 11, 0, 'Elektronikus dobfelszerelés, USB MIDI csatlakozás. Software included. Stúdióhoz tökéletes.', '2025-02-19 15:30:50'),
+(33, 15, 12, 0, 'Prémium gitárkombó, tranzisztoros. Reverb és delay effektek. Szép hang.', '2025-01-24 14:20:35'),
+(34, 15, 13, 0, 'Akusztikus gitár, western típus, Dreadnought méret. Könnyed játékhoz ideális.', '2025-02-09 11:45:15'),
+(35, 15, 14, 0, 'Hangcsatornás fejegység, ritkán használt. Eredeti papírok megvannak.', '2025-02-24 09:30:40'),
+(36, 16, 15, 0, 'Digitális zongora, professzionális billentyűzet. 900+ hangszín bank. Midi támogatás.', '2025-01-19 13:25:50'),
+(37, 16, 16, 0, 'Kétcsatornás erősítő, szalon méretű. Nappali használathoz tökéletes.', '2025-02-06 16:10:30'),
+(38, 16, 17, 0, 'Akusztikus gitár, klasszikus méret. Óvodás és gimis gyerekeknek ideális tanulsxágára.', '2025-02-21 12:40:15'),
+(39, 16, 18, 0, 'Ritka dobszett, vintage 1980-as évekből. Collector szinten érdekes darab.', '2025-03-05 10:55:25'),
+(40, 17, 19, 0, 'Szintetizátor, kreatív funkcióval. Loop recording, arpeggiator. Elektronikus zenéhez ideális.', '2025-01-27 11:15:45'),
+(41, 17, 20, 0, 'Gitárkombó, fekete lekoat, fényes kiállapot. 30 watt teljesítmény.', '2025-02-13 14:30:20'),
+(42, 17, 21, 0, 'Jazz dobfelszerelés, barna szín, vintage stílus. Джаз és blues játékosoknak ideális.', '2025-03-01 09:45:30'),
+(43, 18, 22, 0, 'Professzionális stúdió mixerpult. 16 csatorna, USB audio. Felvételhez szükséges.', '2025-02-02 15:50:10'),
+(44, 18, 23, 0, 'Klasszikus gitár, exportőr minőség. Exportált Spanyolországból.', '2025-02-17 10:20:45'),
+(45, 19, 24, 0, 'Elektromos gitár, dél-koreaian gyártott. Semi-hollow body, klasszikus rock hangzás.', '2025-01-23 12:35:50'),
+(46, 19, 25, 0, 'Gitárátalakító, digitális processzor. 100+ effekt, hangfelvétel lehetőség.', '2025-02-07 13:50:25'),
+(47, 19, 26, 0, 'Dobfelszerelés bőbeszédű, kezdőknek ideális. Könnyű szállíthatóság, összecsukható.', '2025-02-23 11:15:40'),
+(48, 19, 27, 0, 'Szintetizátor MIDI szerverezéshez. Moduláris felépítés, bővíthetô.', '2025-03-03 15:40:15'),
+(49, 20, 7, 0, 'Mini pianista, kompakt elektromos zongora. Bluetooth lezárással. Hordozható.', '2025-01-21 14:25:35'),
+(50, 20, 8, 0, 'Gitárkombó vintage alapegész. Bútor ajánlott az állásból, kifutott modell.', '2025-02-08 16:05:50'),
+(51, 20, 9, 0, 'Akusztikus gitár Western típus, professzionális gitárista készítette. Ritkaságigényes.', '2025-02-26 09:30:20');
+
+--
+-- Link new ads to file IDs (using default-ad-picture for all)
+--
+INSERT INTO `ad_files` (`ad_id`, `file_id`) VALUES
+(7, 'default-ad-picture'),
+(8, 'default-ad-picture'),
+(9, 'default-ad-picture'),
+(10, 'default-ad-picture'),
+(11, 'default-ad-picture'),
+(12, 'default-ad-picture'),
+(13, 'default-ad-picture'),
+(14, 'default-ad-picture'),
+(15, 'default-ad-picture'),
+(16, 'default-ad-picture'),
+(17, 'default-ad-picture'),
+(18, 'default-ad-picture'),
+(19, 'default-ad-picture'),
+(20, 'default-ad-picture'),
+(21, 'default-ad-picture'),
+(22, 'default-ad-picture'),
+(23, 'default-ad-picture'),
+(24, 'default-ad-picture'),
+(25, 'default-ad-picture'),
+(26, 'default-ad-picture'),
+(27, 'default-ad-picture'),
+(28, 'default-ad-picture'),
+(29, 'default-ad-picture'),
+(30, 'default-ad-picture'),
+(31, 'default-ad-picture'),
+(32, 'default-ad-picture'),
+(33, 'default-ad-picture'),
+(34, 'default-ad-picture'),
+(35, 'default-ad-picture'),
+(36, 'default-ad-picture'),
+(37, 'default-ad-picture'),
+(38, 'default-ad-picture'),
+(39, 'default-ad-picture'),
+(40, 'default-ad-picture'),
+(41, 'default-ad-picture'),
+(42, 'default-ad-picture'),
+(43, 'default-ad-picture'),
+(44, 'default-ad-picture'),
+(45, 'default-ad-picture'),
+(46, 'default-ad-picture'),
+(47, 'default-ad-picture'),
+(48, 'default-ad-picture'),
+(49, 'default-ad-picture'),
+(50, 'default-ad-picture'),
+(51, 'default-ad-picture');
+
+--
+-- Add profile votes for realism
+--
+INSERT INTO `profile_votes` (`profile_id`, `voter_user_id`, `vote`) VALUES
+(6, 2, 1),
+(6, 3, 1),
+(7, 4, 1),
+(8, 5, 1),
+(8, 2, -1),
+(9, 3, 1),
+(10, 2, 1),
+(10, 4, 1),
+(11, 5, 1),
+(12, 2, 1),
+(12, 3, 1),
+(13, 4, 1),
+(14, 2, 1),
+(15, 3, 1),
+(15, 4, 1),
+(16, 5, 1),
+(16, 2, 1),
+(17, 3, 1),
+(18, 2, 1),
+(19, 4, 1),
+(20, 5, 1);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
