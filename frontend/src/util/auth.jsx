@@ -40,20 +40,44 @@ export async function checkEditAdAccess({ request }) {
   const adId = url.searchParams.get("id");
   const token = getAuthToken();
 
-  if (!token) 
-    return redirect("/");
+  if (!token) return redirect("/");
 
   const userId = jwtDecode(token).id;
 
   try {
-    const response = await fetch(
-      `http://localhost:3000/backstagegear/ads/${adId}`,
-    );
+    const response = await fetch(`http://localhost:3000/backstagegear/ads/${adId}`);
     const resData = await response.json();
 
     if (resData[0].user_id !== userId) {
       throw new Error("Nincs jogosultságod a hirdetés szerkesztéséhez!");
     }
+  } catch (err) {
+    alert(err.message);
+    return redirect("/");
+  }
+
+  return null;
+}
+
+export async function checkAdminAccess() {
+  const token = getAuthToken();
+
+  if (!token) return redirect("/");
+
+  try {
+    const response = await fetch("http://localhost:3000/backstagegear/me/is_admin",{
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      },
+    );
+
+    const resData = await response.json();
+
+    if (!resData.is_admin)
+      throw new Error("Nincs jogosultságod a hirdetés szerkesztéséhez!");
   } catch (err) {
     alert(err.message);
     return redirect("/");

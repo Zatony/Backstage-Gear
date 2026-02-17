@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { getAuthToken } from "../util/auth";
-import styles from "./editAd.module.css";
-import SelectOption from "../components/selectOption";
-import FormInput from "../components/formInput";
-import ProfileField from "../components/profileField";
-import TextAreaField from "../components/textAreaField";
+import editAd from "./editAd.module.css";
 import { useNavigate } from "react-router-dom";
+import AdFormHeader from "../components/AdFormHeader.jsx";
+import AdFormFields from "../components/AdFormFields.jsx";
+import AdFormActions from "../components/AdFormActions.jsx";
 
 export default function EditAd() {
   const token = getAuthToken();
@@ -145,39 +144,29 @@ export default function EditAd() {
 
   return (
     <>
-      <div className={styles.editAdTextContainer}>
-        <h1 className={styles.editAdText}>Hirdetés szerkesztése</h1>
-        <div className={styles.editAdLine}></div>
-      </div>
+      <AdFormHeader page={editAd} title="Hirdetés szerkesztése" />
 
-      <div className={styles.formWrapper}>
-        <form className={styles.formCard} onSubmit={handleSubmit}>
+      <div className={editAd.formWrapper}>
+        <form className={editAd.formCard} onSubmit={handleSubmit}>
+          <AdFormFields
+            page={editAd}
+            itemNameRef={itemName}
+            categoryIdRef={categoryId}
+            brandIdRef={brandId}
+            conditionRef={condition}
+            priceRef={price}
+            imageRef={image}
+            descriptionRef={description}
+            categories={categories}
+            brands={brands}
+          />
 
-          <div className={styles.formRow}>
-            <label>Termék neve:</label>
-            <input type="text" ref={itemName} />
-          </div>
-          <SelectOption page={styles} label="Kategória" options={categories} refInput={categoryId} />
-          <SelectOption page={styles} label="Márka" options={brands} refInput={brandId} />
-          <div className={styles.formRow}>
-            <label>Állapot:</label>
-            <select ref={condition}>
-              <option value="Új">Új</option>
-              <option value="Használt">Használt</option>
-              <option value="Sérült">Sérült</option>
-            </select>
-          </div>
-          <FormInput page={styles} label="Ár" type="number" refInput={price} min="0" />
-          <FormInput page={styles} label="Kép feltöltése" type="file" accept="image/*" refInput={image} />
-          <TextAreaField page={styles} label="Leírás" refInput={description} />
-
-          <div className={styles.submitBtnWrapper}>
-            <button type="submit" className={styles.submitBtn} disabled={submitting}>
-              Módosítások mentése
-            </button>
-          </div>
-
-          {error && <p className={styles.errorMsg}>{error}</p>}
+          <AdFormActions
+            page={editAd}
+            submitting={submitting}
+            error={error}
+            buttonText="Módosítások mentése"
+          />
         </form>
       </div>
     </>

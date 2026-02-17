@@ -9,9 +9,9 @@ import MyAds from "./page_myAds/MyAds";
 import Profile from "./page_profile/Profile";
 import NewAd from "./page_newAd/NewAd";
 import ViewAd from "./page_ViewAd/viewAd";
-import EditAd from "./page_editAd/EditAd";
+import EditAd from "./page_EditAd/editAd";
 import Message from "./page_message/Message";
-import { tokenLoader, checkAuthLoader, checkEditAdAccess } from "./util/auth";
+import { tokenLoader, checkAuthLoader, checkEditAdAccess, checkAdminAccess } from "./util/auth";
 import { action as logoutAction } from "./util/logout";
 import ReportedAds from "./page_reportedAds/ReportedAds";
 
@@ -74,7 +74,7 @@ export default function Routing() {
         {
           path: "/reported_ads",
           element: <ReportedAds />,
-          loader: checkAuthLoader,
+          loader: checkAdminAccess,
         },
         {
           path: "/logout",

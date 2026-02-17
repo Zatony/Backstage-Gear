@@ -1,6 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import styles from "./message.module.css";
+import message from "./message.module.css";
+import ConversationsList from "../components/ConversationsList.jsx";
+import ConversationHeader from "../components/ConversationHeader.jsx";
+import ChatMessages from "../components/ChatMessages.jsx";
+import MessageActions from "../components/MessageActions.jsx";
+import MessageModal from "../components/MessageModal.jsx";
+import MessageEmptyState from "../components/MessageEmptyState.jsx";
 
 const getCurrentUserId = () => {
   try {
@@ -23,8 +29,6 @@ export default function Message() {
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [newMessageRecipient, setNewMessageRecipient] = useState(null);
   const [loading, setLoading] = useState(true);
-  const replyTextRef = useRef(null);
-  const messageEndRef = useRef(null);
 
   const token = localStorage.getItem("token");
 
@@ -43,10 +47,6 @@ export default function Message() {
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
-
-  useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [selectedConversation]);
 
   useEffect(() => {
     if (selectedConversation && conversations.length > 0) {
@@ -147,13 +147,11 @@ export default function Message() {
     }
   };
   
-  const handleSendReply = async () => {
-    if (!replyTextRef.current?.value.trim()) return;
+  const handleSendReply = async (messageText) => {
+    if (!messageText || !messageText.trim()) return;
 
     const recipientId = newMessageRecipient?.id || selectedConversation?.userId;
     if (!recipientId) return;
-
-    const messageText = replyTextRef.current.value.trim();
 
     try {
       const res = await fetch(
@@ -171,7 +169,6 @@ export default function Message() {
       if (res.ok) {
         setShowReplyModal(false);
         setNewMessageRecipient(null);
-        replyTextRef.current.value = "";
         fetchMessages();
       }
     } catch (error) {
@@ -205,7 +202,7 @@ export default function Message() {
     }
   };
 
-  const formatDate = (dateString) => {
+  function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString("hu-HU", {
       year: "numeric",
@@ -216,7 +213,7 @@ export default function Message() {
     });
   };
 
-  const getInitials = (name) => {
+  function getInitials(name) {
     if (!name) return "?";
     return name
       .split(" ")
@@ -228,169 +225,63 @@ export default function Message() {
 
   return (
     <>
-      <div className={styles.messageTextContainer}>
-        <h1 className={styles.messageTitle}>Üzenetek</h1>
-        <div className={styles.messageLine}></div>
+      <div className={message.messageTextContainer}>
+        <h1 className={message.messageTitle}>Üzeneteim</h1>
+        <div className={message.messageLine}></div>
       </div>
 
-      <div className={styles.messageContainer}>
-        <div className={styles.conversationsSidebar}>
-          <div className={styles.sidebarHeader}>Üzeneteim</div>
+      <div className={message.messageContainer}>
+        <ConversationsList
+          page={message}
+          conversations={conversations}
+          profiles={profiles}
+          selectedConversation={selectedConversation}
+          loading={loading}
+          onSelectConversation={setSelectedConversation}
+          formatDate={formatDate}
+          getInitials={getInitials}
+        />
 
-          <div className={styles.conversationsList}>
-            {loading ? (
-              <div className={styles.emptyConversations}>Betöltés...</div>
-            ) : conversations.length === 0 ? (
-              <div className={styles.emptyConversations}>
-                Nincsenek üzenetek
-              </div>
-            ) : (
-              conversations.map((conversation) => {
-                const otherUser = profiles[conversation.userId];
-                const lastMessage = conversation.messages[conversation.messages.length - 1];
-                return (
-                  <div
-                    key={conversation.userId}
-                    className={
-                      selectedConversation?.userId === conversation.userId
-                        ? styles.conversationItemActive
-                        : styles.conversationItem
-                    }
-                    onClick={() => setSelectedConversation(conversation)}
-                  >
-                    {otherUser?.profile_picture ? (
-                      <img
-                        src={otherUser.profile_picture}
-                        alt=""
-                        className={styles.userAvatar}
-                      />
-                    ) : (
-                      <div className={styles.userAvatar}>
-                        {getInitials(otherUser?.username || "?")}
-                      </div>
-                    )}
-                    <div className={styles.conversationInfo}>
-                      <div className={styles.conversationName}>
-                        {otherUser?.username || "Ismeretlen"}
-                      </div>
-                      <div className={styles.conversationPreview}>
-                        {lastMessage?.content?.slice(0, 50)}
-                        {lastMessage?.content?.length > 50 ? "..." : ""}
-                      </div>
-                    </div>
-                    <div className={styles.conversationDate}>
-                      {formatDate(lastMessage?.sent_at)}
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-
-        <div className={styles.messageDetail}>
+        <div className={message.messageDetail}>
           {selectedConversation ? (
             <>
-              <div className={styles.messageDetailHeader}>
-                {profiles[selectedConversation.userId]?.profile_picture ? (
-                  <img
-                    src={profiles[selectedConversation.userId].profile_picture}
-                    alt=""
-                    className={styles.detailAvatar}
-                  />
-                ) : (
-                  <div className={styles.detailAvatar}>
-                    {getInitials(profiles[selectedConversation.userId]?.username || "?")}
-                  </div>
-                )}
-                <div className={styles.detailUserInfo}>
-                  <div className={styles.detailUserName}>
-                    {profiles[selectedConversation.userId]?.username || "Ismeretlen"}
-                  </div>
-                </div>
-              </div>
+              <ConversationHeader
+                page={message}
+                selectedConversation={selectedConversation}
+                profiles={profiles}
+                getInitials={getInitials}
+              />
 
-              <div className={styles.chatArea}>
-                {selectedConversation.messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={
-                      message.isFromCurrentUser
-                        ? styles.messageBubbleRight
-                        : styles.messageBubbleLeft
-                    }
-                  >
-                    <div className={styles.messageBubbleContent}>
-                      {message.content}
-                    </div>
-                    <div className={styles.messageBubbleTime}>
-                      {formatDate(message.sent_at)}
-                    </div>
-                  </div>
-                ))}
-                <div ref={messageEndRef} />
-              </div>
+              <ChatMessages
+                page={message}
+                selectedConversation={selectedConversation}
+                formatDate={formatDate}
+              />
 
-              <div className={styles.messageActions}>
-                <button
-                  className={`${styles.actionBtn} ${styles.replyBtn}`}
-                  onClick={() => setShowReplyModal(true)}
-                >
-                  Válasz
-                </button>
-                <button
-                  className={`${styles.actionBtn} ${styles.deleteBtn}`}
-                  onClick={handleDeleteConversation}
-                >
-                   Beszélgetés törlése
-                </button>
-              </div>
+              <MessageActions
+                page={message}
+                onOpenReply={() => setShowReplyModal(true)}
+                onDeleteConversation={handleDeleteConversation}
+              />
             </>
           ) : (
-            <div className={styles.emptyDetail}>
-              <div className={styles.emptyText}>
-                Válassz ki egy beszélgetést a listából
-              </div>
-            </div>
+            <MessageEmptyState page={message} />
           )}
         </div>
       </div>
 
-      {showReplyModal && (
-        <div className={styles.modalOverlay} onClick={() => { setShowReplyModal(false); setNewMessageRecipient(null); }}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalHeader}>
-              {newMessageRecipient 
-                ? `Üzenet küldése: ${newMessageRecipient.name}` 
-                : `Üzenet küldése: ${profiles[selectedConversation?.userId]?.username}`}
-            </div>
-            <div className={styles.modalBody}>
-              {newMessageRecipient?.adTitle && (
-                <div>
-                  Hirdetés: <strong>{newMessageRecipient.adTitle}</strong>
-                </div>
-              )}
-              <textarea
-                ref={replyTextRef}
-                className={styles.modalTextarea}
-                placeholder="Írd ide az üzeneted..."
-                autoFocus
-              />
-            </div>
-            <div className={styles.modalActions}>
-              <button
-                className={styles.modalCancelBtn}
-                onClick={() => { setShowReplyModal(false); setNewMessageRecipient(null); }}
-              >
-                Mégse
-              </button>
-              <button className={styles.modalSendBtn} onClick={handleSendReply}>
-                Küldés
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <MessageModal
+        page={message}
+        showReplyModal={showReplyModal}
+        newMessageRecipient={newMessageRecipient}
+        selectedConversation={selectedConversation}
+        profiles={profiles}
+        onClose={() => {
+          setShowReplyModal(false);
+          setNewMessageRecipient(null);
+        }}
+        onSend={handleSendReply}
+      />
     </>
   );
 }

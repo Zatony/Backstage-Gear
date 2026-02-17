@@ -2,6 +2,9 @@ import viewAd from "./viewAd.module.css";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAuthToken } from "../util/auth";
+import ItemImage from "../components/UserData.jsx";
+import ItemDetails from "../components/ItemDetails.jsx";
+import ItemActions from "../components/viewAdButtons.jsx";
 
 export default function ViewAd() {
   const [searchParams] = useSearchParams();
@@ -176,85 +179,41 @@ export default function ViewAd() {
     }
   }
 
+  const handleEditAd = (adId) => {
+    console.log(adId);
+    nav(`/edit_ad?id=${adId}`);
+  };
+
+  const handleMessageClick = (userId, username, adTitle) => {
+    nav("/message", { 
+      state: { 
+        recipientId: userId, 
+        recipientName: username,
+        adTitle: adTitle
+      } 
+    });
+  };
+
   return (
     <div className={viewAd.viewAdContainer}>
       <div className={viewAd.adCardColumn}>
         <div className={viewAd.adInfoBlock}>
-          <div className={viewAd.adImageAndUser}>
-            <img
-              src={getAd.files}
-              alt={getAd.item_name}
-              className={viewAd.mainImg}
-            />
-            <div className={viewAd.userRow}>
-              <img
-                className={viewAd.userIcon}
-                src={userData.profile_picture}
-                alt={userData.username}
-              />
-              <span className={viewAd.username}>{userData.username}</span>
-            </div>
-            <div className={viewAd.ratingRow}>
-              <span
-                className={viewAd.rating}
-              >{`Értékelés: +${userData.up_votes} | -${userData.down_votes}`}</span>
-            </div>
-          </div>
-          <div className={viewAd.adTextBlock}>
-            <h2 className={viewAd.adTitle}>{getAd.item_name}</h2>
-            <div className={viewAd.adMeta}>
-              {getAd.date_of_ad !== undefined && getAd.date_of_ad !== null
-                ? getAd.date_of_ad.substring(0, 16)
-                : "-"}
-            </div>
-            <div className={viewAd.adDescBlock}>
-              <div
-                className={viewAd.adDescLabel}
-              >{`Állapot: ${getAd.item_condition}`}</div>
-              <div className={viewAd.adDescLabel}>Leírás:</div>
-              <div className={viewAd.adDescText}>{getAd.description}</div>
-            </div>
-          </div>
+          <ItemImage page={viewAd} ad={getAd} userData={userData} />
+          <ItemDetails page={viewAd} ad={getAd} />
         </div>
-        <div className={viewAd.priceButtonsFullWidth}>
-          <span className={viewAd.price}>
-            {getAd.price !== undefined && getAd.price !== null
-              ? getAd.price.toLocaleString("hu-HU")
-              : "-"}{" "}
-            Ft
-          </span>
-          <div className={viewAd.buttonRow}>
-            <button
-              onClick={() => isMyAd ? nav(`/edit_ad?id=${getAd.id}`) : handleToggle()}
-              className={ isMyAd ? viewAd.myAd : inCart ? viewAd.inCart : viewAd.notInCart }>
-              {isMyAd ? "Módosítás" : inCart ? "Eltávolítás a kosárból" : "Kosárba"}
-            </button>
-
-            {isMyAd ? (
-              <button onClick={() => handleDeleteAd(getAd.id)} className={viewAd.reportBtn}>
-                Hirdetés törlése
-              </button>
-            ) : (
-              <>
-                <button onClick={handleReport} className={viewAd.reportBtn}>
-                  Hirdetés jelentése
-                </button>
-                <button 
-                  className={viewAd.reachOutBtn}
-                  onClick={() => nav("/message", { 
-                    state: { 
-                      recipientId: getAd.user_id, 
-                      recipientName: userData.username,
-                      adTitle: getAd.item_name
-                    } 
-                  })}
-                >
-                  Érdeklődés
-                </button>
-              </>
-            )}
-          </div>
-        </div>
+        <ItemActions
+          page={viewAd}
+          ad={getAd}
+          userData={userData}
+          isMyAd={isMyAd}
+          inCart={inCart}
+          loading={loading}
+          onToggleCart={handleToggle}
+          onReport={handleReport}
+          onDelete={handleDeleteAd}
+          onEdit={handleEditAd}
+          onMessage={handleMessageClick}
+        />
       </div>
     </div>
   );

@@ -28,30 +28,25 @@
 }
 .messageContainer {
   display: flex;
-  gap: 12px;
-  max-width: 1200px;
+  gap: 0;
+  max-width: 900px;
   margin: 0 auto 30px auto;
-  padding: 0 20px;
+  padding: 0;
   min-height: 70vh;
-}
-.conversationsSidebar {
-  flex: 0 0 320px;
   background: var(--white);
   border-radius: 16px;
   box-shadow: 0 2px 16px #0002;
   overflow: hidden;
+  min-width: 600px;
+}
+.conversationsSidebar {
+  flex: 0 0 280px;
+  background: var(--white);
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-.sidebarHeader {
-  padding: 16px 20px;
-  background: var(--secondary-color);
-  color: var(--white);
-  font-weight: bold;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 .tabButtons {
   display: flex;
@@ -89,7 +84,7 @@
 }
 .conversationItem {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 14px 16px;
   cursor: pointer;
@@ -100,7 +95,7 @@
 }
 .conversationItemActive {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 14px 16px;
   cursor: pointer;
@@ -109,41 +104,50 @@
   border-bottom: 1px solid #f0f0f0;
 }
 .userAvatar {
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: #ddd;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #666;
   flex-shrink: 0;
   object-fit: cover;
+  margin-top: 2px;
 }
 .conversationInfo {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 .conversationName {
   font-weight: 600;
   color: #333;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  line-height: 1.2;
 }
 .conversationPreview {
-  font-size: 0.85rem;
-  color: #888;
+  font-size: 0.8rem;
+  color: #999;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
 }
 .conversationDate {
-  font-size: 0.75rem;
-  color: #aaa;
+  font-size: 0.7rem;
+  color: #bbb;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 .emptyConversations {
   padding: 40px 20px;
@@ -154,13 +158,13 @@
 .messageDetail {
   flex: 1 1 auto;
   background: var(--white);
-  border-radius: 16px;
-  box-shadow: 0 2px 16px #0002;
+  border-radius: 0;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   min-width: 0;
-  width: 400px;
+  border-left: 2px solid var(--accent-color);
 }
 .messageDetailHeader {
   padding: 16px 24px;
@@ -169,7 +173,6 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  border-bottom: 3px solid var(--accent-color);
 }
 .detailAvatar {
   width: 50px;
@@ -407,27 +410,30 @@
 /* Responsive */
 @media (max-width: 900px) {
   .messageContainer {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .conversationsSidebar {
-    flex: none;
-    max-height: 300px;
+    flex: 0 0 auto;
+    max-height: none;
   }
 
   .messageDetail {
-    min-height: 400px;
+    min-height: auto;
   }
 }
 
 @media (max-width: 600px) {
   .messageContainer {
     padding: 0 10px;
+    flex-direction: column;
   }
 
   .conversationsSidebar {
     flex: 0 0 auto;
     max-height: 250px;
+    border-right: none;
+    border-bottom: 1px solid #eee;
   }
 
   .messageActions {
