@@ -185,6 +185,21 @@ export async function deleteOwnUserById(req: any, res: any) {
         );
 
         const usedItemIds = ads.map((a: any) => a.used_item_id);
+        const adIds = ads.map((a: any) => a.id);
+
+        // Remove cart entries that reference these ads to avoid FK constraint errors
+        if (adIds.length > 0) {
+            await connection.query(
+                `DELETE FROM carts WHERE ad_id IN (?)`,
+                [adIds]
+            );
+        }
+
+        // Also remove any carts owned by the user
+        await connection.query(
+            `DELETE FROM carts WHERE user_id = ?`,
+            [userId]
+        );
 
         await connection.query(
             `DELETE FROM advertisements WHERE user_id = ?`,
@@ -296,7 +311,22 @@ export async function deleteUserById(req: any, res: any) {
         );
 
         const usedItemIds = ads.map((a: any) => a.used_item_id);
-        
+        const adIds = ads.map((a: any) => a.id);
+
+        // Remove cart entries that reference these ads to avoid FK constraint errors
+        if (adIds.length > 0) {
+            await connection.query(
+                `DELETE FROM carts WHERE ad_id IN (?)`,
+                [adIds]
+            );
+        }
+
+        // Also remove any carts owned by the deleted user
+        await connection.query(
+            `DELETE FROM carts WHERE user_id = ?`,
+            [userId]
+        );
+
         await connection.query(
             `DELETE FROM advertisements WHERE user_id = ?`,
             [userId]

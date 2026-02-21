@@ -9,7 +9,7 @@ import MyAds from "./page_myAds/MyAds";
 import Profile from "./page_profile/Profile";
 import NewAd from "./page_newAd/NewAd";
 import ViewAd from "./page_ViewAd/viewAd";
-import EditAd from "./page_EditAd/editAd";
+import EditAd from "./page_editAd/EditAd";
 import Message from "./page_message/Message";
 import { tokenLoader, checkAuthLoader, checkEditAdAccess, checkAdminAccess } from "./util/auth";
 import { action as logoutAction } from "./util/logout";

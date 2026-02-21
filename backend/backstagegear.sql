@@ -1,4 +1,4 @@
--- Active: 1765535940941@@127.0.0.1@3307@backstagegear
+-- Active: 1762936195753@@127.0.0.1@3306@backstagegear
 CREATE DATABASE backstagegear
 CHARACTER SET = 'utf8' COLLATE = 'utf8_hungarian_ci';
 
