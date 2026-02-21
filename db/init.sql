@@ -41,12 +41,12 @@ CREATE TABLE `advertisements` (
 --
 
 INSERT INTO `advertisements` (`id`, `user_id`, `used_item_id`, `is_reported`, `description`, `date_of_ad`) VALUES
-(1, 2, 1, 0, 'leírás, leírás', '2025-02-03 10:10:02'),
-(2, 3, 2, 1, 'leírás, leírás', '2025-03-15 12:01:01'),
-(3, 4, 3, 1, 'leírás, leírás', '2025-04-09 20:20:10'),
-(4, 5, 4, 0, 'leírás, leírás', '2025-05-01 15:56:11'),
-(5, 5, 5, 0, 'leírás, leírás', '2025-06-14 08:07:06'),
-(6, 2, 6, 1, 'leírás, leírás', '2025-07-22 09:13:56');
+(1, 2, 1, 0, 'Öreg Fender Strató, kifejezetten vékony, kényelmes nyakkal, tokkal és vonóval eladóvá vált. A nyakon van egy profin bedugózott furat, ezért ennyi az ára. Extra Jumbó, alig használt bundokkal, elől és hátul YJM Seymour Duncan, középen Kinman hangszedők. Baráti, 3,5 Kg súly!', '2025-02-03 10:10:02'),
+(2, 3, 2, 1, '3/4 mini dreadnought formájú test okouméból (afrikai mahagóniból), mahagóni (palaquium) nyak, merbau fogólap és húrláb, dovetail csatlakozás, 22,75˝ húrhossz, saját puhatokkal! Amíg a saját oldalunkon megtalálod,  addig még eladó! Ha nem találod, kérlek írj vagy telefonálj nekünk! Köszönöm, de csere nem érdekel. Az ár nem alkuképes. Kérlek, kattints a linkre, nézz körül az oldalunkon! link megnyitása', '2025-03-15 12:01:01'),
+(3, 4, 3, 1, 'Amíg a hirdetésben lévő linkre kattintva a saját oldalunkon megtalálod, addig még eladó, a honlapunkon le is tudod foglalni! Ha már nem találod, kérlek írj vagy telefonálj nekünk! Köszönöm, de csere nem érdekel. Az ár nem alkuképes.', '2025-04-09 20:20:10'),
+(4, 5, 4, 0, 'Eladnám kibővített Roland TD-17 elektromos szettemet, mivel teljesen kihasználatlanul tartogatom szinte a megvétele óta. KD-10-es lábdobbal, plusz a szett kiegészítve még 2 cinnel. Semmi mókolás, semmi módosítás, a modul alapból támogatja az 5 cint. Tapadós eredeti Roland V-drums szőnyeget is adok hozzá, duplázó pedált azt nem. Bármilyen duplázóval tökéletesen megy, semmit nem kell állítgatni hozzá, ezért is a KD-10 az egyik legjobb lábdob.', '2025-05-01 15:56:11'),
+(5, 5, 5, 0, 'Eladó a 2022-ben vásárolt Marshall DSL1CR gitárkombóm kihasználatlanság miatt. Minden jól működik rajta, otthoni gyakorlásra használtam. Megtekinthető és kipróbálható előzetes egyeztetést követően Budapesten az Orange Termek-ben (1095, Budapest, Soroksári út 158-C).', '2025-06-14 08:07:06'),
+(6, 2, 6, 1, 'Eladó egy Behringer X32 Core digitális keverő, kitűnő műszaki és esztétikai állapotban. Kizárólag stúdióban használt, füstmentes környezetből, soha nem turnézott.', '2025-07-22 09:13:56');
 
 -- --------------------------------------------------------
 
@@ -64,12 +64,12 @@ CREATE TABLE `ad_files` (
 --
 
 INSERT INTO `ad_files` (`ad_id`, `file_id`) VALUES
-(1, 'default-ad-picture'),
-(2, 'default-ad-picture'),
-(3, 'default-ad-picture'),
-(4, 'default-ad-picture'),
-(5, 'default-ad-picture'),
-(6, 'default-ad-picture');
+(1, 'fender-american-professional-ii.jpg'),
+(2, 'cort-earth-70.jpg'),
+(3, 'yamaha-pss-e30.jpg'),
+(4, 'roland-td-07dmk.jpg'),
+(5, 'marshall-dsl40cr.jpg'),
+(6, 'behringer-xenxy.jpg');
 
 -- --------------------------------------------------------
 
@@ -278,7 +278,13 @@ CREATE TABLE `files` (
 --
 
 INSERT INTO `files` (`id`, `file_name`, `file_size`) VALUES
-('default-ad-picture', 'default-ad-picture.png', 0);
+('default-ad-picture', 'default-ad-picture.png', 0),
+('fender-american-professional-ii.jpg', 'fender-american-professional-ii', 0),
+('cort-earth-70.jpg', 'cort-earth-70', 0),
+('yamaha-pss-e30.jpg', 'yamaha-pss-e30', 0),
+('roland-td-07dmk.jpg', 'roland-td-07dmk', 0),
+('marshall-dsl40cr.jpg', 'marshall-dsl40cr', 0),
+('behringer-xenxy.jpg', 'behringer-xenxy', 0);
 
 -- --------------------------------------------------------
 
@@ -346,11 +352,11 @@ CREATE TABLE `profiles` (
 --
 
 INSERT INTO `profiles` (`id`, `user_id`, `profile_picture`) VALUES
-(1, 1, 'default-profile-picture.jpg'),
-(2, 2, 'default-profile-picture.jpg'),
-(3, 3, 'default-profile-picture.jpg'),
-(4, 4, 'default-profile-picture.jpg'),
-(5, 5, 'default-profile-picture.jpg');
+(1, 1, 'profile_picture_1.jpg'),
+(2, 2, 'profile_picture_2.jpg'),
+(3, 3, 'profile_picture_3.jpg'),
+(4, 4, 'profile_picture_4.jpg'),
+(5, 5, 'profile_picture_5.jpg');
 
 -- --------------------------------------------------------
 
@@ -684,7 +690,7 @@ ALTER TABLE `used_items`
 -- =====================================================
 -- MOCK DATA: 15 New Profiles with 2-4 Ads Each
 -- =====================================================
-
+/*
 --
 -- Insert 15 new users
 --
@@ -902,7 +908,7 @@ INSERT INTO `profile_votes` (`profile_id`, `voter_user_id`, `vote`) VALUES
 (18, 2, 1),
 (19, 4, 1),
 (20, 5, 1);
-
+*/
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
