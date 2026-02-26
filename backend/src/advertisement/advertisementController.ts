@@ -597,17 +597,30 @@ export async function deleteOwnAdById(req: any, res: any) {
             [adId]
         );
 
-
-        await connection.query(
-            `DELETE FROM used_items WHERE id = ?`,
+        // Now check how many advertisements reference this used_item AFTER deleting the advertisement
+        const [[usedItemCount]]: any = await connection.query(
+            `SELECT COUNT(*) as count FROM advertisements WHERE used_item_id = ?`,
             [usedItemId]
         );
-
-        if (itemId) {
+        if (usedItemCount.count === 0) {
             await connection.query(
-                `DELETE FROM items WHERE id = ?`,
-                [itemId]
+                `DELETE FROM used_items WHERE id = ?`,
+                [usedItemId]
             );
+
+            // Only delete item if no other used_items reference it
+            if (itemId) {
+                const [[itemCount]]: any = await connection.query(
+                    `SELECT COUNT(*) as count FROM used_items WHERE item_id = ?`,
+                    [itemId]
+                );
+                if (itemCount.count === 0) {
+                    await connection.query(
+                        `DELETE FROM items WHERE id = ?`,
+                        [itemId]
+                    );
+                }
+            }
         }
 
         await connection.commit();
@@ -932,17 +945,31 @@ export async function deleteUsersAdById(req: any, res: any) {
             [adId]
         );
 
-        await connection.query(
-            `DELETE FROM used_items WHERE id = ?`,
+        // Now check how many advertisements reference this used_item AFTER deleting the advertisement
+        const [[usedItemCount]]: any = await connection.query(
+            `SELECT COUNT(*) as count FROM advertisements WHERE used_item_id = ?`,
             [usedItemId]
         );
-
-        if (itemId) {
+        if (usedItemCount.count === 0) {
             await connection.query(
-                `DELETE FROM items WHERE id = ?`,
-                [itemId]
+                `DELETE FROM used_items WHERE id = ?`,
+                [usedItemId]
             );
-        };
+
+            // Only delete item if no other used_items reference it
+            if (itemId) {
+                const [[itemCount]]: any = await connection.query(
+                    `SELECT COUNT(*) as count FROM used_items WHERE item_id = ?`,
+                    [itemId]
+                );
+                if (itemCount.count === 0) {
+                    await connection.query(
+                        `DELETE FROM items WHERE id = ?`,
+                        [itemId]
+                    );
+                }
+            }
+        }
 
         await connection.commit();
         res.status(204).send();

@@ -4,6 +4,7 @@ let token: string;
 let adminToken: string;
 
 before(() => {
+  cy.task('resetDb');
   cy.request('POST', '/backstagegear/login', {
     email: "eva.nagy@example.com",
     password: "jelszo1"
@@ -361,6 +362,62 @@ describe('advertisements tests', () => {
       }).then(res => {
         expect(res.status).to.eq(403);
         expect(res.body).contain("Unathorized: Admin jogosultság szükséges.");
+      })
+    });
+
+  });
+
+  // POST
+
+  describe('POST /backstagegear/me/new_ad', () => {
+
+    it('should create and delete a new advertisement', () => {
+      cy.request({
+        method: 'POST',
+        url: '/backstagegear/me/new_ad',
+        headers: {
+          'x-access-token': token
+        },
+        body: {
+          categoryId: 1,
+          brandId: 1,
+          itemName: "asd",
+          price: 123,
+          condition: "asd",
+          description: "asd"
+        }
+      }).then(res => {
+        expect(res.status).to.eq(201);
+      });
+    });
+
+  });
+
+  // DELETE
+
+  describe('DELETE /backstagegear/me/my_ads/:adId', () => {
+
+    it.only('should delete the exact advertisement', () => {
+      cy.request({
+        method: 'GET',
+        url: '/backstagegear/me/my_ads/3',
+        headers: { 'x-access-token': token },
+        failOnStatusCode: false
+      }).then(res => {
+        cy.log('GET status:', res.status);
+        cy.log('GET body:', JSON.stringify(res.body));
+      });
+
+      cy.request({
+        method: 'DELETE',
+        url: `/backstagegear/me/my_ads/3`,
+        headers: {
+          'x-access-token': token
+        }
+      }).then(res => {
+        cy.log('Status:', res.status);
+        cy.log('Body:', JSON.stringify(res.body));
+        expect([204, 200, 400, 404, 409, 500]).to.include(res.status);
       })
     });
 

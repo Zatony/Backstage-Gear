@@ -4,6 +4,7 @@ let userToken: string;
 let userAdminToken: string;
 
 before(() => {
+  cy.task('resetDb');
   cy.request('POST', '/backstagegear/login', {
     email: "eva.nagy@example.com",
     password: "jelszo1"
@@ -63,4 +64,5 @@ describe('user tests', () => {
     });
 
   });
+
 })

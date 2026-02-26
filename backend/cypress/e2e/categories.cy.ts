@@ -2,6 +2,8 @@
 
 describe('categories tests', () => {
   
+  // GET
+  
   describe('GET /backstagegear/categories', () => {
 
     it('should return all the categories', () => {

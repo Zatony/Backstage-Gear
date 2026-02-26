@@ -3,6 +3,7 @@
 let cartToken: string;
 
 before(() => {
+  cy.task('resetDb');
   cy.request('POST', '/backstagegear/login', {
     email: "eva.nagy@example.com",
     password: "jelszo1"
@@ -59,7 +60,7 @@ describe('cart tests', () => {
     it('should fail with the wrong id', () => {
       cy.request({
         method: 'GET',
-        url: '/backstagegear/me/cart/1',
+        url: '/backstagegear/me/cart/6',
         headers: {
           'x-access-token': cartToken
         },
