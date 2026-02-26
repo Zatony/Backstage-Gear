@@ -17,16 +17,16 @@
   "dependencies": {
     "@types/cors": "^2.8.19",
     "@types/mysql": "^2.15.27",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
     "mysql2": "^3.15.3",
     "nodemon": "^3.1.11",
     "tslint": "^5.20.1",
-    "typescript": "^5.9.3",
-    "bcryptjs": "^3.0.3",
-    "multer": "^2.0.2"
+    "typescript": "^5.9.3"
   },
   "files": [
     "./bin/*",
@@ -38,6 +38,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^24.10.1",
+    "cypress": "^15.11.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
     "util": "^0.12.5"
