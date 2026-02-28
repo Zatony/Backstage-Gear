@@ -19,7 +19,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- =====================
 
 INSERT INTO categories (id, name, picture)
-VALUES (1,'elektromos gitár, elektromos basszusgitár','elektromos.png');
+VALUES 
+(1,'elektromos gitár, elektromos basszusgitár','elektromos.png'),
+(2,'akusztikus gitár, akusztikus basszusgitár','akusztikus.png');
 
 INSERT INTO brands (id, brand_name)
 VALUES 
@@ -27,10 +29,16 @@ VALUES
 (2,'Gibson');
 
 INSERT INTO items (id, category_id, brand_id, name)
-VALUES (1,1,1,'Fender American Professional II Stratocaster HSS, RW, Dark Night');
+VALUES 
+(1,1,1,'Fender American Professional II Stratocaster HSS, RW, Dark Night'),
+(2,2,1,'Cort Earth-70 OP akusztikus gitár'),
+(3,2,1,'Cort Earth-70 OP akusztikus gitár');
 
 INSERT INTO used_items (id, item_id, price, item_condition)
-VALUES (1,1,860000,'új');
+VALUES 
+(1,1,860000,'új'),
+(2,2,70000,'új'),
+(3,2,70000,'új');
 
 -- =====================
 -- USERS
@@ -64,12 +72,14 @@ INSERT INTO advertisements
 VALUES
 (1,2,1,0,'Öreg Fender Strató, kifejezetten vékony, kényelmes nyakkal, tokkal és vonóval eladóvá vált. A nyakon van egy profin bedugózott furat, ezért ennyi az ára. Extra Jumbó, alig használt bundokkal, elől és hátul YJM Seymour Duncan, középen Kinman hangszedők. Baráti, 3,5 Kg súly!', '2025-02-03 10:10:02'),
 (2,1,1,1,'Jelentett hirdetés példa', '2025-03-15 12:01:01'),
-(3,2,1,1,'Teszt hirdetés', '2025-03-15 12:01:01');
+(3,2,2,0,'Teszt hirdetés', '2025-03-15 12:01:01'),
+(4,3,3,0,'Teszt hirdetés', '2025-03-15 12:01:01');
 
 INSERT INTO ad_files(ad_id,file_id)
 VALUES (1,'fender-american-professional-ii.jpg'),
 	   (2,'fender-american-professional-ii.jpg'),
-	   (3,'fender-american-professional-ii.jpg');
+	   (3,'fender-american-professional-ii.jpg'),
+	   (4,'fender-american-professional-ii.jpg');
 
 -- =====================
 -- MESSAGES
@@ -79,7 +89,7 @@ INSERT INTO messages(id,sender_id,receiver_id,content,sent_at)
 VALUES
 (1, 3, 2, 'üzenet, üzenet', '2025-08-11 12:08:45'),
 (2, 4, 2, 'üzenet, üzenet', '2025-09-30 10:12:13'),
-(4, 2, 3, 'üzenet, üzenet', '2025-01-12 21:10:10');
+(3, 2, 3, 'üzenet, üzenet', '2025-01-12 21:10:10');
 
 
 -- =====================

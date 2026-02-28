@@ -281,10 +281,10 @@ export async function patchMessageById(req: any, res: any) {
     idIsNan(messId, res);
     bodyIsUndefined(req, res);
 
-    if (req.body.content.trim() === "") {
+    if (typeof req.body.content !== "string" || req.body.content.trim() === "") {
         res.status(400).send("Hiányosan megadott adatok.");
         return;
-    };
+    }
 
     const sql = `
         UPDATE messages

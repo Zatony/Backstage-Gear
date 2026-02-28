@@ -79,4 +79,158 @@ describe('profiles tests', () => {
     });
 
   });
+
+  // PATCH
+
+  describe('PATCH /backstagegear/me/my_profile/update_datas', () => {
+
+    it('should update the datas of the exact profile', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/my_profile/update_datas',
+        headers: {
+          'x-access-token': profileToken
+        },
+        body: {
+          username: "eva.nagy",
+          phone_number: "1234"
+        }
+      }).then(res => {
+        expect(res.status).to.eq(200);
+        expect(res.body).to.have.property('message', "Profil frissítve.");
+      })
+    });
+
+    it('should fail without token', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/my_profile/update_datas',
+        body: {
+          username: "eva.nagy",
+          phone_number: "1234"
+        },
+        failOnStatusCode: false
+      }).then(res => {
+        expect(res.status).to.eq(401);
+        expect(res.body).contain("Token szükséges.");
+      })
+    });
+
+    it('should fail without body', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/my_profile/update_datas',
+        headers: {
+          'x-access-token': profileToken
+        },
+        failOnStatusCode: false
+      }).then(res => {
+        expect(res.status).to.eq(400);
+        expect(res.body).contain("Nem küldte el az adatokat.");
+      })
+    });
+
+  });
+
+  describe('PATCH /backstagegear/me/profiles/:profileId', () => {
+
+    it('should vote the exact profile', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/profiles/1',
+        headers: {
+          'x-access-token': profileToken
+        },
+        body: {
+          vote: 1
+        }
+      }).then(res => {
+        expect(res.status).to.eq(200);
+        expect(res.body).contain("Szavazat rögzítve.");
+      })
+    });
+
+    it('should fail with the wrong id', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/profiles/999999999',
+        headers: {
+          'x-access-token': profileToken
+        },
+        body: {
+          vote: 1
+        },
+        failOnStatusCode: false
+      }).then(res => {
+        expect(res.status).to.eq(404);
+        expect(res.body).contain("Profil nem található.");
+      })
+    });
+
+    it('should fail with the wrong format id', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/profiles/asd',
+        headers: {
+          'x-access-token': profileToken
+        },
+        body: {
+          vote: 1
+        },
+        failOnStatusCode: false
+      }).then(res => {
+        expect(res.status).to.eq(400);
+        expect(res.body).contain("Nem megfelelő formátumú azonosító.");
+      })
+    });
+
+    it('should fail with wrong value', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/profiles/1',
+        headers: {
+          'x-access-token': profileToken
+        },
+        body: {
+          vote: 10
+        },
+        failOnStatusCode: false
+      }).then(res => {
+        expect(res.status).to.eq(400);
+        expect(res.body).contain("Érvénytelen szavazat.");
+      })
+    });
+
+    it('should fail with own profile', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/profiles/2',
+        headers: {
+          'x-access-token': profileToken
+        },
+        body: {
+          vote: 1
+        },
+        failOnStatusCode: false
+      }).then(res => {
+        expect(res.status).to.eq(403);
+        expect(res.body).contain("A saját profilodat nem szavazhatod.");
+      })
+    });
+
+    it('should fail without token', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/profiles/2',
+        body: {
+          vote: 1
+        },
+        failOnStatusCode: false
+      }).then(res => {
+        expect(res.status).to.eq(401);
+        expect(res.body).contain("Token szükséges.");
+      })
+    });
+
+  });
 })

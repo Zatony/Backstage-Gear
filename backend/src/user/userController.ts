@@ -6,6 +6,8 @@ import { IUser, User } from "./user";
 
 
 export async function signIn(req: any, res: any) {
+    bodyIsUndefined(req, res);
+
     const {email, password} = req.body;
     
     if(!(email && password)){
@@ -171,7 +173,6 @@ export async function getIsAdminById(req: any, res: any){
 
 export async function deleteOwnUserById(req: any, res: any) {
     const userId: number = parseInt(req.user.id);
-
     const connection = await mysql.createConnection(config.database);
 
     try {
@@ -187,7 +188,6 @@ export async function deleteOwnUserById(req: any, res: any) {
         const usedItemIds = ads.map((a: any) => a.used_item_id);
         const adIds = ads.map((a: any) => a.id);
 
-        // Remove cart entries that reference these ads to avoid FK constraint errors
         if (adIds.length > 0) {
             await connection.query(
                 `DELETE FROM carts WHERE ad_id IN (?)`,
@@ -195,7 +195,6 @@ export async function deleteOwnUserById(req: any, res: any) {
             );
         }
 
-        // Also remove any carts owned by the user
         await connection.query(
             `DELETE FROM carts WHERE user_id = ?`,
             [userId]
@@ -313,7 +312,6 @@ export async function deleteUserById(req: any, res: any) {
         const usedItemIds = ads.map((a: any) => a.used_item_id);
         const adIds = ads.map((a: any) => a.id);
 
-        // Remove cart entries that reference these ads to avoid FK constraint errors
         if (adIds.length > 0) {
             await connection.query(
                 `DELETE FROM carts WHERE ad_id IN (?)`,
@@ -321,7 +319,6 @@ export async function deleteUserById(req: any, res: any) {
             );
         }
 
-        // Also remove any carts owned by the deleted user
         await connection.query(
             `DELETE FROM carts WHERE user_id = ?`,
             [userId]

@@ -597,7 +597,6 @@ export async function deleteOwnAdById(req: any, res: any) {
             [adId]
         );
 
-        // Now check how many advertisements reference this used_item AFTER deleting the advertisement
         const [[usedItemCount]]: any = await connection.query(
             `SELECT COUNT(*) as count FROM advertisements WHERE used_item_id = ?`,
             [usedItemId]
@@ -608,7 +607,6 @@ export async function deleteOwnAdById(req: any, res: any) {
                 [usedItemId]
             );
 
-            // Only delete item if no other used_items reference it
             if (itemId) {
                 const [[itemCount]]: any = await connection.query(
                     `SELECT COUNT(*) as count FROM used_items WHERE item_id = ?`,

@@ -393,32 +393,42 @@ describe('advertisements tests', () => {
 
   });
 
+  // PATCH
+
+  describe('PATCH /backstagegear/me/my_ads/update_ad/:adId', () => {
+
+    it('should update the exact advertisement', () => {
+      cy.request({
+        method: 'PATCH',
+        url: '/backstagegear/me/my_ads/update_ad/3',
+        headers: {
+          'x-access-token': token
+        },
+        body: {
+          price: 50000,
+          condition: "használt"
+        }
+      }).then(res => {
+        expect(res.status).to.eq(200);
+      })
+    });
+
+  });
+
   // DELETE
 
   describe('DELETE /backstagegear/me/my_ads/:adId', () => {
 
-    it.only('should delete the exact advertisement', () => {
-      cy.request({
-        method: 'GET',
-        url: '/backstagegear/me/my_ads/3',
-        headers: { 'x-access-token': token },
-        failOnStatusCode: false
-      }).then(res => {
-        cy.log('GET status:', res.status);
-        cy.log('GET body:', JSON.stringify(res.body));
-      });
-
+    it('should delete the exact advertisement', () => {
       cy.request({
         method: 'DELETE',
-        url: `/backstagegear/me/my_ads/3`,
-        headers: {
-          'x-access-token': token
+        url: '/backstagegear/me/my_ads/3',
+        headers: { 
+          'x-access-token': token 
         }
       }).then(res => {
-        cy.log('Status:', res.status);
-        cy.log('Body:', JSON.stringify(res.body));
-        expect([204, 200, 400, 404, 409, 500]).to.include(res.status);
-      })
+        expect(res.status).to.eq(204);
+      });
     });
 
   });

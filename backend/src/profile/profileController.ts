@@ -1,4 +1,4 @@
-import { idIsNan } from "../validators/id.validator";
+import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
 import config from "../config/config";
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
@@ -152,6 +152,8 @@ export async function voteProfileById(req: any, res: any) {
 
 
 export async function patchProfileById(req: any, res: any) {
+    bodyIsUndefined(req, res);
+
     const userId = parseInt(req.user.id);
     const connection = await mysql.createConnection(config.database);
 
