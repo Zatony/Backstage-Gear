@@ -237,7 +237,7 @@ describe('messages tests', () => {
       })
     });
 
-    it('should fail with missing field', () => {
+    it('should fail with missing body', () => {
       cy.request({
         method: 'POST',
         url: '/backstagegear/me/new_message/3',

@@ -18,7 +18,7 @@ describe('cart tests', () => {
   
   describe('GET /backstagegear/me/cart', () => {
 
-    it('should return all messages of a user', () => {
+    it("should return all advertisements of a user's cart", () => {
       cy.request({
         method: 'GET',
         url: '/backstagegear/me/cart',
@@ -46,7 +46,7 @@ describe('cart tests', () => {
 
   describe('GET /backstagegear/me/cart/:adId', () => {
 
-    it('should return the exact messages of a user', () => {
+    it('should return the exact advertisements in the cart', () => {
       cy.request({
         method: 'GET',
         url: '/backstagegear/me/cart/2',
@@ -220,7 +220,7 @@ describe('cart tests', () => {
     it('should fail without token', () => {
       cy.request({
         method: 'DELETE',
-        url: '/backstagegear/me/cart/asd',
+        url: '/backstagegear/me/cart/1',
         failOnStatusCode: false
       }).then(res => {
         expect(res.status).to.eq(401);

@@ -221,7 +221,7 @@ describe('profiles tests', () => {
     it('should fail without token', () => {
       cy.request({
         method: 'PATCH',
-        url: '/backstagegear/me/profiles/2',
+        url: '/backstagegear/me/profiles/1',
         body: {
           vote: 1
         },
