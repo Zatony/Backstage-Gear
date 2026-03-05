@@ -45,7 +45,7 @@ export async function requireAdmin(req: any, res: any, next: any) {
             res.status(404).send("Nem létezik ilyen azonosítójú felhasználó.");
         }
         if(adminRows[0].is_admin !== 1){
-            res.status(403).send("Unathorized: Admin jogosultság szükséges.");
+            res.status(403).send("Admin jogosultság szükséges.");
             return;
         }
         

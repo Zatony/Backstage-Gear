@@ -563,6 +563,8 @@ export async function deleteOwnAdById(req: any, res: any) {
     const adId = parseInt(req.params.adId);
     const userId = parseInt(req.user.id);
 
+    idIsNan(adId, res);
+
     const connection = await mysql.createConnection(config.database);
 
     try {
