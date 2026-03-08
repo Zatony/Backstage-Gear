@@ -23,6 +23,31 @@ export default function NewAd() {
 
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [isValid, setIsValid] = useState({
+    itemName: false,
+    categoryId: false,
+    brandId: false,
+    condition: false,
+    price: false,
+    description: false,
+  });
+  const [isEdited, setIsEdited] = useState({
+    itemName: false,
+    categoryId: false,
+    brandId: false,
+    condition: false,
+    price: false,
+    description: false,
+  });
+
+  function validateInputs(inputText, inputType) {
+    if (inputText.trim().length === 0) {
+      setIsValid((prevState) => ({ ...prevState, [inputType]: false }));
+    } else {
+      setIsValid((prevState) => ({ ...prevState, [inputType]: true }));
+    }
+    setIsEdited((prevState) => ({ ...prevState, [inputType]: true }));
+  }
 
   useEffect(() => {
     async function fetchCategories() {
@@ -69,6 +94,7 @@ export default function NewAd() {
     formData.append("price", price.current.value);
     formData.append("condition", condition.current.value);
     formData.append("description", description.current.value);
+
     if (image.current.files[0]) {
       formData.append("files", image.current.files[0]);
     }
@@ -84,14 +110,13 @@ export default function NewAd() {
         body: formData
       });
 
-      console.log(formData);
-
       if (res.ok) {
         alert("Hirdetés sikeresen létrehozva!");
         navigate("/my_ads");
       }
-      else{
-        throw new Error(res.statusText);
+      else {
+        const errorText = await res.text();
+        throw new Error(`${res.status}: ${errorText}`);
       }
 
     } catch (err) {
@@ -118,6 +143,9 @@ export default function NewAd() {
             descriptionRef={description}
             categories={categories}
             brands={brands}
+            isValid={isValid}
+            isEdited={isEdited}
+            validateInputs={validateInputs}
           />
 
           <AdFormActions

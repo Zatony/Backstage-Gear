@@ -74,6 +74,9 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
           const cartItems = await response.json();
           setCartCount(cartItems.length);
         }
+        else {
+          setCartCount(0);
+        }
       } catch (err) {
         setCartCount(0);
         console.error("Hiba történt a kosár lekérése során: ", err);

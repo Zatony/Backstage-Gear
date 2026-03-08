@@ -1,6 +1,5 @@
 import SelectOption from "./selectOption.jsx";
-import FormInput from "./formInput.jsx";
-import TextAreaField from "./textAreaField.jsx";
+import InputField from "./inputField.jsx";
 
 export default function AdFormFields({
   page,
@@ -14,13 +13,22 @@ export default function AdFormFields({
   categories,
   brands,
   isEditing,
+  isValid,
+  isEdited,
+  validateInputs,
 }) {
   return (
     <>
-      <div className={page.formRow}>
-        <label>Termék neve:</label>
-        <input type="text" ref={itemNameRef} />
-      </div>
+      <InputField
+        page={page}
+        label="Termék neve"
+        type="text"
+        refInput={itemNameRef}
+        fieldName="itemName"
+        isValid={isValid?.itemName}
+        isEdited={isEdited?.itemName}
+        validateInputs={validateInputs}
+      />
 
       <SelectOption
         page={page}
@@ -44,24 +52,37 @@ export default function AdFormFields({
         </select>
       </div>
 
-      <FormInput
+      <InputField
         page={page}
         label="Ár"
         type="number"
         refInput={priceRef}
         min="0"
+        fieldName="price"
+        isValid={isValid?.price}
+        isEdited={isEdited?.price}
+        validateInputs={validateInputs}
       />
-      <FormInput
+      <InputField
         page={page}
         label="Kép feltöltése"
         type="file"
         accept="image/*"
         refInput={imageRef}
+        fieldName="imageFile"
+        isValid={isValid?.imageFile}
+        isEdited={isEdited?.imageFile}
+        validateInputs={validateInputs}
       />
-      <TextAreaField
+      <InputField
         page={page}
         label="Leírás"
+        type="textarea"
         refInput={descriptionRef}
+        fieldName="description"
+        isValid={isValid?.description}
+        isEdited={isEdited?.description}
+        validateInputs={validateInputs}
       />
     </>
   );

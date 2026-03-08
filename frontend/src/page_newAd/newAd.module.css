@@ -103,6 +103,18 @@
 .formRowTextarea textarea:focus {
   border-color: var(--accent-color);
 }
+.inputError {
+  border-color: var(--warning-70);
+}
+.inputError::placeholder {
+  color: var(--warning-70);
+}
+.textareaError {
+  border-color: var(--warning-70);
+}
+.textareaError::placeholder {
+  color: var(--warning-70);
+}
 .submitBtnWrapper {
   display: flex;
   justify-content: center;

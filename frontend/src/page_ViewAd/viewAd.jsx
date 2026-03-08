@@ -97,7 +97,7 @@ export default function ViewAd() {
 
   async function handleToggle() {
     if (!token || !getAd.id) {
-      alert("Jelentkezz vagy regisztrálj a művelethez!");
+      alert("Jelentkezz be vagy regisztrálj a művelethez!");
       return;
     }
     setLoading(true);
@@ -134,7 +134,7 @@ export default function ViewAd() {
 
   async function handleReport() {
     if (!token || !getAd.id) {
-      alert("Jelentkezz vagy regisztrálj a művelethez!");
+      alert("Jelentkezz be vagy regisztrálj a művelethez!");
       return;
     }
 
@@ -184,14 +184,20 @@ export default function ViewAd() {
     nav(`/edit_ad?id=${adId}`);
   };
 
-  const handleMessageClick = (userId, username, adTitle) => {
-    nav("/message", { 
-      state: { 
-        recipientId: userId, 
-        recipientName: username,
-        adTitle: adTitle
-      } 
-    });
+  function handleMessageClick(userId, username, adTitle){
+    if(!token) {
+      alert("Jelentkezz be vagy regisztrálj a művelethez!");
+      return;
+    }
+    else{
+      nav("/message", { 
+        state: { 
+          recipientId: userId, 
+          recipientName: username,
+          adTitle: adTitle
+        } 
+      });
+    }
   };
 
   return (

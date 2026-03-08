@@ -89,6 +89,18 @@
   border-radius: 4px;
   box-sizing: border-box;
 }
+.profileField label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+  color: var(--black);
+}
+.inputError {
+  border: 1px solid var(--warning-70);
+}
+.inputError::placeholder {
+  color: var(--warning-70);
+}
 .profileButtons {
   display: flex;
   justify-content: center;

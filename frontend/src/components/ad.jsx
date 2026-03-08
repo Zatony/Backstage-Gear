@@ -30,7 +30,7 @@ export default function Ad({ adName, adDesc, adImg, adPrice, page, adId, cartIds
 
   async function handleToggle() {
     if (!token || !adId) {
-      alert ("Jelentkezz vagy regisztrálj a művelethez!");
+      alert ("Jelentkezz be vagy regisztrálj a művelethez!");
       return;
     }
     setLoading(true);

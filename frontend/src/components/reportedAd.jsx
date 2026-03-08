@@ -1,33 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAuthToken } from "../util/auth";
-
-//ideiglenes
-function formatHungarianPhone(input) {
-  if(!input)
-    return null;
-
-  console.log("Eredeti telefonszám: ", input);
-  // Remove everything except digits
-  let digits = input.replace(/\D/g, "");
-
-  // Normalize prefix
-  if (digits.startsWith("36")) {
-    digits = digits.slice(2);
-  } else if (digits.startsWith("06")) {
-    digits = digits.slice(2);
-  }
-
-  // Hungarian numbers should now be 9 digits
-  if (digits.length !== 9) {
-    return null; // invalid Hungarian phone number
-  }
-
-  const area = digits.slice(0, 2);
-  const part1 = digits.slice(2, 5);
-  const part2 = digits.slice(5);
-
-  return `+36 ${area} ${part1} ${part2}`;
-}
+import { formatHungarianPhone } from "../util/phoneUtils";
 
 export default function ReportedAd({ adId, page }) {
   const [report, setReport] = useState([]);

@@ -8,7 +8,6 @@ export default function Root() {
   const submit = useSubmit();
   const revalidator = useRevalidator();
 
-  // Re-run tokenLoader when login/logout changes localStorage
   useEffect(() => {
     const handleAuthChanged = () => {
       revalidator.revalidate();

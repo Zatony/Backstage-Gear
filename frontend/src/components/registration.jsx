@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import InputField from "./inputField";
+import { createPhoneChangeHandler } from "../util/phoneUtils";
 
 export default function Registration({ onClose, onRegister }) {
   useEffect(() => {
@@ -42,6 +43,8 @@ export default function Registration({ onClose, onRegister }) {
 
     setIsEdited((prevState) => ({ ...prevState, [inputType]: true }));
   }
+
+  const handlePhoneChange = createPhoneChangeHandler(refPhone, validateInputs, 'tel');
 
   async function handleRegistration(e) {
     e.preventDefault();
@@ -119,7 +122,7 @@ export default function Registration({ onClose, onRegister }) {
           <InputField type="email" name="email" labelText="E-mail cím" refData={refEmail} isValid={isValided} isEdited={isEdited} validateInputs={validateInputs}/>
           <InputField type="password" name="password" labelText="Jelszó" refData={refPassword} isValid={isValided} isEdited={isEdited} validateInputs={validateInputs}/>
           <InputField type="password" name="repassword" labelText="Ismételt jelszó" refData={refRePassword} isValid={isValided} isEdited={isEdited} validateInputs={validateInputs}/>
-          <InputField type="tel" name="tel" labelText="Telefonszám" refData={refPhone} isValid={isValided} isEdited={isEdited} validateInputs={validateInputs}/>
+          <InputField type="tel" name="tel" labelText="Telefonszám" refData={refPhone} isValid={isValided} isEdited={isEdited} validateInputs={validateInputs} onChange={handlePhoneChange}/>
           <InputField type="date" name="date" labelText="Születési dátum" refData={refBirthdate} isValid={isValided} isEdited={isEdited} validateInputs={validateInputs}/>
           <div className="log_reg-actions">
             <button className="registration-button" onClick={onRegister}>Regisztráció</button>

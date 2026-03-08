@@ -38,12 +38,13 @@
   background-color: var(--white);
   padding: 16px;
   border-radius: 16px;
-  margin: 16px 50px;
+  margin: 16px auto;
+  max-width: calc(100% - 32px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   position: relative;
 }
 .ad img {
-  flex: 0 0 200px;
+  flex: 0 0 220px;
   width: 220px;
   height: 220px;
   display: block;
@@ -102,8 +103,9 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--black);
-  white-space: nowrap;
+  white-space: normal;
   text-align: right;
+  word-break: break-word;
 }
 .adText_Button .inCart {
   padding: 10px 28px;

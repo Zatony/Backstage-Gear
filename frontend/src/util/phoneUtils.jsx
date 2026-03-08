@@ -32,3 +32,31 @@ export function unformatHungarianPhone(input) {
   if (digits.startsWith("36") && digits.length > 11) return digits.slice(0, 11);
   return null;
 }
+
+export function formatPhoneInput(input) {
+  const digits = String(input).replace(/\D/g, "");
+  if (digits.length === 0) return "";
+  
+  const limited = digits.slice(0, 11);
+  
+  if (limited.length <= 2) {
+    return "+36";
+  } else if (limited.length <= 4) {
+    return `+36 ${limited.slice(2)}`;
+  } else if (limited.length <= 7) {
+    return `+36 ${limited.slice(2, 4)} ${limited.slice(4)}`;
+  } else {
+    return `+36 ${limited.slice(2, 4)} ${limited.slice(4, 7)} ${limited.slice(7)}`;
+  }
+}
+
+export function createPhoneChangeHandler(phoneRef, validateInputs, fieldName = 'tel') {
+  return (e) => {
+    const value = e.target.value;
+    const formatted = formatPhoneInput(value);
+    if (phoneRef.current) {
+      phoneRef.current.value = formatted;
+    }
+    validateInputs(formatted, fieldName);
+  };
+}

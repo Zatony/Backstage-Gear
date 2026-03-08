@@ -24,6 +24,31 @@ export default function EditAd() {
 
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [isValid, setIsValid] = useState({
+    itemName: false,
+    categoryId: false,
+    brandId: false,
+    condition: false,
+    price: false,
+    description: false,
+  });
+  const [isEdited, setIsEdited] = useState({
+    itemName: false,
+    categoryId: false,
+    brandId: false,
+    condition: false,
+    price: false,
+    description: false,
+  });
+
+  function validateInputs(inputText, inputType) {
+    if (inputText.trim().length === 0) {
+      setIsValid((prevState) => ({ ...prevState, [inputType]: false }));
+    } else {
+      setIsValid((prevState) => ({ ...prevState, [inputType]: true }));
+    }
+    setIsEdited((prevState) => ({ ...prevState, [inputType]: true }));
+  }
 
   useEffect(() => {
     async function fetchCategories() {
@@ -102,8 +127,17 @@ export default function EditAd() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError(null);
+    
+    if (
+      !itemName.current.value || !categoryId.current.value ||
+      !brandId.current.value || !condition.current.value ||
+      !price.current.value || !description.current.value
+    ) {
+      setError("Kérjük, tölts ki minden kötelező mezőt!");
+      return;
+    }
 
+    setError(null);
     const data = new FormData();
     data.append("categoryId", categoryId.current?.value || "");
     data.append("brandId", brandId.current?.value || "");
@@ -133,10 +167,11 @@ export default function EditAd() {
         alert("Hirdetés sikeresen módosítva!");
         navigate("/my_ads");
       } else {
-        throw new Error(res.statusText);
+        const errorText = await res.text();
+        throw new Error(`${res.status}: ${errorText}`);
       }
     } catch (err) {
-      setError("Valami hiba történt: " + err.message);
+      setError("Valami hiba történt: " + err);
     } finally {
       setSubmitting(false);
     }
@@ -159,6 +194,9 @@ export default function EditAd() {
             descriptionRef={description}
             categories={categories}
             brands={brands}
+            isValid={isValid}
+            isEdited={isEdited}
+            validateInputs={validateInputs}
           />
 
           <AdFormActions

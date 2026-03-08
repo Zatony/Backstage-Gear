@@ -26,7 +26,6 @@ export default function UserDropdownMenu({ userData, dropdownPos, logoutIcon, re
       }
     }
     fetchIsAdmin();
-    console.log("isAdmin: ", isAdmin);
   }, []);
   return(
       <div ref={ref} className="user-dropdown" style={{top: `${dropdownPos.top}px`, right: `${dropdownPos.right}px`}}>
@@ -47,7 +46,6 @@ export default function UserDropdownMenu({ userData, dropdownPos, logoutIcon, re
                  <Link to="/my_ads" className="userMenuLink" onClick={onClose}>Hirdetéseim</Link>
                  <Link to="/new_ad" className="userMenuLink" onClick={onClose}>Új hirdetés</Link>
                  <Link to="/reported_ads" className="userMenuLink" onClick={onClose}>Jelentett hirdetések</Link>
-                 {/*<a className="userMenuLink" href="#">Jelentett felhasználók</a>*/}
               </>
             }
             <Form action="/logout" method="post" className="userMenuLogout" onSubmit={onClose}>
