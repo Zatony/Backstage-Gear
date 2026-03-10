@@ -1,249 +1,78 @@
 import config from "../config/config";
-import jwt from "jsonwebtoken";
+//import jwt from "jsonwebtoken";
 import mysql from "mysql2/promise";
 import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
-import { IUser, User } from "./user";
+//import { IUser, User } from "./user";
+import { signInService, signUpService, getIsAdminService, deleteOwnUserByIdService } from "./userService";
 
 
 export async function signIn(req: any, res: any) {
-    bodyIsUndefined(req, res);
+    const { email, password } = req.body;
 
-    const {email, password} = req.body;
-    
-    if(!(email && password)){
+    if (!(email && password)) {
         res.status(400).send("Nem megfelelően megadott adatok.");
         return;
-    };
-
-    const connection = await mysql.createConnection(config.database);
-
-    try{
-        const [result] = await connection.query(
-            'SELECT login(?, ?) AS id',
-            [email, password]
-        ) as Array<any>;
-
-        if(!result[0].id){
-            res.status(401).send("Hibásan megadott email vagy jelszó.");
-            return;
-        };
-
-        if(!config.jwtSecret){
-            res.status(500).send("Hiba van a titkos kulcsnál.");
-            return;
-        };
-
-        const [adminRows] = await connection.query(
-            'SELECT is_admin FROM users WHERE id = ?',
-            [result[0].id]
-        ) as Array<any>;
-
-        const token = jwt.sign(
-            {
-                id: result[0].id
-            },
-            config.jwtSecret, 
-            {expiresIn: "2h"}
-        );
-
-        res.status(201).send({token: token,
-        is_admin: adminRows[0].is_admin
-        });
     }
-    catch(err){
-        console.log(err);
+
+    try {
+        const result = await signInService(email, password);
+        res.status(200).json(result);
     }
-    finally{
-        await connection.end();
+    catch (err: any) {
+        if (err.message === "INVALID_CREDENTIALS") {
+            return res.status(401).send("Hibás email vagy jelszó.");
+        }
+
+        res.status(500).send("Szerver hiba.");
     }
 };
 
 
 export async function signUp(req: any, res: any) {
-    bodyIsUndefined(req, res);
+    try {
+        const result = await signUpService(req.body);
+        res.status(201).json(result);
+    } 
+    catch (err: any) {
+        if(err.message === "INVALID_DATA"){
+            return res.status(400).send("Hibásan vagy hiányosan megadott adatok.");
+        }
 
-    let newUser: any = new User(req.body as IUser);
-
-    if(
-        newUser.name == "" || !newUser.name ||
-        newUser.userName == "" || !newUser.userName ||
-        newUser.email == "" || !newUser.email ||
-        newUser.phoneNumber == "" || !newUser.phoneNumber ||
-        newUser.dateOfBirth == "" || !newUser.dateOfBirth ||
-        newUser.password == "" || !newUser.password
-    ){
-        res.status(400).send("Hibásan vagy hiányosan megadott adatok.");
-        return;
-    };
-
-    const connection = await mysql.createConnection(config.database);
-
-    try{
-        await connection.beginTransaction();
-
-        const [userResult]: any = await connection.query(
-            'INSERT INTO users(name, username, email, phone_number, date_of_birth, password) VALUES (?, ?, ?, ?, ?, ?)',
-            [newUser.name, newUser.userName, newUser.email, newUser.phoneNumber, newUser.dateOfBirth, newUser.password]
-        );
-
-        if(userResult.affectedRows === 0){
-            throw new Error("Nem sikerült a regisztráció.");
-        };
-
-
-        await connection.query(
-            'INSERT INTO profiles (user_id) VALUES (?)',
-            [userResult.insertId]
-        );
-
-        await connection.commit();
-
-
-        // regisztráció utáni bejelentkeztetés
-
-        const {email, password} = req.body;
-
-        const [result] = await connection.query(
-            'SELECT login(?, ?) AS id',
-            [email, password]
-        ) as Array<any>;
-
-        const [adminRows] = await connection.query(
-            'SELECT is_admin FROM users WHERE id = ?',
-            [result[0].id]
-        ) as Array<any>;
-
-        const token = jwt.sign(
-            {
-                id: result[0].id,
-                is_admin: adminRows[0].is_admin
-            },
-            config.jwtSecret, 
-            {expiresIn: "2h"}
-        );
-
-
-        res.status(201).json({
-            message: "Sikeres regisztráció",
-            token
-        });
-    }
-    catch(err){
-        await connection.rollback();
-        console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Regisztráció sikertelen.");
     }
 };
 
 
-export async function getIsAdminById(req: any, res: any){
+export async function getIsAdminById(req: any, res: any) {
     const userId: number = parseInt(req.user.id);
 
-    const connection = await mysql.createConnection(config.database);
+    try {
+        const isAdmin = await getIsAdminService(userId);
 
-    try{
-        const [adminRows] = await connection.query(
-            'SELECT is_admin FROM users WHERE id = ?',
-            [userId]
-        ) as Array<any>;
-
-        if(adminRows.length > 0){
-            if(adminRows[0].is_admin === 1){
-                res.status(200).send({is_admin: true});
-                return;
-            }
-            else{
-                res.status(200).send({is_admin: false});
-                return;
-            }
-        };
-
-        res.status(404).send("Nem létezik ilyen azonosítójú felhasználó.");
-    }
-    catch(err){
+        if (isAdmin === null) {
+            res.status(404).send("Nem létezik ilyen azonosítójú felhasználó.");
+        } 
+        else {
+            res.status(200).send({ is_admin: isAdmin });
+        }
+    } 
+    catch (err) {
         console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };
 
 
 export async function deleteOwnUserById(req: any, res: any) {
     const userId: number = parseInt(req.user.id);
-    const connection = await mysql.createConnection(config.database);
 
     try {
-        await connection.beginTransaction();
-
-        const [ads]: any = await connection.query(
-            `SELECT id, used_item_id 
-             FROM advertisements 
-             WHERE user_id = ?`,
-            [userId]
-        );
-
-        const usedItemIds = ads.map((a: any) => a.used_item_id);
-        const adIds = ads.map((a: any) => a.id);
-
-        if (adIds.length > 0) {
-            await connection.query(
-                `DELETE FROM carts WHERE ad_id IN (?)`,
-                [adIds]
-            );
-        }
-
-        await connection.query(
-            `DELETE FROM carts WHERE user_id = ?`,
-            [userId]
-        );
-
-        await connection.query(
-            `DELETE FROM advertisements WHERE user_id = ?`,
-            [userId]
-        );
-
-        if (usedItemIds.length > 0) {
-
-            const [itemRows]: any = await connection.query(
-                `SELECT item_id 
-                 FROM used_items 
-                 WHERE id IN (?)`,
-                [usedItemIds]
-            );
-
-            const itemIds = itemRows.map((r: any) => r.item_id);
-
-            await connection.query(
-                `DELETE FROM used_items WHERE id IN (?)`,
-                [usedItemIds]
-            );
-
-            if (itemIds.length > 0) {
-                await connection.query(
-                    `DELETE FROM items WHERE id IN (?)`,
-                    [itemIds]
-                );
-            }
-        }
-
-        await connection.query(
-            `DELETE FROM users WHERE id = ?`,
-            [userId]
-        );
-
-        await connection.commit();
-
+        await deleteOwnUserByIdService(userId);
         res.status(204).send();
-
-    } catch (err) {
-        await connection.rollback();
+    } 
+    catch (err) {
         console.error(err);
         res.status(500).send("A felhasználó törlése nem sikerült.");
-    } finally {
-        await connection.end();
     }
 };
 

@@ -33,7 +33,14 @@
 		"esModuleInterop": true
 	},
 	"include": [
-		"typings/**/*",
-		"src/**/*"
+	   "typings/**/*",
+	   "src/**/*"
+	],
+	"exclude": [
+	   "node_modules",
+	   "**/*.test.ts",
+	   "**/*.spec.ts",
+	   "cypress",
+	   "src/**/tests"
 	]
 }
