@@ -3,12 +3,8 @@ CREATE DATABASE backstagegear
 CHARACTER SET = 'utf8' COLLATE = 'utf8_hungarian_ci';
 
 
+/* USERS TABLE */
 
-/*
-DELETE FROM users;
-DROP TABLE users;
-ALTER TABLE users AUTO_INCREMENT = 1;
-*/
 CREATE TABLE users(
     id INT AUTO_INCREMENT PRIMARY KEY,
     is_admin TINYINT(1) DEFAULT 0,
@@ -50,12 +46,8 @@ VALUES
 (NULL, 0, 'János Péter', 'janos.peter', 'peter.janos@example.com', '36302109876', '2000-06-22', 'jelszo4');
 
 
+/* PROFILES TABLE */
 
-/*
-DELETE FROM profiles;
-DROP TABLE profiles;
-ALTER TABLE profiles AUTO_INCREMENT = 1;
-*/
 CREATE TABLE profiles(
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -73,12 +65,8 @@ VALUES
 (NULL, 5);
 
 
+/* PROFILE_VOTES TABLE */
 
-/*
-DELETE FROM profile_votes;
-DROP TABLE profile_votes;
-ALTER TABLE profile_votes AUTO_INCREMENT = 1;
-*/
 CREATE TABLE profile_votes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     profile_id INT NOT NULL,
@@ -92,12 +80,8 @@ CREATE TABLE profile_votes (
 );
 
 
+/* MESSAGES TABLE */
 
-/*
-DELETE FROM messages;
-DROP TABLE messages;
-ALTER TABLE messages AUTO_INCREMENT = 1;
-*/
 CREATE TABLE messages(
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
@@ -117,13 +101,8 @@ VALUES
 (NULL, 2, 3, 'üzenet, üzenet', '2025-01-12 21:10:10');
 
 
+/* CATEGORIES TABLE */
 
-
-/*
-DELETE FROM categories;
-DROP TABLE categories;
-ALTER TABLE categories AUTO_INCREMENT = 1;
-*/
 CREATE TABLE categories(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -140,6 +119,7 @@ VALUES
 (NULL, 'hangtechnika', 'hangtechnika.png');
 
 
+/* BRANDS TABLE */
 
 CREATE TABLE brands(
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -197,12 +177,8 @@ VALUES
 (NULL, "Egyéb");
 
 
+/* ITEMS TABLE */
 
-/*
-DELETE FROM items;
-DROP TABLE items;
-ALTER TABLE items AUTO_INCREMENT = 1;
-*/
 CREATE TABLE items(
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT NOT NULL,
@@ -223,6 +199,7 @@ VALUES
 (NULL, 6, 5, 'Behringer Xenyx X2442USB keverő');
 
 
+/* BRAND_CATEGORIES TABLE */
 
 CREATE TABLE brand_categories (
     brand_id INT NOT NULL,
@@ -297,12 +274,8 @@ VALUES
 (46, 4);
 
 
+/* USED_ITEMS TABLE */
 
-/*
-DELETE FROM used_items;
-DROP TABLE used_items;
-ALTER TABLE used_items AUTO_INCREMENT = 1;
-*/
 CREATE TABLE used_items(
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
@@ -322,11 +295,8 @@ VALUES
 (NULL, 6, 1000000, 'használt');
 
 
+/* FILES TABLE */
 
-/*
-DELETE FROM files;
-DROP TABLE files;
-*/
 CREATE TABLE files(
     id VARCHAR(255) NOT NULL PRIMARY KEY UNIQUE,
     file_name VARCHAR(255) NOT NULL,
@@ -338,12 +308,8 @@ VALUES
 ('default-ad-picture', 'default-ad-picture.png', 0);
 
 
+/* ADVERTISEMENTS TABLE */
 
-/*
-DELETE FROM advertisements;
-DROP TABLE advertisements;
-ALTER TABLE advertisements AUTO_INCREMENT = 1;
-*/
 CREATE TABLE advertisements(
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -365,11 +331,8 @@ INSERT INTO advertisements (id, user_id, used_item_id, is_reported, description,
 (NULL, 2, 6, TRUE, 'leírás, leírás', '2025-07-22 09:13:56');
 
 
+/* AD_FILES TABLE */
 
-/*
-DELETE FROM ad_files;
-DROP TABLE ad_files;
-*/
 CREATE TABLE ad_files(
     ad_id INT NOT NULL,
     file_id VARCHAR(255),
@@ -387,12 +350,8 @@ INSERT INTO ad_files (ad_id, file_id) VALUES
 (6, 'default-ad-picture');
 
 
+/* CARTS TABLE */
 
-/*
-DELETE FROM carts;
-DROP TABLE carts;
-ALTER TABLE carts AUTO_INCREMENT = 1;
-*/
 CREATE TABLE carts(
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,

@@ -1,59 +1,31 @@
-import { Response } from "express";
-import mysql from "mysql2/promise";
-import config from "../config/config";
 import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
 import { Message, IMessage } from "./message";
-
-
-async function isUserExisted(id: number, res: Response, connection: any){
-    const [result] = await connection.query(
-        'SELECT id FROM users WHERE id = ?',
-        [id]
-    ) as Array<any>;
-
-    if(result.length === 0){
-        res.status(404).send("Ez a felhasználó nem létezik.");
-        return;
-    };
-};
+import { getUserIncomingMessagesService, getUserIncomingMessageByIdService, getUserSentMessagesService, getUserSentMessageByIdService, postNewMessageService, deleteMessageByIdService, patchMessageByIdService } from "./messageService";
 
 
 export async function getUserIncomingMessages(req: any, res: any){
     const userId: number = parseInt(req.user.id);
     idIsNan(userId, res);
 
-    const connection = await mysql.createConnection(config.database);
-
-    try{
-        isUserExisted(userId, res, connection);
-
-
-        const [results] = await connection.query(
-            `SELECT
-                messages.id,
-                messages.sender_id,
-                messages.receiver_id,
-                messages.content,
-                DATE_FORMAT(messages.sent_at, '%Y-%m-%d %H:%i:%s') AS sent_at
-            FROM messages
-            INNER JOIN users AS receiver ON messages.receiver_id = receiver.id
-            WHERE messages.receiver_id = ?
-            ORDER BY messages.sent_at DESC;`,
-            [userId]
-        ) as Array<any>;
-
-        if(results.length > 0){
-            res.status(200).send(results);
-            return;
-        };
-
-        res.status(404).send("Nincsenek beérkező üzenetek.");
+    if (isNaN(userId)) {
+        return;
     }
-    catch(err){
+
+    try {
+        const results = await getUserIncomingMessagesService(userId);
+        res.status(200).send(results);
+    }
+    catch (err: any) {
+        if (err.message === "USER_NOT_FOUND") {
+            return res.status(404).send("Ez a felhasználó nem létezik.");
+        }
+
+        if (err.message === "NO_INCOMING_MESSAGES") {
+            return res.status(404).send("Nincsenek beérkező üzenetek.");
+        }
+
         console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };
 
@@ -65,38 +37,25 @@ export async function getUserIcomingMessageById(req: any, res: any){
     idIsNan(userId, res);
     idIsNan(messageId, res);
 
-    const connection = await mysql.createConnection(config.database);
-
-    try{
-        isUserExisted(userId, res, connection);
-
-
-        const [result] = await connection.query(
-            `SELECT
-                messages.id,
-                messages.sender_id,
-                messages.receiver_id,
-                messages.content,
-                DATE_FORMAT(messages.sent_at, '%Y-%m-%d %H:%i:%s') AS sent_at
-            FROM messages
-            INNER JOIN users AS receiver ON messages.receiver_id = receiver.id
-            WHERE messages.receiver_id = ? AND messages.id = ?
-            ORDER BY messages.sent_at DESC;`,
-            [userId, messageId]
-        ) as Array<any>;
-
-        if(result.length > 0){
-            res.status(200).send(result);
-            return;
-        };
-
-        res.status(404).send("Nem létezik ilyen azonosítójú elem.");
+    if (isNaN(userId) || isNaN(messageId)) {
+        return;
     }
-    catch(err){
+
+    try {
+        const result = await getUserIncomingMessageByIdService(userId, messageId);
+        res.status(200).send(result);
+    }
+    catch (err: any) {
+        if (err.message === "USER_NOT_FOUND") {
+            return res.status(404).send("Ez a felhasználó nem létezik.");
+        }
+
+        if (err.message === "MESSAGE_NOT_FOUND") {
+            return res.status(404).send("Nem létezik ilyen azonosítójú elem.");
+        }
+
         console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };
 
@@ -105,38 +64,25 @@ export async function getUserSentMessages(req: any, res: any){
     const userId: number = parseInt(req.user.id);
     idIsNan(userId, res);
 
-    const connection = await mysql.createConnection(config.database);
-
-    try{
-        isUserExisted(userId, res, connection);
-
-
-        const [results] = await connection.query(
-            `SELECT
-                messages.id,
-                messages.sender_id,
-                messages.receiver_id,
-                messages.content,
-                DATE_FORMAT(messages.sent_at, '%Y-%m-%d %H:%i:%s') AS sent_at
-            FROM messages
-            INNER JOIN users AS sender ON messages.sender_id = sender.id
-            WHERE messages.sender_id = ?
-            ORDER BY messages.sent_at DESC;`,
-            [userId]
-        ) as Array<any>;
-
-        if(results.length > 0){
-            res.status(200).send(results);
-            return;
-        };
-
-        res.status(404).send("Nincsenek elküldött üzenetek.");
+    if (isNaN(userId)) {
+        return;
     }
-    catch(err){
+
+    try {
+        const results = await getUserSentMessagesService(userId);
+        res.status(200).send(results);
+    }
+    catch (err: any) {
+        if (err.message === "USER_NOT_FOUND") {
+            return res.status(404).send("Ez a felhasználó nem létezik.");
+        }
+
+        if (err.message === "NO_SENT_MESSAGES") {
+            return res.status(404).send("Nincsenek elküldött üzenetek.");
+        }
+
         console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };
 
@@ -148,38 +94,25 @@ export async function getUserSentMessageById(req: any, res: any){
     idIsNan(userId, res);
     idIsNan(messageId, res);
 
-    const connection = await mysql.createConnection(config.database);
-
-    try{
-        isUserExisted(userId, res, connection);
-
-
-        const [result] = await connection.query(
-            `SELECT
-                messages.id,
-                messages.sender_id,
-                messages.receiver_id,
-                messages.content,
-                DATE_FORMAT(messages.sent_at, '%Y-%m-%d %H:%i:%s') AS sent_at
-            FROM messages
-            INNER JOIN users AS sender ON messages.sender_id = sender.id
-            WHERE messages.sender_id = ? AND messages.id = ?
-            ORDER BY messages.sent_at DESC;`,
-            [userId, messageId]
-        ) as Array<any>;
-
-        if(result.length > 0){
-            res.status(200).send(result);
-            return;
-        };
-
-        res.status(404).send("Nem létezik ilyen azonosítójú elem.");
+    if (isNaN(userId) || isNaN(messageId)) {
+        return;
     }
-    catch(err){
+
+    try {
+        const result = await getUserSentMessageByIdService(userId, messageId);
+        res.status(200).send(result);
+    }
+    catch (err: any) {
+        if (err.message === "USER_NOT_FOUND") {
+            return res.status(404).send("Ez a felhasználó nem létezik.");
+        }
+
+        if (err.message === "MESSAGE_NOT_FOUND") {
+            return res.status(404).send("Nem létezik ilyen azonosítójú elem.");
+        }
+
         console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };
 
@@ -191,6 +124,10 @@ export async function postNewMessage(req: any, res: any) {
     idIsNan(recId, res);
     bodyIsUndefined(req, res);
 
+    if (isNaN(recId) || !req.body) {
+        return;
+    }
+
     let newMessage: any = new Message(req.body as IMessage);
 
     if(newMessage.content == "" || !newMessage.content){
@@ -198,30 +135,25 @@ export async function postNewMessage(req: any, res: any) {
         return;
     };
 
-    const connection = await mysql.createConnection(config.database);
-
-    try{
-        isUserExisted(recId, res, connection);
-
-
-        const [result] = await connection.query(
-            'INSERT INTO messages(sender_id, receiver_id, content) VALUES(?, ?, ?)',
-            [sendId, recId, newMessage.content]
-        ) as Array<any>;
-
-        if(result.affectedRows > 0){
-            res.status(201).send("Sikeres üzenetküldés.");
-            return;
-        };
-
-
-        res.status(404).send("Nem sikerült elküldeni az üzenetet.");
+    try {
+        await postNewMessageService(sendId, recId, newMessage.content);
+        res.status(201).send("Sikeres üzenetküldés.");
     }
-    catch(err){
+    catch (err: any) {
+        if (err.message === "USER_NOT_FOUND") {
+            return res.status(404).send("Ez a felhasználó nem létezik.");
+        }
+
+        if (err.message === "INVALID_MESSAGE_CONTENT") {
+            return res.status(400).send("Hibásan vagy nem megfelelően megadott adatok.");
+        }
+
+        if (err.message === "MESSAGE_SEND_FAILED") {
+            return res.status(404).send("Nem sikerült elküldeni az üzenetet.");
+        }
+
         console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };
 
@@ -232,44 +164,25 @@ export async function deleteMessageById(req: any, res: any) {
 
     idIsNan(messId, res);
 
-    const connection = await mysql.createConnection(config.database);
-
-    try{
-        const [result]: any = await connection.query(
-            `
-            DELETE FROM messages
-            WHERE id = ?
-              AND (sender_id = ? OR receiver_id = ?)
-            `,
-            [messId, userId, userId]
-        );
-
-        if (result.affectedRows === 1) {
-            res.status(204).send();
-            return;
-        };
-
-
-        const [rows]: any = await connection.query(
-            'SELECT id FROM messages WHERE id = ?',
-            [messId]
-        );
-
-        if (rows.length === 0) {
-            res.status(404).send("Nem létezik ilyen azonosítójú üzenet.");
-            return;
-        };
-
-
-        res.status(403).send(
-            "Nincs jogosultságod törölni ezt az üzenetet."
-        );
+    if (isNaN(messId)) {
+        return;
     }
-    catch(err){
+
+    try {
+        await deleteMessageByIdService(messId, userId);
+        res.status(204).send();
+    }
+    catch (err: any) {
+        if (err.message === "MESSAGE_NOT_FOUND") {
+            return res.status(404).send("Nem létezik ilyen azonosítójú üzenet.");
+        }
+
+        if (err.message === "MESSAGE_FORBIDDEN") {
+            return res.status(403).send("Nincs jogosultságod törölni ezt az üzenetet.");
+        }
+
         console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };
 
@@ -281,48 +194,33 @@ export async function patchMessageById(req: any, res: any) {
     idIsNan(messId, res);
     bodyIsUndefined(req, res);
 
+    if (isNaN(messId) || !req.body) {
+        return;
+    }
+
     if (typeof req.body.content !== "string" || req.body.content.trim() === "") {
         res.status(400).send("Hiányosan megadott adatok.");
         return;
     }
 
-    const sql = `
-        UPDATE messages
-        SET content = ?
-        WHERE id = ? AND sender_id = ?
-    `;
-
-    const connection = await mysql.createConnection(config.database);
-
     try {
-        const [result]: any = await connection.query(sql, [
-            req.body.content,
-            messId,
-            userId
-        ]);
-
-        if (result.affectedRows === 1) {
-            res.status(204).send();
-            return;
-        }
-
-
-        const [rows]: any = await connection.query(
-            "SELECT id FROM messages WHERE id = ?",
-            [messId]
-        );
-
-        if (rows.length === 0) {
-            res.status(404).send("Nem létezik ilyen üzenet.");
-            return;
-        }
-
-        res.status(403).send("Nincs jogosultságod módosítani ezt az üzenetet.");
+        await patchMessageByIdService(messId, userId, req.body.content);
+        res.status(204).send();
     }
-    catch (err) {
+    catch (err: any) {
+        if (err.message === "INVALID_MESSAGE_CONTENT") {
+            return res.status(400).send("Hiányosan megadott adatok.");
+        }
+
+        if (err.message === "MESSAGE_NOT_FOUND") {
+            return res.status(404).send("Nem létezik ilyen üzenet.");
+        }
+
+        if (err.message === "MESSAGE_FORBIDDEN") {
+            return res.status(403).send("Nincs jogosultságod módosítani ezt az üzenetet.");
+        }
+
         console.error(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };

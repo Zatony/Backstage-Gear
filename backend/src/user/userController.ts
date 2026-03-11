@@ -1,9 +1,5 @@
-import config from "../config/config";
-//import jwt from "jsonwebtoken";
-import mysql from "mysql2/promise";
 import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
-//import { IUser, User } from "./user";
-import { signInService, signUpService, getIsAdminService, deleteOwnUserByIdService } from "./userService";
+import { signInService, signUpService, getIsAdminService, deleteOwnUserByIdService, updateOwnPasswordByIdService, deleteUserByIdService } from "./userService";
 
 
 export async function signIn(req: any, res: any) {
@@ -82,31 +78,25 @@ export async function updateOwnPasswordById(req: any, res: any) {
 
     bodyIsUndefined(req, res);
 
-    if (req.body.password.trim() === "") {
-        res.status(400).send("Hiányosan megadott adatok.");
+    if (!req.body) {
         return;
-    };
-
-    const connection = await mysql.createConnection(config.database);
-
-    try{
-        const [result] = await connection.query(
-            'UPDATE users SET password = ? WHERE id = ?',
-            [req.body.password, userId]
-        ) as Array<any>;
-
-        if(result.affectedRows === 1){
-            res.status(204).send();
-            return;
-        };
-
-        res.status(404).send("Nem sikerült a jelszó módosítása.");
     }
-    catch(err){
+
+    try {
+        await updateOwnPasswordByIdService(userId, req.body.password);
+        res.status(204).send();
+    }
+    catch (err: any) {
+        if (err.message === "INVALID_PASSWORD") {
+            return res.status(400).send("Hiányosan megadott adatok.");
+        }
+
+        if (err.message === "PASSWORD_UPDATE_FAILED") {
+            return res.status(404).send("Nem sikerült a jelszó módosítása.");
+        }
+
         console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };
 
@@ -118,80 +108,20 @@ export async function deleteUserById(req: any, res: any) {
 
     idIsNan(userId, res);
 
-    const connection = await mysql.createConnection(config.database);
+    if (isNaN(userId)) {
+        return;
+    }
 
-    try{
-        await connection.beginTransaction();
-
-        const [userCheck] = await connection.query(
-            'SELECT id FROM users WHERE id = ?',
-            [userId]
-        ) as Array<any>;
-
-        if(userCheck.length < 1){
-            res.status(404).send("Nem létezik ilyen azonosítójú felhasználó.");
-            return;
-        };
-
-        const [ads]: any = await connection.query(
-            `SELECT id, used_item_id FROM advertisements WHERE user_id = ?`,
-            [userId]
-        );
-
-        const usedItemIds = ads.map((a: any) => a.used_item_id);
-        const adIds = ads.map((a: any) => a.id);
-
-        if (adIds.length > 0) {
-            await connection.query(
-                `DELETE FROM carts WHERE ad_id IN (?)`,
-                [adIds]
-            );
-        }
-
-        await connection.query(
-            `DELETE FROM carts WHERE user_id = ?`,
-            [userId]
-        );
-
-        await connection.query(
-            `DELETE FROM advertisements WHERE user_id = ?`,
-            [userId]
-        );
-
-        if (usedItemIds.length > 0) {
-            await connection.query(
-                `DELETE FROM used_items WHERE id IN (?)`,
-                [usedItemIds]
-            );
-        }
-
-        const [itemRows]: any = await connection.query(
-            `SELECT item_id FROM used_items WHERE id IN (?)`,
-            [usedItemIds]
-        );
-
-        const itemIds = itemRows.map((r: any) => r.item_id);
-
-        if (itemIds.length > 0) {
-            await connection.query(
-                `DELETE FROM items WHERE id IN (?)`,
-                [itemIds]
-            );
-        }
-
-        await connection.query(
-            `DELETE FROM users WHERE id = ?`,
-            [userId]
-        );
-
-        await connection.commit();
+    try {
+        await deleteUserByIdService(userId);
         res.status(204).send();
     }
-    catch(err){
-        await connection.rollback();
+    catch (err: any) {
+        if (err.message === "USER_NOT_FOUND") {
+            return res.status(404).send("Nem létezik ilyen azonosítójú felhasználó.");
+        }
+
         console.log(err);
-    }
-    finally{
-        await connection.end();
+        res.status(500).send("Szerver hiba.");
     }
 };

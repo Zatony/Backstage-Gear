@@ -4,6 +4,60 @@ import mysql from "mysql2/promise";
 import { ISignUpUser } from "./user.dto";
 
 
+async function deleteUserData(connection: any, userId: number): Promise<void> {
+    const [ads]: any = await connection.query(
+        `SELECT id, used_item_id FROM advertisements WHERE user_id = ?`,
+        [userId]
+    );
+
+    const usedItemIds = ads.map((a: any) => a.used_item_id);
+    const adIds = ads.map((a: any) => a.id);
+
+    if (adIds.length > 0) {
+        await connection.query(
+            `DELETE FROM carts WHERE ad_id IN (?)`,
+            [adIds]
+        );
+    }
+
+    await connection.query(
+        `DELETE FROM carts WHERE user_id = ?`,
+        [userId]
+    );
+
+    await connection.query(
+        `DELETE FROM advertisements WHERE user_id = ?`,
+        [userId]
+    );
+
+    if (usedItemIds.length > 0) {
+        const [itemRows]: any = await connection.query(
+            `SELECT item_id FROM used_items WHERE id IN (?)`,
+            [usedItemIds]
+        );
+
+        const itemIds = itemRows.map((r: any) => r.item_id);
+
+        await connection.query(
+            `DELETE FROM used_items WHERE id IN (?)`,
+            [usedItemIds]
+        );
+
+        if (itemIds.length > 0) {
+            await connection.query(
+                `DELETE FROM items WHERE id IN (?)`,
+                [itemIds]
+            );
+        }
+    }
+
+    await connection.query(
+        `DELETE FROM users WHERE id = ?`,
+        [userId]
+    );
+}
+
+
 export async function signInService(email: string, password: string) {
     const connection = await mysql.createConnection(config.database);
 
@@ -140,56 +194,7 @@ export async function deleteOwnUserByIdService(userId: number): Promise<void> {
     try {
         await connection.beginTransaction();
 
-        const [ads]: any = await connection.query(
-            `SELECT id, used_item_id FROM advertisements WHERE user_id = ?`,
-            [userId]
-        );
-
-        const usedItemIds = ads.map((a: any) => a.used_item_id);
-        const adIds = ads.map((a: any) => a.id);
-
-        if (adIds.length > 0) {
-            await connection.query(
-                `DELETE FROM carts WHERE ad_id IN (?)`,
-                [adIds]
-            );
-        }
-
-        await connection.query(
-            `DELETE FROM carts WHERE user_id = ?`,
-            [userId]
-        );
-
-        await connection.query(
-            `DELETE FROM advertisements WHERE user_id = ?`,
-            [userId]
-        );
-
-        if (usedItemIds.length > 0) {
-            const [itemRows]: any = await connection.query(
-                `SELECT item_id FROM used_items WHERE id IN (?)`,
-                [usedItemIds]
-            );
-
-            const itemIds = itemRows.map((r: any) => r.item_id);
-
-            await connection.query(
-                `DELETE FROM used_items WHERE id IN (?)`,
-                [usedItemIds]
-            );
-
-            if (itemIds.length > 0) {
-                await connection.query(
-                    `DELETE FROM items WHERE id IN (?)`,
-                    [itemIds]
-                );
-            }
-        }
-
-        await connection.query(
-            `DELETE FROM users WHERE id = ?`,
-            [userId]
-        );
+        await deleteUserData(connection, userId);
 
         await connection.commit();
     } 
@@ -200,4 +205,55 @@ export async function deleteOwnUserByIdService(userId: number): Promise<void> {
     finally {
         await connection.end();
     }
-}
+};
+
+
+export async function deleteUserByIdService(userId: number): Promise<void> {
+    const connection = await mysql.createConnection(config.database);
+
+    try {
+        await connection.beginTransaction();
+
+        const [userCheck]: any = await connection.query(
+            'SELECT id FROM users WHERE id = ?',
+            [userId]
+        );
+
+        if (userCheck.length < 1) {
+            throw new Error("USER_NOT_FOUND");
+        }
+
+        await deleteUserData(connection, userId);
+
+        await connection.commit();
+    }
+    catch (err) {
+        await connection.rollback();
+        throw err;
+    }
+    finally {
+        await connection.end();
+    }
+};
+
+
+export async function updateOwnPasswordByIdService(userId: number, newPassword: string): Promise<void> {
+    if (!newPassword || newPassword.trim() === "") {
+        throw new Error("INVALID_PASSWORD");
+    }
+
+    const connection = await mysql.createConnection(config.database);
+
+    try {
+        const [result]: any = await connection.query(
+            'UPDATE users SET password = ? WHERE id = ?',
+            [newPassword, userId]
+        );
+
+        if (result.affectedRows !== 1) {
+            throw new Error("PASSWORD_UPDATE_FAILED");
+        }
+    } finally {
+        await connection.end();
+    }
+};

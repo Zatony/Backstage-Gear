@@ -1,6 +1,6 @@
 import * as userService from "./userService";
-import { signIn, getIsAdminById } from "./userController";
-import { signUpService, deleteOwnUserByIdService } from "./userService";
+import { signIn, getIsAdminById, deleteUserById } from "./userController";
+import { signUpService, deleteOwnUserByIdService, updateOwnPasswordByIdService, deleteUserByIdService } from "./userService";
 import mysql from "mysql2/promise";
 import jwt from "jsonwebtoken";
 
@@ -153,5 +153,128 @@ describe("deleteOwnUserByIdService", () => {
     await expect(deleteOwnUserByIdService(1)).rejects.toThrow("fail");
     expect(mockConnection.rollback).toHaveBeenCalled();
     expect(mockConnection.end).toHaveBeenCalled();
+  });
+});
+
+
+describe("updateOwnPasswordByIdService", () => {
+  let mockConnection: any;
+
+  beforeEach(() => {
+    mockConnection = {
+      query: jest.fn(),
+      end: jest.fn()
+    };
+
+    (mysql.createConnection as jest.Mock).mockResolvedValue(mockConnection);
+    jest.clearAllMocks();
+  });
+
+  it("should update password and close the connection", async () => {
+    mockConnection.query.mockResolvedValueOnce([{ affectedRows: 1 }]);
+
+    await expect(updateOwnPasswordByIdService(1, "new-password")).resolves.toBeUndefined();
+
+    expect(mysql.createConnection).toHaveBeenCalled();
+    expect(mockConnection.query).toHaveBeenCalledWith(
+      "UPDATE users SET password = ? WHERE id = ?",
+      ["new-password", 1]
+    );
+    expect(mockConnection.end).toHaveBeenCalled();
+  });
+
+  it("should throw INVALID_PASSWORD for empty password", async () => {
+    await expect(updateOwnPasswordByIdService(1, "   ")).rejects.toThrow("INVALID_PASSWORD");
+
+    expect(mysql.createConnection).not.toHaveBeenCalled();
+  });
+
+  it("should throw PASSWORD_UPDATE_FAILED when no row is updated", async () => {
+    mockConnection.query.mockResolvedValueOnce([{ affectedRows: 0 }]);
+
+    await expect(updateOwnPasswordByIdService(1, "new-password")).rejects.toThrow("PASSWORD_UPDATE_FAILED");
+
+    expect(mockConnection.end).toHaveBeenCalled();
+  });
+});
+
+
+describe("deleteUserByIdService", () => {
+  let mockConnection: any;
+
+  beforeEach(() => {
+    mockConnection = {
+      beginTransaction: jest.fn(),
+      query: jest.fn(),
+      commit: jest.fn(),
+      rollback: jest.fn(),
+      end: jest.fn()
+    };
+
+    (mysql.createConnection as jest.Mock).mockResolvedValue(mockConnection);
+    jest.clearAllMocks();
+  });
+
+  it("should delete an existing user and related data", async () => {
+    mockConnection.query
+      .mockResolvedValueOnce([[{ id: 1 }]])
+      .mockResolvedValueOnce([[{ id: 10, used_item_id: 20 }]])
+      .mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce([[{ item_id: 30 }]])
+      .mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce(undefined);
+
+    await expect(deleteUserByIdService(1)).resolves.toBeUndefined();
+
+    expect(mockConnection.beginTransaction).toHaveBeenCalled();
+    expect(mockConnection.commit).toHaveBeenCalled();
+    expect(mockConnection.rollback).not.toHaveBeenCalled();
+    expect(mockConnection.end).toHaveBeenCalled();
+  });
+
+  it("should throw USER_NOT_FOUND when the user does not exist", async () => {
+    mockConnection.query.mockResolvedValueOnce([[]]);
+
+    await expect(deleteUserByIdService(999)).rejects.toThrow("USER_NOT_FOUND");
+
+    expect(mockConnection.rollback).toHaveBeenCalled();
+    expect(mockConnection.end).toHaveBeenCalled();
+  });
+});
+
+
+describe("deleteUserById", () => {
+  let req: any;
+  let res: any;
+
+  beforeEach(() => {
+    req = { params: { userId: "1" } };
+    res = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn()
+    };
+    jest.clearAllMocks();
+  });
+
+  it("should return 204 when the service succeeds", async () => {
+    jest.spyOn(userService, "deleteUserByIdService").mockResolvedValue();
+
+    await deleteUserById(req, res);
+
+    expect(userService.deleteUserByIdService).toHaveBeenCalledWith(1);
+    expect(res.status).toHaveBeenCalledWith(204);
+    expect(res.send).toHaveBeenCalled();
+  });
+
+  it("should return 404 when the service reports missing user", async () => {
+    jest.spyOn(userService, "deleteUserByIdService").mockRejectedValue(new Error("USER_NOT_FOUND"));
+
+    await deleteUserById(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.send).toHaveBeenCalledWith(expect.stringContaining("Nem létezik ilyen azonosítójú felhasználó"));
   });
 });
