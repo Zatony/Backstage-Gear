@@ -1,14 +1,17 @@
 import mysql from "mysql2/promise";
 import {
+  deleteMessageByIdService,
   getUserIncomingMessagesService,
   getUserIncomingMessageByIdService,
   getUserSentMessagesService,
-  getUserSentMessageByIdService
+  getUserSentMessageByIdService,
+  patchMessageByIdService,
+  postNewMessageService
 } from "./messageService";
 
 jest.mock("mysql2/promise");
 
-describe("messageService get methods", () => {
+describe("messageService tests", () => {
   let mockConnection: any;
 
   beforeEach(() => {
@@ -121,6 +124,130 @@ describe("messageService get methods", () => {
         .mockResolvedValueOnce([[]]);
 
       await expect(getUserSentMessageByIdService(1, 9)).rejects.toThrow("MESSAGE_NOT_FOUND");
+
+      expect(mockConnection.end).toHaveBeenCalled();
+    });
+  });
+
+  describe("postNewMessageService", () => {
+    it("should insert a new message", async () => {
+      mockConnection.query
+        .mockResolvedValueOnce([[{ id: 2 }]])
+        .mockResolvedValueOnce([{ affectedRows: 1 }]);
+
+      await expect(postNewMessageService(1, 2, "hello there")).resolves.toBeUndefined();
+
+      expect(mockConnection.query).toHaveBeenNthCalledWith(1, "SELECT id FROM users WHERE id = ?", [2]);
+      expect(mockConnection.query).toHaveBeenNthCalledWith(
+        2,
+        "INSERT INTO messages(sender_id, receiver_id, content) VALUES(?, ?, ?)",
+        [1, 2, "hello there"]
+      );
+      expect(mockConnection.end).toHaveBeenCalled();
+    });
+
+    it("should throw INVALID_MESSAGE_CONTENT when content is blank", async () => {
+      await expect(postNewMessageService(1, 2, "   ")).rejects.toThrow("INVALID_MESSAGE_CONTENT");
+
+      expect(mysql.createConnection).not.toHaveBeenCalled();
+    });
+
+    it("should throw USER_NOT_FOUND when receiver does not exist", async () => {
+      mockConnection.query.mockResolvedValueOnce([[]]);
+
+      await expect(postNewMessageService(1, 2, "hello there")).rejects.toThrow("USER_NOT_FOUND");
+
+      expect(mockConnection.end).toHaveBeenCalled();
+    });
+
+    it("should throw MESSAGE_SEND_FAILED when insert affects no rows", async () => {
+      mockConnection.query
+        .mockResolvedValueOnce([[{ id: 2 }]])
+        .mockResolvedValueOnce([{ affectedRows: 0 }]);
+
+      await expect(postNewMessageService(1, 2, "hello there")).rejects.toThrow("MESSAGE_SEND_FAILED");
+
+      expect(mockConnection.end).toHaveBeenCalled();
+    });
+  });
+
+  describe("deleteMessageByIdService", () => {
+    it("should delete a message when the user is sender or receiver", async () => {
+      mockConnection.query.mockResolvedValueOnce([{ affectedRows: 1 }]);
+
+      await expect(deleteMessageByIdService(5, 1)).resolves.toBeUndefined();
+
+      expect(mockConnection.query).toHaveBeenCalledWith(
+        `
+			DELETE FROM messages
+			WHERE id = ?
+			  AND (sender_id = ? OR receiver_id = ?)
+			`,
+        [5, 1, 1]
+      );
+      expect(mockConnection.end).toHaveBeenCalled();
+    });
+
+    it("should throw MESSAGE_NOT_FOUND when the message does not exist", async () => {
+      mockConnection.query
+        .mockResolvedValueOnce([{ affectedRows: 0 }])
+        .mockResolvedValueOnce([[]]);
+
+      await expect(deleteMessageByIdService(5, 1)).rejects.toThrow("MESSAGE_NOT_FOUND");
+
+      expect(mockConnection.end).toHaveBeenCalled();
+    });
+
+    it("should throw MESSAGE_FORBIDDEN when the user cannot delete the message", async () => {
+      mockConnection.query
+        .mockResolvedValueOnce([{ affectedRows: 0 }])
+        .mockResolvedValueOnce([[{ id: 5 }]]);
+
+      await expect(deleteMessageByIdService(5, 1)).rejects.toThrow("MESSAGE_FORBIDDEN");
+
+      expect(mockConnection.end).toHaveBeenCalled();
+    });
+  });
+
+  describe("patchMessageByIdService", () => {
+    it("should update a sent message", async () => {
+      mockConnection.query.mockResolvedValueOnce([{ affectedRows: 1 }]);
+
+      await expect(patchMessageByIdService(5, 1, "updated content")).resolves.toBeUndefined();
+
+      expect(mockConnection.query).toHaveBeenCalledWith(
+        `
+			UPDATE messages
+			SET content = ?
+			WHERE id = ? AND sender_id = ?
+			`,
+        ["updated content", 5, 1]
+      );
+      expect(mockConnection.end).toHaveBeenCalled();
+    });
+
+    it("should throw INVALID_MESSAGE_CONTENT when content is blank", async () => {
+      await expect(patchMessageByIdService(5, 1, "")).rejects.toThrow("INVALID_MESSAGE_CONTENT");
+
+      expect(mysql.createConnection).not.toHaveBeenCalled();
+    });
+
+    it("should throw MESSAGE_NOT_FOUND when the message does not exist", async () => {
+      mockConnection.query
+        .mockResolvedValueOnce([{ affectedRows: 0 }])
+        .mockResolvedValueOnce([[]]);
+
+      await expect(patchMessageByIdService(5, 1, "updated content")).rejects.toThrow("MESSAGE_NOT_FOUND");
+
+      expect(mockConnection.end).toHaveBeenCalled();
+    });
+
+    it("should throw MESSAGE_FORBIDDEN when the user is not the sender", async () => {
+      mockConnection.query
+        .mockResolvedValueOnce([{ affectedRows: 0 }])
+        .mockResolvedValueOnce([[{ id: 5 }]]);
+
+      await expect(patchMessageByIdService(5, 1, "updated content")).rejects.toThrow("MESSAGE_FORBIDDEN");
 
       expect(mockConnection.end).toHaveBeenCalled();
     });
