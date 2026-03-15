@@ -2,8 +2,31 @@ import jwt from "jsonwebtoken";
 import config from "../config/config";
 import mysql from "mysql2/promise";
 
+function extractToken(req: any) {
+    const authorizationHeader = req.headers?.authorization || req.headers?.Authorization;
+    const headerToken = authorizationHeader || req.headers?.["x-access-token"];
+    const rawToken = req.body?.token || req.query?.token || headerToken;
+
+    if (typeof rawToken !== "string") {
+        return null;
+    }
+
+    const token = rawToken.trim();
+
+    if (!token) {
+        return null;
+    }
+
+    if (token.startsWith("Bearer ")) {
+        const bearerToken = token.slice(7).trim();
+        return bearerToken || null;
+    }
+
+    return token;
+}
+
 export function verifyToken(req: any, res: any, next: any){
-    const token = req.body?.token || req.query?.token || req.headers?.['x-access-token'];
+    const token = extractToken(req);
 
     if(!token){
         return res.status(401).send("Token szükséges.");
@@ -20,7 +43,9 @@ export function verifyToken(req: any, res: any, next: any){
         return next();
     }
     catch(err){
-        console.log(err);
+        if (!(err instanceof Error) || (err.name !== "JsonWebTokenError" && err.name !== "TokenExpiredError")) {
+            console.error(err);
+        }
         return res.status(401).send("A hitelesítés nem sikerült.");
     }
 };

@@ -6,6 +6,7 @@ import Login from "../components/login";
 import Registration from "../components/registration";
 import { useEffect, useRef, useState } from "react";
 import UserDropdownMenu from "./userDropdownMenu";
+import { getAuthToken } from "../util/auth";
 
 export default function NavBar({ callLogin, showLogin, handleCloseLogin, showRegister, handleCloseRegister, handleShowRegister, handleShowLogin, }) {
   const tokenFromLoader = useRouteLoaderData("root");
@@ -18,7 +19,7 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
 
   useEffect(() => {
     function handleAuthChange() {
-      setToken(localStorage.getItem("token"));
+      setToken(getAuthToken());
       setIsProfileOpen(false);
     }
     window.addEventListener("authChanged", handleAuthChange);
@@ -57,7 +58,7 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
 
   useEffect(() => {
     async function fetchCart() {
-      const token = localStorage.getItem("token");
+      const token = getAuthToken();
       if (!token) {
         setCartCount(0);
         return;

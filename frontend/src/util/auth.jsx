@@ -1,11 +1,52 @@
 import { redirect } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
+const AUTH_CHANGED_EVENT = "authChanged";
+
+function notifyAuthChanged() {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event(AUTH_CHANGED_EVENT));
+  }
+}
+
+function clearStoredAuth(shouldNotify = true) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const hadStoredAuth = localStorage.getItem("token") || localStorage.getItem("expiration");
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("expiration");
+
+  if (shouldNotify && hadStoredAuth) {
+    notifyAuthChanged();
+  }
+}
+
+function decodeTokenSafely(token) {
+  try {
+    return jwtDecode(token);
+  } catch {
+    return null;
+  }
+}
+
 export function getTokenDuration() {
   const storedDate = localStorage.getItem("expiration");
-  const now = new Date();
 
-  const duration = new Date(storedDate).getTime() - now.getTime();
+  if (!storedDate) {
+    return null;
+  }
+
+  const expiration = new Date(storedDate).getTime();
+
+  if (Number.isNaN(expiration)) {
+    clearStoredAuth();
+    return null;
+  }
+
+  const duration = expiration - Date.now();
 
   return duration;
 }
@@ -17,12 +58,39 @@ export function getAuthToken() {
     return null;
   }
 
+  if (!decodeTokenSafely(token)) {
+    clearStoredAuth();
+    return null;
+  }
+
   const duration = getTokenDuration();
-  if (duration < 0) {
-    return "EXPIRED";
+  if (duration === null || duration <= 0) {
+    clearStoredAuth();
+    return null;
   }
 
   return token;
+}
+
+export function getAuthUser() {
+  const token = getAuthToken();
+
+  if (!token) {
+    return null;
+  }
+
+  const decodedToken = decodeTokenSafely(token);
+
+  if (!decodedToken) {
+    clearStoredAuth();
+    return null;
+  }
+
+  return decodedToken;
+}
+
+export function getAuthUserId() {
+  return getAuthUser()?.id ?? null;
 }
 
 export function tokenLoader() {
@@ -42,7 +110,11 @@ export async function checkEditAdAccess({ request }) {
 
   if (!token) return redirect("/");
 
-  const userId = jwtDecode(token).id;
+  const userId = getAuthUserId();
+
+  if (!userId) {
+    return redirect("/");
+  }
 
   try {
     const response = await fetch(`http://localhost:3000/backstagegear/ads/${adId}`);

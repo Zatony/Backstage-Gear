@@ -19,12 +19,12 @@ export default function Root() {
   useEffect(() => {
     if (!token) return;
 
-    if (token === "EXPIRED") {
+    const duration = getTokenDuration();
+
+    if (duration === null || duration <= 0) {
       submit(null, { action: "/logout", method: "post" });
       return;
     }
-
-    const duration = getTokenDuration();
 
     const timer = setTimeout(() => {
       submit(null, { action: "/logout", method: "post" });
