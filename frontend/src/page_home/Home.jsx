@@ -20,13 +20,14 @@ export default function Home() {
   }
 
   function handleSearch(query) {
-    const params = new URLSearchParams();
-    if (query) params.append("q", query);
-    if (filters.categoryId) params.append("categoryId", filters.categoryId);
-    if (filters.brandId) params.append("brandId", filters.brandId);
-    if (filters.minPrice) params.append("minPrice", filters.minPrice);
-    if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
-    navigate(`/products?${params.toString()}`);
+    navigate("/products", {
+      state: {
+        preselectedFilters: {
+          ...filters,
+          q: query,
+        },
+      },
+    });
   }
 
   return (
@@ -36,7 +37,7 @@ export default function Home() {
         <div className={home.searchbarLine}></div>
         <SearchBar page={home} onFilter={handleFilter} onSearch={handleSearch} />
       </div>
-      {showFilter && <Filter page={home} onFilterChange={handleFilterChange} />}
+      {showFilter && <Filter page={home} onFilterChange={handleFilterChange} initialFilters={filters} />}
 
       <main>
         <Categories page={home} />

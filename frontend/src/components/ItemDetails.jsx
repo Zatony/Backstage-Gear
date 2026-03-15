@@ -9,7 +9,7 @@ export default function ItemDetails({ page, ad }) {
       </div>
       <div className={page.adDescBlock}>
         <div
-          className={page.adDescLabel}
+          className={page.adCondLabel}
         >{`Állapot: ${ad.item_condition}`}</div>
         <div className={page.adDescLabel}>Leírás:</div>
         <div className={page.adDescText}>{ad.description}</div>

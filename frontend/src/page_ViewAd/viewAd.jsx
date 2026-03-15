@@ -2,7 +2,7 @@ import viewAd from "./viewAd.module.css";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAuthToken } from "../util/auth";
-import ItemImage from "../components/UserData.jsx";
+import ItemImageAndUser from "../components/ItemImageAndUser.jsx";
 import ItemDetails from "../components/ItemDetails.jsx";
 import ItemActions from "../components/viewAdButtons.jsx";
 
@@ -14,7 +14,9 @@ export default function ViewAd() {
   const [inCart, setInCart] = useState(false);
   const [isMyAd, setIsMyAd] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [voteLoading, setVoteLoading] = useState(false);
   const token = getAuthToken();
+  const isLoggedIn = !!token && token !== "EXPIRED";
   const nav = useNavigate();
   
   useEffect(() => {
@@ -50,24 +52,61 @@ export default function ViewAd() {
   }, [queryId]);
 
   useEffect(() => {
-    async function fetchUserData() {
-      try {
-        if (!getAd.user_id) 
-          return;
-
-        const response = await fetch(`http://localhost:3000/backstagegear/profiles/${getAd.user_id}`);
-
-        const resData = await response.json();
-        if (response.ok) 
-          setUserData(resData);
-
-        console.log("Felhasználói: ", resData);
-      } catch (err) {
-        console.error("Hiba a felhasználói adatok lekérésekor: ", err);
-      }
-    }
     fetchUserData();
   }, [getAd.user_id]);
+
+  async function fetchUserData() {
+    try {
+      if (!getAd.user_id)
+        return;
+
+      const response = await fetch(`http://localhost:3000/backstagegear/profiles/${getAd.user_id}`);
+
+      const resData = await response.json();
+      if (response.ok)
+        setUserData(resData);
+
+      console.log("Felhasználói: ", resData);
+    } catch (err) {
+      console.error("Hiba a felhasználói adatok lekérésekor: ", err);
+    }
+  }
+
+  async function handleVoteProfile(vote) {
+    if (!isLoggedIn || !userData.profile_id) {
+      alert("Jelentkezz be vagy regisztrálj a szavazáshoz!");
+      return;
+    }
+    if (isMyAd) {
+      alert("A saját profilodat nem szavazhatod.");
+      return;
+    }
+
+    setVoteLoading(true);
+    try {
+      const response = await fetch(`http://localhost:3000/backstagegear/me/profiles/${userData.profile_id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+        body: JSON.stringify({ vote }),
+      });
+
+      if (!response.ok) {
+        const message = await response.text();
+        alert(message || "Hiba történt a szavazás során.");
+        return;
+      }
+
+      await fetchUserData();
+    } catch (err) {
+      console.error("Hiba történt a profil szavazásakor: ", err);
+      alert("Hiba történt a szavazás során.");
+    } finally {
+      setVoteLoading(false);
+    }
+  }
 
   useEffect(() => {
     async function checkInCart() {
@@ -204,7 +243,16 @@ export default function ViewAd() {
     <div className={viewAd.viewAdContainer}>
       <div className={viewAd.adCardColumn}>
         <div className={viewAd.adInfoBlock}>
-          <ItemImage page={viewAd} ad={getAd} userData={userData} />
+          <ItemImageAndUser
+            page={viewAd}
+            ad={getAd}
+            userData={userData}
+            isMyAd={isMyAd}
+            isLoggedIn={isLoggedIn}
+            voteLoading={voteLoading}
+            onUpVote={() => handleVoteProfile(1)}
+            onDownVote={() => handleVoteProfile(-1)}
+          />
           <ItemDetails page={viewAd} ad={getAd} />
         </div>
         <ItemActions

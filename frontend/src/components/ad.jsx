@@ -84,7 +84,7 @@ export default function Ad({ adName, adDesc, adImg, adPrice, page, adId, cartIds
               disabled={loading}
               className={inCart ? page.inCart : isMyAd ? page.myAd : page.notInCart}
             >
-              {inCart ? "Eltávolítás a kosárból" : isMyAd ? "Módosítás" : "Kosárba"}
+              {inCart ? "Eltávolítás a kívánságlistáról" : isMyAd ? "Módosítás" : "Kívánságlistára tűzés"}
             </button>
           </div>
         </div>

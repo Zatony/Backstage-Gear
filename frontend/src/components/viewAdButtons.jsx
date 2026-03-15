@@ -15,7 +15,7 @@ export default function ItemActions({ page, ad, userData, isMyAd, inCart, loadin
           }
           disabled={loading}
         >
-          {isMyAd ? "Módosítás" : inCart ? "Eltávolítás a kosárból" : "Kosárba"}
+          {isMyAd ? "Módosítás" : inCart ? "Eltávolítás a kívánságlistáról" : "Kívánságlistára tűzés"}
         </button>
 
         {isMyAd ? (

@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Filter from "../components/filter";
 import SearchBar from "../components/searchbar";
 import products from "./products.module.css";
 import Ads from "../components/ads";
 
 export default function Products(){
-    const [searchParams] = useSearchParams();
-    const initialQuery = searchParams.get("q") || "";
-    const initialCategoryIds = searchParams.get("categoryIds") ? searchParams.get("categoryIds").split(",") : [];
-    const initialBrandId = searchParams.get("brandId") || "";
-    const initialConditions = searchParams.get("conditions") ? searchParams.get("conditions").split(",") : [];
-    const initialMinPrice = searchParams.get("minPrice") || "";
-    const initialMaxPrice = searchParams.get("maxPrice") || "";
+    const location = useLocation();
+    const preselectedFilters = location.state?.preselectedFilters || {};
+    const initialQuery = preselectedFilters.q || "";
+    const initialCategoryIds = preselectedFilters.categoryIds || [];
+    const initialBrandId = preselectedFilters.brandId ? String(preselectedFilters.brandId) : "";
+    const initialConditions = preselectedFilters.conditions || [];
+    const initialMinPrice = preselectedFilters.minPrice || "";
+    const initialMaxPrice = preselectedFilters.maxPrice || "";
     const [filters, setFilters] = useState({
         q: initialQuery,
         categoryIds: initialCategoryIds,
@@ -33,7 +34,11 @@ export default function Products(){
     return(
         <>
             <div className={products.searchFilter}>
-                <Filter page={products} onFilterChange={handleFilterChange} />
+                <Filter
+                    page={products}
+                    onFilterChange={handleFilterChange}
+                    initialFilters={filters}
+                />
                 <div className={products.mainArea}>
                     <SearchBar page={products} onSearch={handleSearch} initialQuery={initialQuery} />
                     <Ads page={products} filters={filters} />

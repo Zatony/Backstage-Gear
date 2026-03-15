@@ -8,7 +8,13 @@ export default function Category({ page, isLoading, loadingText, fallbackText, c
   }
 
   function handleClick(categoryId) {
-    navigate(`/products?categoryId=${categoryId}`);
+    navigate("/products", {
+      state: {
+        preselectedFilters: {
+          categoryIds: [categoryId],
+        },
+      },
+    });
   }
 
   return (

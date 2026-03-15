@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 
-export default function Filter({ page, onFilterChange }) {
+export default function Filter({ page, onFilterChange, initialFilters = {} }) {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedConditions, setSelectedConditions] = useState([]);
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState(
+    Array.isArray(initialFilters.categoryIds)
+      ? initialFilters.categoryIds.map((id) => Number(id))
+      : []
+  );
+  const [selectedBrand, setSelectedBrand] = useState(
+    initialFilters.brandId ? String(initialFilters.brandId) : ""
+  );
+  const [selectedConditions, setSelectedConditions] = useState(
+    Array.isArray(initialFilters.conditions) ? initialFilters.conditions : []
+  );
+  const [minPrice, setMinPrice] = useState(initialFilters.minPrice || "");
+  const [maxPrice, setMaxPrice] = useState(initialFilters.maxPrice || "");
 
   useEffect(() => {
     async function fetchCategories() {
@@ -38,7 +46,7 @@ export default function Filter({ page, onFilterChange }) {
   }
 
   function handleCategoryChange(e) {
-    const val = parseInt(e.target.value);
+    const val = parseInt(e.target.value, 10);
     const updated = e.target.checked
       ? [...selectedCategories, val]
       : selectedCategories.filter((id) => id !== val);
@@ -83,7 +91,7 @@ export default function Filter({ page, onFilterChange }) {
         <div className={page.filterCategoriesList}>
           {categories.map((category) => (
             <div key={"filterCategoryCH-"+category.id} className={page.filterCategory + " " + page.filterCheckBox}>
-                <input type="checkbox" id={"filterCategory-"+category.id} name="categories" value={category.id} onChange={handleCategoryChange}/>
+                <input type="checkbox" id={"filterCategory-"+category.id} name="categories" value={category.id} checked={selectedCategories.includes(Number(category.id))} onChange={handleCategoryChange}/>
                 <label htmlFor={"filterCategory-"+category.id}>{handleName(category.name)}</label>
             </div>
           ))}
@@ -95,11 +103,11 @@ export default function Filter({ page, onFilterChange }) {
         <div className={page.filterLine}></div>
         
         <div className={page.filterConditionList}>
-          <input type="checkbox" id="filterCondition1" name="conditions" value="Új" onChange={handleConditionChange} />
+          <input type="checkbox" id="filterCondition1" name="conditions" value="Új" checked={selectedConditions.includes("Új")} onChange={handleConditionChange} />
           <label htmlFor="filterCondition1">Új</label>
-          <input type="checkbox" id="filterCondition2" name="conditions" value="Használt" onChange={handleConditionChange} />
+          <input type="checkbox" id="filterCondition2" name="conditions" value="Használt" checked={selectedConditions.includes("Használt")} onChange={handleConditionChange} />
           <label htmlFor="filterCondition2">Használt</label>
-          <input type="checkbox" id="filterCondition3" name="conditions" value="Sérült" onChange={handleConditionChange} />
+          <input type="checkbox" id="filterCondition3" name="conditions" value="Sérült" checked={selectedConditions.includes("Sérült")} onChange={handleConditionChange} />
           <label htmlFor="filterCondition3">Sérült</label>
         </div>
       </div>
