@@ -7,15 +7,10 @@ import ChatMessages from "../components/ChatMessages.jsx";
 import MessageActions from "../components/MessageActions.jsx";
 import MessageModal from "../components/MessageModal.jsx";
 import MessageEmptyState from "../components/MessageEmptyState.jsx";
+import { getAuthToken, getAuthUserId } from "../util/auth";
 
 const getCurrentUserId = () => {
-  try {
-    const token = localStorage.getItem("token");
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.id;
-  } catch {
-    return null;
-  }
+  return getAuthUserId();
 };
 
 export default function Message() {
@@ -30,11 +25,11 @@ export default function Message() {
   const [newMessageRecipient, setNewMessageRecipient] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");
+  const token = getAuthToken();
 
   useEffect(() => {
     fetchMessages();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (location.state?.recipientId) {
@@ -61,6 +56,17 @@ export default function Message() {
 
   const fetchMessages = async () => {
     setLoading(true);
+
+    if (!token) {
+      setIncomingMessages([]);
+      setSentMessages([]);
+      setProfiles({});
+      setConversations([]);
+      setSelectedConversation(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       const [incomingRes, sentRes] = await Promise.all([
         fetch("http://localhost:3000/backstagegear/me/incoming_messages", {

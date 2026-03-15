@@ -46,7 +46,13 @@ INSERT INTO `advertisements` (`id`, `user_id`, `used_item_id`, `is_reported`, `d
 (3, 4, 3, 1, 'Amíg a hirdetésben lévő linkre kattintva a saját oldalunkon megtalálod, addig még eladó, a honlapunkon le is tudod foglalni! Ha már nem találod, kérlek írj vagy telefonálj nekünk! Köszönöm, de csere nem érdekel. Az ár nem alkuképes.', '2025-04-09 20:20:10'),
 (4, 5, 4, 0, 'Eladnám kibővített Roland TD-17 elektromos szettemet, mivel teljesen kihasználatlanul tartogatom szinte a megvétele óta. KD-10-es lábdobbal, plusz a szett kiegészítve még 2 cinnel. Semmi mókolás, semmi módosítás, a modul alapból támogatja az 5 cint. Tapadós eredeti Roland V-drums szőnyeget is adok hozzá, duplázó pedált azt nem. Bármilyen duplázóval tökéletesen megy, semmit nem kell állítgatni hozzá, ezért is a KD-10 az egyik legjobb lábdob.', '2025-05-01 15:56:11'),
 (5, 5, 5, 0, 'Eladó a 2022-ben vásárolt Marshall DSL1CR gitárkombóm kihasználatlanság miatt. Minden jól működik rajta, otthoni gyakorlásra használtam. Megtekinthető és kipróbálható előzetes egyeztetést követően Budapesten az Orange Termek-ben (1095, Budapest, Soroksári út 158-C).', '2025-06-14 08:07:06'),
-(6, 2, 6, 1, 'Eladó egy Behringer X32 Core digitális keverő, kitűnő műszaki és esztétikai állapotban. Kizárólag stúdióban használt, füstmentes környezetből, soha nem turnézott.', '2025-07-22 09:13:56');
+(6, 2, 6, 1, 'Eladó egy Behringer X32 Core digitális keverő, kitűnő műszaki és esztétikai állapotban. Kizárólag stúdióban használt, füstmentes környezetből, soha nem turnézott.', '2025-07-22 09:13:56'),
+(7, 2, 7, 0, 'Ikonikus Les Paul hangzás letisztult kivitelben. A mahagóni test és juhar top gazdag, sustainben erős tónust biztosít, a humbucker hangszedők pedig vastag, karakteres hangzást adnak. Sokoldalú elektromos gitár rock, blues és modern műfajokhoz egyaránt.', '2025-07-25 10:00:00'),
+(8, 3, 8, 0, 'Prémium kategóriás klasszikus gitár a Yamaha kézműves GC szériájából. A tömör cédrus fedlap meleg, kiegyensúlyozott hangzást biztosít, amely ideális klasszikus és fingerstyle játékhoz.', '2025-07-26 10:00:00'),
+(9, 4, 9, 0, 'A Clavinova sorozat egyik csúcsmodellje, amely a koncertzongora élményét digitális formában kínálja. Realisztikus billentés, prémium hangminták és modern funkciók teszik ideális választássá gyakorláshoz vagy otthoni zenéléshez.', '2025-07-27 10:00:00'),
+(10, 5, 10, 0, 'Professzionális dobkészlet a legendás Starclassic Maple sorozatból. A juhar testek dinamikus, meleg és jól artikulált hangzást biztosítanak, amely stúdióban és élőben is kiváló.', '2025-07-28 10:00:00'),
+(11, 5, 11, 0, '100 wattos csöves erősítő fej színpadi használatra tervezve. Több csatorna és az ISF hangszínszabályzó széles hangzásvilágot kínál a brit karaktertől az amerikai stílusig.', '2025-07-29 10:00:00'),
+(12, 5, 12, 0, 'Kompakt és megbízható aktív DI-box két csatornával. Ideális hangszerek vagy vonalszintű jelek szimmetrikusítására, valamint jelosztásra élő hangosításnál vagy stúdióban.', '2025-07-30 10:00:00');
 
 -- --------------------------------------------------------
 
@@ -69,7 +75,13 @@ INSERT INTO `ad_files` (`ad_id`, `file_id`) VALUES
 (3, 'yamaha-pss-e30.jpg'),
 (4, 'roland-td-07dmk.jpg'),
 (5, 'marshall-dsl40cr.jpg'),
-(6, 'behringer-xenxy.jpg');
+(6, 'behringer-xenxy.jpg'),
+(7, 'gibson-les-paul.jpg'),
+(8, 'yamaha-gc.jpg'),
+(9, 'yamaha-csp.jpg'),
+(10, 'tama-starclassic.jpg'),
+(11, 'blackstar-ht.jpg'),
+(12, 'behringer-di20.jpg');
 
 -- --------------------------------------------------------
 
@@ -284,7 +296,13 @@ INSERT INTO `files` (`id`, `file_name`, `file_size`) VALUES
 ('yamaha-pss-e30.jpg', 'yamaha-pss-e30', 0),
 ('roland-td-07dmk.jpg', 'roland-td-07dmk', 0),
 ('marshall-dsl40cr.jpg', 'marshall-dsl40cr', 0),
-('behringer-xenxy.jpg', 'behringer-xenxy', 0);
+('behringer-xenxy.jpg', 'behringer-xenxy', 0),
+('gibson-les-paul.jpg', 'gibson-les-paul', 0),
+('yamaha-gc.jpg', 'yamaha-gc', 0),
+('yamaha-csp.jpg', 'yamaha-csp', 0),
+('tama-starclassic.jpg', 'tama-starclassic', 0),
+('blackstar-ht.jpg', 'blackstar-ht', 0),
+('behringer-di20.jpg', 'behringer-di20', 0);
 
 -- --------------------------------------------------------
 
@@ -309,7 +327,13 @@ INSERT INTO `items` (`id`, `category_id`, `brand_id`, `name`) VALUES
 (3, 3, 45, 'Yamaha PSS E30 gyermek szintetizátor'),
 (4, 4, 36, 'Roland TD-07DMK Elektromos dobfelszerelés'),
 (5, 5, 27, 'Marshall DSL40CR csöves gitárkombó'),
-(6, 6, 5, 'Behringer Xenyx X2442USB keverő');
+(6, 6, 5, 'Behringer Xenyx X2442USB keverő'),
+(7, 1, 18, 'Gibson Les Paul Studio, Tobacco Burst'),
+(8, 2, 45, 'Yamaha GC-12C klasszikus gitár'),
+(9, 3, 45, 'Yamaha CSP-295GP PE Clavinova digitális zongora, lakk fekete'),
+(10, 4, 42, 'Tama Starclassic Maple Duracover Wrap Shell Kit 4 pcs - Red Oyster/Chrome HW'),
+(11, 5, 6, 'Blackstar HT Stage 100H MkIII'),
+(12, 6, 5, 'Behringer Ultra-DI DI20 2-csatornás aktív DI-Box/Splitter');
 
 -- --------------------------------------------------------
 
@@ -394,7 +418,13 @@ INSERT INTO `used_items` (`id`, `item_id`, `price`, `item_condition`) VALUES
 (3, 3, 27000, 'új'),
 (4, 4, 420000, 'használt'),
 (5, 5, 200000, 'sérült'),
-(6, 6, 1000000, 'használt');
+(6, 6, 1000000, 'használt'),
+(7, 7, 649900, 'új'),
+(8, 8, 418200, 'új'),
+(9, 9, 5894070, 'használt'),
+(10, 10, 1302100, 'sérült'),
+(11, 11, 466400, 'sérült'),
+(12, 12, 10500, 'használt');
 
 -- --------------------------------------------------------
 
@@ -566,7 +596,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT a táblához `advertisements`
 --
 ALTER TABLE `advertisements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT a táblához `brands`
@@ -590,7 +620,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT a táblához `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT a táblához `messages`
@@ -614,7 +644,7 @@ ALTER TABLE `profile_votes`
 -- AUTO_INCREMENT a táblához `used_items`
 --
 ALTER TABLE `used_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT a táblához `users`

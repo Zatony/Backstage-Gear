@@ -1,7 +1,7 @@
 import viewAd from "./viewAd.module.css";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getAuthToken } from "../util/auth";
+import { getAuthToken, getAuthUserId } from "../util/auth";
 import ItemImage from "../components/UserData.jsx";
 import ItemDetails from "../components/ItemDetails.jsx";
 import ItemActions from "../components/viewAdButtons.jsx";
@@ -22,12 +22,8 @@ export default function ViewAd() {
       setIsMyAd(false);
       return;
     }
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      setIsMyAd(payload.id === getAd.user_id);
-    } catch {
-      setIsMyAd(false);
-    }
+    const currentUserId = getAuthUserId();
+    setIsMyAd(currentUserId === getAd.user_id);
   }, [token, getAd.user_id]);
 
 
