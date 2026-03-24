@@ -2,6 +2,7 @@ import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
 import config from "../config/config";
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
@@ -183,13 +184,13 @@ export async function patchProfileById(req: any, res: any) {
         if (req.file) {
             const fileId = req.file.filename;
 
-            const profilePicturesDir = config.baseDir + config.uploadDir + "profile-pictures/";
+            const profilePicturesDir = path.join(config.uploadDir, "profile-pictures");
             try { fs.mkdirSync(profilePicturesDir, { recursive: true }); } catch (e) { /* ignore */ }
 
             try {
                 fs.renameSync(
-                    config.baseDir + config.uploadDir + fileId,
-                    profilePicturesDir + fileId
+                    path.join(config.uploadDir, fileId),
+                    path.join(profilePicturesDir, fileId)
                 );
             } catch (e) {
                 console.error('Fájl áthelyezése sikertelen:', e);
@@ -202,13 +203,13 @@ export async function patchProfileById(req: any, res: any) {
                     [fileId, req.file.originalname, req.file.size]
                 );
             } catch (e) {
-                try { fs.unlinkSync(profilePicturesDir + fileId); } catch (_) { /* ignore */ }
+                try { fs.unlinkSync(path.join(profilePicturesDir, fileId)); } catch (_) { /* ignore */ }
                 throw e;
             }
 
             if (profile.profile_picture && profile.profile_picture !== 'default-profile-picture.jpg') {
                 try {
-                    const oldPath = profilePicturesDir + profile.profile_picture;
+                    const oldPath = path.join(profilePicturesDir, profile.profile_picture);
                     fs.unlinkSync(oldPath);
                 } catch (e) { /* ignore deletion errors */ }
             }
@@ -226,8 +227,8 @@ export async function patchProfileById(req: any, res: any) {
 
         try {
             if (req.file) {
-                const adPicturesPath = config.baseDir + config.uploadDir + "profile-pictures/" + req.file.filename;
-                const rootPath = config.baseDir + config.uploadDir + req.file.filename;
+                const adPicturesPath = path.join(config.uploadDir, "profile-pictures", req.file.filename);
+                const rootPath = path.join(config.uploadDir, req.file.filename);
                 try { fs.unlinkSync(adPicturesPath); } catch (e) { try { fs.unlinkSync(rootPath); } catch (_) { /* ignore */ } }
             }
         } catch (e) {

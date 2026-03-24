@@ -14,6 +14,9 @@ import mysql from "mysql2/promise";
 import config from "../config/config";
 import fs from "fs";
 
+const profilePicturesDir = path.join(config.uploadDir, "profile-pictures");
+const categoryPicturesDir = path.join(config.uploadDir, "categories-pictures");
+const adPicturesDir = path.join(config.uploadDir, "ad-pictures");
 
 const app = express();
 
@@ -41,7 +44,7 @@ app.use(
           else if (ext === '.jpg' || ext === '.jpeg') contentType = 'image/jpeg';
           else if (ext === '.gif') contentType = 'image/gif';
 
-          const filePath = path.join(process.cwd(), 'uploads', 'profile-pictures', fileId);
+          const filePath = path.join(profilePicturesDir, fileId);
           res.setHeader('Content-Type', contentType);
           res.setHeader('Content-Disposition', `inline; filename="${originalName}"`);
           return res.sendFile(filePath, (err) => {
@@ -56,7 +59,7 @@ app.use(
     }
 
     try {
-      const filePath = path.join(process.cwd(), 'uploads', 'profile-pictures', fileId);
+      const filePath = path.join(profilePicturesDir, fileId);
       if (fs.existsSync(filePath)) {
         const fd = fs.openSync(filePath, 'r');
         const header = Buffer.alloc(8);
@@ -83,14 +86,14 @@ app.use(
     next();
   },
   express.static(
-    path.join(process.cwd(), "uploads", "profile-pictures")
+    profilePicturesDir
   )
 );
 
 app.use(
   "/categories-pictures",
   express.static(
-    path.join(process.cwd(), "uploads", "categories-pictures")
+    categoryPicturesDir
   )
 );
 
@@ -112,7 +115,7 @@ app.use(
           else if (ext === '.jpg' || ext === '.jpeg') contentType = 'image/jpeg';
           else if (ext === '.gif') contentType = 'image/gif';
 
-          const filePath = path.join(process.cwd(), 'uploads', 'ad-pictures', fileId);
+          const filePath = path.join(adPicturesDir, fileId);
           res.setHeader('Content-Type', contentType);
           res.setHeader('Content-Disposition', `inline; filename="${originalName}"`);
           return res.sendFile(filePath, (err) => {
@@ -129,7 +132,7 @@ app.use(
     next();
   },
   express.static(
-    path.join(process.cwd(), "uploads", "ad-pictures")
+    adPicturesDir
   )
 );
 

@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ const config: any = {
     database: dbDefaults,
     maxSize: parseInt(process.env.MAX_FILE_SIZE ?? "2097152"),
     baseDir: process.cwd(),
-    uploadDir: process.env.UPLOAD_DIR_NAME ?? "/uploads/"
+    uploadDir: path.resolve(process.cwd(), process.env.UPLOAD_DIR_NAME ?? "uploads")
 };
 
 export default config;

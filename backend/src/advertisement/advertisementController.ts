@@ -5,6 +5,7 @@ import { bodyIsUndefined, idIsNan } from "../validators/id.validator";
 import db from "../database/db";
 import { RowDataPacket } from "mysql2";
 import fs from "fs";
+import path from "path";
 
 
 export async function getAds(_req: Request, res: Response){
@@ -380,7 +381,7 @@ export async function postNewAdvertisement(req: any, res: any) {
         const adId = adResult.insertId;
 
         if (req.files && Array.isArray(req.files) && req.files.length > 0) {
-            const adPicturesDir = config.baseDir + config.uploadDir + "ad-pictures/";
+            const adPicturesDir = path.join(config.uploadDir, "ad-pictures");
             try { fs.mkdirSync(adPicturesDir, { recursive: true }); } catch (e) { /* ignore */ }
 
             for (const f of req.files) {
@@ -390,8 +391,8 @@ export async function postNewAdvertisement(req: any, res: any) {
 
                 try {
                     fs.renameSync(
-                        config.baseDir + config.uploadDir + fileId,
-                        adPicturesDir + fileId
+                        path.join(config.uploadDir, fileId),
+                        path.join(adPicturesDir, fileId)
                     );
                 } catch (e) {
                     console.error('Fájl áthelyezése sikertelen:', e);
@@ -429,8 +430,8 @@ export async function postNewAdvertisement(req: any, res: any) {
         await connection.rollback();
         try {
             for (const f of savedFiles) {
-                const adPicturesPath = config.baseDir + config.uploadDir + "ad-pictures/" + f;
-                const rootPath = config.baseDir + config.uploadDir + f;
+                const adPicturesPath = path.join(config.uploadDir, "ad-pictures", f);
+                const rootPath = path.join(config.uploadDir, f);
                 try {
                     fs.unlinkSync(adPicturesPath);
                 } catch (e) {
@@ -703,7 +704,7 @@ export async function patchAdById(req: any, res: any) {
                 [adId]
             );
 
-            const adPicturesDir = config.baseDir + config.uploadDir + "ad-pictures/";
+            const adPicturesDir = path.join(config.uploadDir, "ad-pictures");
             try { fs.mkdirSync(adPicturesDir, { recursive: true }); } catch (e) { /* ignore */ }
 
             for (const f of req.files) {
@@ -713,8 +714,8 @@ export async function patchAdById(req: any, res: any) {
 
                 try {
                     fs.renameSync(
-                        config.baseDir + config.uploadDir + fileId,
-                        adPicturesDir + fileId
+                        path.join(config.uploadDir, fileId),
+                        path.join(adPicturesDir, fileId)
                     );
                 } catch (e) {
                     console.error('Fájl áthelyezése sikertelen:', e);
@@ -744,8 +745,8 @@ export async function patchAdById(req: any, res: any) {
 
         try {
             for (const f of savedFiles) {
-                const adPicturesPath = config.baseDir + config.uploadDir + "ad-pictures/" + f;
-                const rootPath = config.baseDir + config.uploadDir + f;
+                const adPicturesPath = path.join(config.uploadDir, "ad-pictures", f);
+                const rootPath = path.join(config.uploadDir, f);
                 try {
                     fs.unlinkSync(adPicturesPath);
                 } catch (e) {

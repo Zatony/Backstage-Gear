@@ -9,7 +9,7 @@ dotenv.config();
 
 const storage = multer.diskStorage({
     destination: (_req, _file, cb) => {
-        cb(null, config.baseDir + config.uploadDir);
+        cb(null, config.uploadDir);
     }
 });
 
