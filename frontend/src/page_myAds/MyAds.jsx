@@ -20,7 +20,7 @@ export default function MyAds() {
         });
 
         const resData = await response.json();
-        console.log(resData);
+        // console.log(resData);
         if (response.ok) {
           setItems(resData);
           setMyAdIds(resData.map((item) => item.id));

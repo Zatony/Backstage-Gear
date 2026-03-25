@@ -39,7 +39,7 @@ export default function ViewAd() {
         if (response.ok) 
           setGetAd(resData[0]);
 
-        console.log("Hirdetés adatai: ", resData);
+        // console.log("Hirdetés adatai: ", resData);
       } catch (err) {
         console.error("Hiba a hirdetés lekérésekor: ", err);
       }
@@ -62,7 +62,7 @@ export default function ViewAd() {
       if (response.ok)
         setUserData(resData);
 
-      console.log("Felhasználói: ", resData);
+      // console.log("Felhasználói: ", resData);
     } catch (err) {
       console.error("Hiba a felhasználói adatok lekérésekor: ", err);
     }
@@ -181,7 +181,7 @@ export default function ViewAd() {
           "x-access-token": token
         }
       });
-      console.log("Jelentés válasza: ", response);
+      // console.log("Jelentés válasza: ", response);
       if (response.ok) {
         alert("A hirdetés sikeresen jelentve lett.");
         return nav("/")
@@ -215,7 +215,7 @@ export default function ViewAd() {
   }
 
   const handleEditAd = (adId) => {
-    console.log(adId);
+    // console.log(adId);
     nav(`/edit_ad?id=${adId}`);
   };
 

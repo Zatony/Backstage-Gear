@@ -38,7 +38,6 @@ export default function Root() {
 
   //Login es register kezelok
   function handleLogin() {
-    console.log("Login clicked");
     setShowLogin(true);
   }
   function handleCloseLogin() {

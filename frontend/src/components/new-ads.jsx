@@ -12,7 +12,7 @@ export default function NewAd({ page }) {
     async function fetchAds() {
       const response = await fetch("http://localhost:3000/backstagegear/latest_ads");
       const resAds = await response.json();
-      console.log("Friss hirdetések: ", resAds);
+      // console.log("Friss hirdetések: ", resAds);
       setAds(resAds);
     }
     fetchAds();

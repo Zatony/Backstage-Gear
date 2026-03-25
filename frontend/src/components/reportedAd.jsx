@@ -35,7 +35,7 @@ export default function ReportedAd({ adId, page }) {
       if(!report || report.user_id === undefined)
         return;
 
-      console.log(report.user_id)
+      // console.log(report.user_id)
 
       try {
         const response = await fetch(`http://localhost:3000/backstagegear/profiles/${report.user_id}`);
@@ -73,10 +73,10 @@ export default function ReportedAd({ adId, page }) {
   }
 
   async function handleDeleteUser(userId) {
-    console.log("Törlendő user ID: ", userId);
+    // console.log("Törlendő user ID: ", userId);
     if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?"))
       return;
-    console.log("Törlés megerősítve, végrehajtás...");
+    // console.log("Törlés megerősítve, végrehajtás...");
     try {
       const response = await fetch(`http://localhost:3000/backstagegear/me/delete_user/${userId}`, {
           method: "DELETE",
@@ -86,12 +86,12 @@ export default function ReportedAd({ adId, page }) {
           },
         });
 
-        console.log("Felhasználó törlésének válasza: ", response);
+        // console.log("Felhasználó törlésének válasza: ", response);
       if (response.ok) {
         setReport(null);
       }
-      else
-        console.log(response)
+      // else
+        // console.log(response)
     } catch (err) {
       console.error("Hiba a felhasználó törlésekor:", err);
     }

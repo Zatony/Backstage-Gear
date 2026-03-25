@@ -26,7 +26,7 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
     return () => window.removeEventListener("authChanged", handleAuthChange);
   }, []);
 
-  console.log("localStorage: ", localStorage);
+  // console.log("localStorage: ", localStorage);
   useEffect(() => {
     async function fetchUserProfile() {
       if (!token) return;
@@ -45,7 +45,7 @@ export default function NavBar({ callLogin, showLogin, handleCloseLogin, showReg
 
         const resData = await response.json();
         if (response.ok) {
-          console.log("Felhasználói adatok lekérve: ", resData);
+          // console.log("Felhasználói adatok lekérve: ", resData);
           setUserData(resData);
         }
       } catch (err) {

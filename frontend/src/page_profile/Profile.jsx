@@ -12,7 +12,7 @@ export default function Profile() {
   const [userData, setUserData] = useState({
     username: "",
     phone: "",
-    pictureLink: "",
+    pictureLink: null,
     up_vote: 0,
     down_vote: 0
   });
@@ -148,7 +148,12 @@ export default function Profile() {
           phone: true
         });
         setIsEditing(false);
-        window.location.reload();
+
+        setUserData((prev) => ({
+          ...prev,
+          username: username.current?.value || prev.username,
+          phone: unformatHungarianPhone(phoneNumber.current?.value || "") || prev.phone,
+        }));
       } else {
         const errorText = await response.text();
         alert("Hiba történt a frissítés során: " + errorText);
@@ -196,7 +201,7 @@ export default function Profile() {
       <div className={profile.profileContainer}>
         <div className={profile.profileMain}>
           <div className={profile.profilePicture}>
-            <img src={userData.pictureLink} alt="Profilkép" className={profile.profileImg} />
+            <img src={userData.pictureLink || undefined} alt="Profilkép" className={profile.profileImg} />
           </div>
 
           <div className={profile.profileFields}>

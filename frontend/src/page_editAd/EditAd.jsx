@@ -89,7 +89,7 @@ export default function EditAd() {
           const resData = await response.json();
           const ad = Array.isArray(resData) ? resData[0] : resData;
           setAdData(ad);
-          console.log("Hirdetés adatai: ", ad);
+          // console.log("Hirdetés adatai: ", ad);
         }
       } catch (err) {
         setError("Nem sikerült betölteni a hirdetés adatait.");

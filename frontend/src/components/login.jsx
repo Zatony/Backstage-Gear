@@ -58,8 +58,8 @@ export default function Login({ onClose, onShowRegister }) {
         expiration.setHours(expiration.getHours() + 2);
         localStorage.setItem('expiration', expiration.toISOString());
 
-        console.log("token: " + data.token);
-        console.log("Sikeres belépés!");
+        // console.log("token: " + data.token);
+        // console.log("Sikeres belépés!");
         onClose();
         try{ window.dispatchEvent(new Event('authChanged')); }catch(e){}
 

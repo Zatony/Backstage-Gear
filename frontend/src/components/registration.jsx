@@ -72,7 +72,7 @@ export default function Registration({ onClose, onRegister }) {
         dateOfBirth: refBirthdate.current.value
       }
 
-      console.log(newUser);
+      // console.log(newUser);
 
       try{
         const response = await fetch("http://localhost:3000/backstagegear/signup", {
@@ -84,7 +84,7 @@ export default function Registration({ onClose, onRegister }) {
           alert("Sikertelen regisztráció!");
           return;
         }
-        console.log(response)
+        // console.log(response);
 
         const data = await response.json();
         localStorage.setItem('token', data.token);
@@ -93,8 +93,8 @@ export default function Registration({ onClose, onRegister }) {
         expiration.setHours(expiration.getHours() + 2);
         localStorage.setItem('expiration', expiration.toISOString());
         
-        console.log("token: " + data.token);
-        console.log("Sikeres regisztráció!");
+        // console.log("token: " + data.token);
+        // console.log("Sikeres regisztráció!");
         onClose();
         try{ window.dispatchEvent(new Event('authChanged')); }catch(e){}
 

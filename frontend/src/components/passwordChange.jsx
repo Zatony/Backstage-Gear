@@ -60,7 +60,7 @@ export default function PasswordChange({ onClose }) {
       password: refNewPassword.current.value,
     };
 
-    console.log("Jelszó módosítás adatai:", passwordData);
+    // console.log("Jelszó módosítás adatai:", passwordData);
 
     try {
       const response = await fetch("http://localhost:3000/backstagegear/me/my_profile/update_password", {
