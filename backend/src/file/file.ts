@@ -1,6 +1,7 @@
 import mysql from "mysql2/promise";
 import config from "../config/config";
 import fs from "fs";
+import path from "path";
 
 export interface IFile{
     fileId?: string;
@@ -119,7 +120,7 @@ export class File implements IFile{
 
     deleteFileDir(){
         try{
-            fs.unlinkSync(config.baseDir + config.uploadDir + this.fileId);
+            fs.unlinkSync(path.join(config.uploadDir, this.fileId ?? ""));
         }
         catch(err){
             throw err;
