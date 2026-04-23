@@ -212,6 +212,33 @@
   box-shadow: 0 0 0 2px var(--accent-12);
 }
 
+@media screen and (max-width: 900px) {
+  .filterContainer {
+    width: auto;
+    max-width: none;
+    margin: 12px;
+    padding: 20px;
+    position: relative;
+    top: 0;
+    height: auto;
+    box-shadow: none;
+    border-radius: 12px;
+    display: block;
+    box-sizing: border-box;
+  }
+  .filterCategoriesList {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 8px;
+  }
+  .filterConditionList {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .filterCheckBox label {
+    font-size: 1.05rem;
+  }
+}
+
 /*KATEGORIAK*/
 main {
   margin-top: 70px;

@@ -5,13 +5,13 @@
   padding: 20px;
 }
 
-/* Main area: stacks searchbar above ads and other content */
 .mainArea {
   flex: 1 1 auto;
   flex-direction: column;
   gap: 20px;
   width: 100%;
 }
+
 /*SEARCHBAR*/
 .searchbar {
   background-color: var(--white);
@@ -196,7 +196,6 @@
   border-color: var(--accent-color);
   box-shadow: 0 0 0 2px var(--accent-12);
 }
-
 .filterBrands {
   padding: 5px;
   font-size: 1rem;
@@ -218,10 +217,22 @@
 
 @media screen and (max-width: 900px) {
   .searchFilter {
+    display: flex;
     flex-direction: column;
     padding: 12px;
   }
+  .mainArea {
+    display: contents;
+  }
+  .searchbar {
+    order: 1;
+    max-width: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 12px 0 12px 0;
+  }
   .filterContainer {
+    order: 2;
     width: 100%;
     position: relative;
     top: 0;
@@ -229,6 +240,10 @@
     box-shadow: none;
     border-radius: 12px;
     margin-bottom: 12px;
+    box-sizing: border-box;
+  }
+  .ads {
+    order: 3;
   }
 }
 
@@ -367,4 +382,38 @@
   color: var(--black);
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+.emptySearch {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--white);
+  margin-top: 40px;
+}
+@media screen and (max-width: 900px) {
+  .ad {
+    margin: 12px 12px;
+    gap: 12px;
+    padding: 12px;
+  }
+  .ad img {
+    flex: 0 0 160px;
+    width: 160px;
+    height: 160px;
+    margin: 0;
+  }
+  .adText_Button h3 {
+    font-size: 1.05rem;
+  }
+  .adText_Button h2 {
+    white-space: normal;
+  }
+  .adText_Button .notInCart,
+  .adText_Button .inCart,
+  .adText_Button .myAd {
+    width: 100%;
+    max-width: 240px;
+    padding: 9px 12px;
+    white-space: normal;
+    line-height: 1.2;
+  }
 }

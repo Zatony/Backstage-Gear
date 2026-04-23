@@ -102,6 +102,7 @@ export default function Ads({ page, filters = {} }) {
   return (
     <>
       <div className={page.ads}>
+        {ads.length === 0 && <p className={page.emptySearch}>Nincsen a keresésnek megfelelő termék.</p>}
         {ads.map((ad) => (
           <Ad
             key={ad.id || ad.advertisementId}

@@ -20,6 +20,10 @@
   align-items: center;
   min-width: 160px;
 }
+.adHeaderMobile {
+  display: none;
+  width: 100%;
+}
 .adTextBlock {
   flex: 1;
   display: flex;
@@ -65,6 +69,7 @@
 .rating {
   color: var(--muted);
   font-size: 0.98rem;
+  margin-left: 12px;
 }
 .voteActions {
   display: flex;
@@ -318,4 +323,109 @@
   color: var(--black);
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+@media screen and (max-width: 900px) {
+  .viewAdContainer {
+    padding: 12px;
+    box-sizing: border-box;
+  }
+  .adCardColumn {
+    width: 100%;
+    max-width: none;
+    margin: 18px auto;
+    padding: 20px 14px;
+    box-sizing: border-box;
+  }
+  .adInfoBlock {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .adImageAndUser {
+    width: 100%;
+    min-width: 0;
+    align-items: flex-start;
+  }
+  .adHeaderMobile {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 10px;
+  }
+  .mainImg {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 10px auto;
+  }
+  .adTextBlock {
+    width: 100%;
+    gap: 6px;
+  }
+  .adTextBlock .adTitle,
+  .adTextBlock .adMeta {
+    display: none;
+  }
+  .adTitle {
+    font-size: 2rem;
+    line-height: 1.25;
+    margin: 0;
+  }
+  .adMeta {
+    margin-bottom: 4px;
+  }
+  .adDescBlock {
+    margin: 8px 0;
+  }
+  .adCondLabel {
+    margin-bottom: 12px;
+  }
+  .adDescText {
+    margin-bottom: 8px;
+  }
+  .userRow {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .ratingRow {
+    width: 100%;
+  }
+  .rating {
+    margin-left: 0;
+  }
+  .voteActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .priceButtonsFullWidth {
+    margin-top: 18px;
+    gap: 12px;
+  }
+  .buttonRow {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .buttonRow .notInCart,
+  .buttonRow .inCart,
+  .buttonRow .myAd,
+  .buttonRow .reportBtn,
+  .buttonRow .reachOutBtn {
+    flex: 1 1 100%;
+    width: 100%;
+    padding: 10px 16px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .adCardColumn {
+    padding: 14px 10px;
+    margin: 12px auto;
+  }
+  .adTitle {
+    font-size: 1.8rem;
+  }
+  .priceButtonsFullWidth .price {
+    font-size: 1.35rem;
+  }
 }

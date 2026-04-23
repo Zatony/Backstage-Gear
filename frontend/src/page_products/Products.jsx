@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Filter from "../components/filter";
 import SearchBar from "../components/searchbar";
@@ -22,6 +22,19 @@ export default function Products(){
         minPrice: initialMinPrice,
         maxPrice: initialMaxPrice,
     });
+    const [isMobile, setIsMobile] = useState(
+        typeof window !== "undefined" ? window.innerWidth <= 900 : false
+    );
+    const [showFilter, setShowFilter] = useState(false);
+
+    useEffect(() => {
+        function handleResize() {
+            setIsMobile(window.innerWidth <= 900);
+        }
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     function handleFilterChange(newFilters) {
         setFilters((prev) => ({ ...prev, ...newFilters }));
@@ -31,16 +44,27 @@ export default function Products(){
         setFilters((prev) => ({ ...prev, q: query }));
     }
 
+    function handleFilter() {
+        setShowFilter((prev) => !prev);
+    }
+
     return(
         <>
             <div className={products.searchFilter}>
-                <Filter
-                    page={products}
-                    onFilterChange={handleFilterChange}
-                    initialFilters={filters}
-                />
+                {(!isMobile || showFilter) && (
+                    <Filter
+                        page={products}
+                        onFilterChange={handleFilterChange}
+                        initialFilters={filters}
+                    />
+                )}
                 <div className={products.mainArea}>
-                    <SearchBar page={products} onSearch={handleSearch} initialQuery={initialQuery} />
+                    <SearchBar
+                        page={products}
+                        onFilter={isMobile ? handleFilter : undefined}
+                        onSearch={handleSearch}
+                        initialQuery={initialQuery}
+                    />
                     <Ads page={products} filters={filters} />
                 </div>
             </div>

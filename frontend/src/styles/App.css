@@ -15,11 +15,21 @@
   --warning-70: #fa0303c2;
 }
 
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   min-height: 100vh;
-  min-width: 610px;
+  min-width: 550px;
   box-sizing: border-box;
 
   background-image: url("../assets/bg.jpg");
@@ -42,6 +52,12 @@ body {
 
 .main-content {
   flex: 1;
+}
+
+header,
+.navbar,
+.footer {
+  width: 100%;
 }
 
 /*NAVBAR*/
